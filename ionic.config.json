@@ -1,0 +1,7 @@
+{
+  "name": "vetverse-mobile",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
