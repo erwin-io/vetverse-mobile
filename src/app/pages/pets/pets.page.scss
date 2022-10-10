@@ -1,0 +1,169 @@
+
+
+* {
+
+  font-family: Roboto, "Helvetica Neue", sans-serif!important;
+}
+
+  ion-col {
+    padding: 0!important;
+  }
+  .filter-row {
+    display: flex!important;
+    padding: 10px!important;
+    .search-bar {
+      flex-grow: 1;
+      display: flex;
+      input {
+        flex-grow: 1;
+        height: 50px;
+        border-radius: 40px;
+        padding: 10px 20px;
+        border: 2px solid #E0E0E0!important;
+        font-size: inherit;
+        font-weight: 400;
+        line-height: 1.125;
+        letter-spacing: normal;
+        // background-color: #E0F2F1!important;
+        transition: border-color 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
+        &:focus,
+        &:active,
+        &:visited,
+        &:hover {
+          outline-width: 0;
+          border-color: #26A69A!important;
+        }
+      }
+    }
+  }
+  .pet-category {
+    background-color: #ffffff;
+    padding: 15px 0 0 0 ;
+    display: flex;
+    overflow: scroll;
+    box-sizing: border-box;
+    overflow: -moz-scrollbars-none;
+    -ms-overflow-style: none!important;
+    &::-webkit-scrollbar { width: 0 !important }
+    ::ng-deep .mat-chip-list-wrapper {
+      flex-direction: row!important;
+      flex-wrap: nowrap!important;
+      mat-chip {
+        white-space: nowrap;
+        padding-inline: 25px;
+        height: 50px!important;
+        border-radius: 25px;
+        border: 2px solid #BDBDBD!important;
+        background-color: #F5F5F5!important;
+        &:nth-child(1){
+          margin-left: 15px;
+        }
+        &.selected {
+          border-color: #009688!important;
+          color: #009688!important;
+        }
+      }
+    }
+    ion-chip {
+      box-sizing: border-box;
+      padding: 25px;
+      display: flex;
+      border-radius: 25px;
+      height: 50px!important;
+      --background: rgba($color: #222428, $alpha: 0.4);
+      border: 2px solid rgba($color: #000000, $alpha: 0.12);
+      span {
+        box-sizing: border-box;
+        display: flex;
+        overflow: visible;
+        white-space: nowrap;
+        max-width: auto!important;
+      }
+      &.selected {
+        border-color: #009688!important;
+        --background: #E0F2F1!important;
+        --color: #009688!important;
+      }
+    }
+  }
+  .pet-list-container {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    .list-title {
+      padding: 0 20px!important;
+    }
+    .pet-list {
+      overflow: scroll;
+      display: flex;
+      gap: 20px;
+      flex-grow: 1;
+      flex-flow: nowrap;
+      flex-direction: column;
+      padding: 20px;
+      overflow: -moz-scrollbars-none;
+      -ms-overflow-style: none;
+      &::-webkit-scrollbar { width: 0 !important }
+      .pet-card {
+        display: flex;
+        margin: 0;
+        flex-direction: row;
+        width: 100%;
+        padding: 20px;
+        .card-header {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          flex-grow: 1;
+          width: 120px!important;
+          height: 120px!important;
+          ::ng-deep ion-avatar {
+            width: 120px!important;
+            height: 120px!important;
+          }
+        }
+        .card-content {
+          margin-left: 20px;
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          flex-grow: 1;
+          .card-content-header {
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            margin-bottom: 25px;
+            align-items: center;
+            .title {
+              margin: 0!important;
+              flex-grow: 1;
+              font-style: normal;
+              font-weight: 500;
+              line-height: 22px;
+              color: #004D40;
+              font-size: 30px!important;
+              transition: color 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
+              &:focus,
+              &:active,
+              &:visited,
+              &:hover {
+                color: #0097A7!important;
+              }
+            }
+            ion-buttons {
+              // margin-right: -20px!important;
+              // margin-right: -20px!important;
+              ion-button {
+              }
+            }
+          }
+          .description {
+            font-size: 18px!important;
+            display: flex;
+            flex-direction: column;
+          }
+        }
+      }
+    }
+
+  }

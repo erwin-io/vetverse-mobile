@@ -1,0 +1,159 @@
+<ion-content>
+  <div class="register container">
+    <div class="form-container">
+      <form
+        id="registerForm"
+        #documentEditForm="ngForm"
+        [formGroup]="registerForm"
+        (ngSubmit)="onFormSubmit(registerForm.value)">
+        <fieldset [disabled]="isSubmitting">
+          <div class="form-field-group">
+            <div class="app_banner">
+              <div class="image-container">
+                <img src="../../../../assets/img/app_banner.jpg">
+              </div>
+            </div>
+            <span class="register-text">Create account</span>
+            <mat-form-field appearance="outline">
+              <mat-label>First name</mat-label>
+              <input
+                matInput
+                type="text"
+                placeholder="First name"
+                formControlName="firstName"
+                autocomplete="new-firstName"
+              />
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Middle name</mat-label>
+              <input
+                matInput
+                type="text"
+                placeholder="Middle name"
+                formControlName="middleName"
+                autocomplete="new-middleName"
+              />
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Last name</mat-label>
+              <input
+                matInput
+                type="text"
+                placeholder="Last name"
+                formControlName="lastName"
+                autocomplete="new-lastName"
+              />
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Email</mat-label>
+              <input
+                matInput
+                type="email"
+                placeholder="Email"
+                formControlName="email"
+                autocomplete="new-email"
+              />
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Mobile number</mat-label>
+              <input
+                matInput
+                type="text"
+                placeholder="Mobile number"
+                formControlName="mobileNumber"
+                autocomplete="new-mobileNumber"
+              />
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Address</mat-label>
+              <textarea
+                matInput
+                type="text"
+                placeholder="Address"
+                formControlName="address"
+              ></textarea>
+            </mat-form-field>
+            <mat-form-field appearance="outline" (click)="picker.open()" style="cursor: pointer;">
+              <mat-label>Birthdate</mat-label>
+              <input
+                matInput
+                [matDatepicker]="picker"
+                placeholder="Birthdate"
+                formControlName="birthDate"
+                autocomplete="new-birthDate">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker></mat-datepicker>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Gender</mat-label>
+              <mat-select
+                formControlName="genderId"
+                [disabled]="isSubmitting">
+                <mat-option value="1">Male</mat-option>
+                <mat-option value="2">Female</mat-option>
+                <mat-option value="3">Rather not say</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Username</mat-label>
+              <input
+                matInput
+                type="text"
+                placeholder="Username"
+                formControlName="username"
+                autocomplete="new-username"
+              />
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Passowrd</mat-label>
+              <input
+                matInput
+                type="password"
+                placeholder="Password"
+                formControlName="password"
+                autocomplete="new-password"
+                #passowrd
+              />
+              <mat-icon
+                class="icon-right"
+                (click)="passowrd.type = (passowrd.type === 'password' ? 'text' : 'password')"
+                style="cursor: pointer;"
+                matSuffix>{{ passowrd.type === 'password' ? 'visibility' : 'visibility_off' }}</mat-icon>
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Confirm passowrd</mat-label>
+              <input
+                matInput
+                type="password"
+                placeholder="Confirm passowrd"
+                formControlName="confirmPassword"
+                autocomplete="new-confirmPassword"
+                [errorStateMatcher]="matcher"
+                #confirmPassword
+              />
+              <mat-icon
+                class="icon-right"
+                (click)="confirmPassword.type = (confirmPassword.type === 'password' ? 'text' : 'password')"
+                style="cursor: pointer;"
+                matSuffix>{{ confirmPassword.type === 'password' ? 'visibility' : 'visibility_off' }}</mat-icon>
+            </mat-form-field>
+          </div>
+        </fieldset>
+      </form>
+    </div>
+    <div class="register-footer">
+      <div class="action">
+        <button
+          form="registerForm"
+          type="submit"
+          mat-flat-button
+          color="primary"
+          [disabled]="isSubmitting"
+          >Sign up</button>
+      </div>
+      <div class="footer-helper">
+        <span>Already have an account? <a routerLink="/login">Login</a></span>
+      </div>
+    </div>
+  </div>
+</ion-content>

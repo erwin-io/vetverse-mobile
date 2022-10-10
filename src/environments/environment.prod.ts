@@ -1,3 +1,4 @@
 export const environment = {
-  production: true
+  production: true,
+  apiBaseUrl: 'https://vetverse-api.herokuapp.com/api/v1/',
 };

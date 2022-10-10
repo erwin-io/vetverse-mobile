@@ -1,0 +1,60 @@
+<ion-content>
+  <div class="login container">
+    <div class="form-container">
+      <form
+        [formGroup]="loginForm"
+        (ngSubmit)="onFormSubmit(loginForm.value)">
+        <fieldset [disabled]="isSubmitting">
+          <h4 class="welcome">Welcome to</h4>
+          <div class="form-field-group">
+            <div class="app_banner">
+              <div class="image-container">
+                <img src="../../../../assets/img/app_banner.jpg">
+              </div>
+            </div>
+            <span class="login-text">Log into your account</span>
+            <mat-form-field appearance="outline">
+              <mat-label>Username</mat-label>
+              <input
+                matInput
+                type="text"
+                placeholder="Username"
+                formControlName="username"
+                oninput="this.value = this.value.toLowerCase()"
+              />
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Passowrd</mat-label>
+              <input
+                matInput
+                type="password"
+                placeholder="Password"
+                formControlName="password"
+                #passowrd
+              />
+              <mat-icon
+                class="icon-right"
+                (click)="passowrd.type = (passowrd.type === 'password' ? 'text' : 'password')"
+                style="cursor: pointer;"
+                matSuffix>{{ passowrd.type === 'password' ? 'visibility' : 'visibility_off' }}</mat-icon>
+            </mat-form-field>
+            <mat-checkbox
+              [disabled]="isSubmitting"
+              formControlName="rememberMe"
+              color="primary">Remember me</mat-checkbox>
+          </div>
+          <div class="action">
+            <button
+              type="submit"
+              mat-flat-button
+              color="primary"
+              >Log In</button>
+          </div>
+        </fieldset>
+      </form>
+    </div>
+    <div class="login-footer">
+      <span>Don't have an account? <a routerLink="/signup">Sign up</a></span>
+    </div>
+  </div>
+</ion-content>

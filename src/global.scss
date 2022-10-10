@@ -24,3 +24,120 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
+
+
+html, body {
+    font-family: "Inter",sans-serif !important;
+    background-color: #ffffff!important;
+  }
+
+  // /* official variable for theme */
+  // $input-label-color: rgba(0, 0, 0, 0.42);
+  // $input-border-color: rgba(0, 0, 0, 0.42);
+  // $input-label-focused-color: #247881;
+  // $input-border-focused-color: #247881;
+  // $input-label-invalid-color: #FF5252;
+  // $input-border-invalid-color: #FF5252;
+
+  // $button-disabled-color: #A1A1A1;
+  // $button-primary-submitting-color: #A1A1A1;
+
+  // $checkbox-checked-color: #4f8287;
+
+  // $select-label-selected-color: #247881;
+
+
+  h1,h2,h3,h4,h5,h6,
+  p,strong,span,label {
+    margin: 0;
+  }
+
+
+  /* app theme */
+  form {
+    flex-grow: 1;
+    display: flex;
+    fieldset {
+      flex-grow: 1;
+      display: flex;
+      border: none!important;
+      padding: 0;
+      margin: 0;
+      flex-direction: column;
+      .form-field-group {
+        flex-grow: 1;
+        display: flex;
+        flex-direction: column;
+        padding: 0 0 20px 0;
+        margin: 0;
+        .mat-form-field-wrapper {
+          padding-bottom: 0px;
+        }
+        .error {
+          margin: 10px 0 0 0!important;
+          color: #f44336;
+        }
+      }
+    }
+  }
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active{
+      -webkit-box-shadow: 0 0 0 30px #ecf3f6 inset !important;
+      -webkit-text-fill-color: #000000 !important;
+  }
+  .vetverse-btn-primary {
+    color: #ffffff!important;
+    letter-spacing: 0px!important;
+    background-color: #b36b39!important;
+    padding: 0!important;
+  }
+
+  .vetverse-btn-secondary {
+  }
+
+  /* end */
+
+
+.modal-fullscreen {
+  --width: 100%;
+  --height: 100%;
+}
+.toast-success {
+  --background: #383a3e;
+  --color: #ffff;
+}
+.toast-error {
+  --background: #cf3c4f;
+  --color: #ffff;
+}
+
+@media only screen and (max-width: 768px) {
+}
+
+
+.action {
+  display: flex;
+  ion-button,button {
+    flex-grow: 1;
+    height: 45px;
+    font-size: 15px;
+  }
+}
+
+ion-modal {
+  --backdrop-opacity: 0.4!important;
+}
+
+ion-item {
+  --border-color: rgba(0,0,0,0.1);
+}
+ion-item.item-has-focus.ion-valid {
+  --highlight-background:#26A69A;
+  --border-color: var(--ion-color-primary, #26A69A);
+}
+
+.mat-select-panel{
+  font-size: 18px!important;
+}

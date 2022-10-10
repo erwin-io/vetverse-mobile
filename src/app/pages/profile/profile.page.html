@@ -1,0 +1,31 @@
+<ion-header no-border no-shadow>
+  <ion-toolbar>
+    <div slot="start" style="width: 48px"></div>
+    <ion-title class="ion-text-center">Profile</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="onShowSettings()">
+        <ion-icon slot="icon-only" name="settings-sharp"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="content">
+    <div class="row profile">
+      <div class="col avatar">
+        <ion-avatar>
+          <img src="https://ionicframework.com/docs/demos/api/avatar/avatar.svg">
+        </ion-avatar>
+      </div>
+      <div class="col welcome">
+        <div class="row name">
+          <h2>Hi, {{ user.fullName }}</h2>
+        </div>
+        <div class="row description">
+          <h3>What can we help you today?</h3>
+        </div>
+      </div>
+    </div>
+  </div>
+</ion-content>

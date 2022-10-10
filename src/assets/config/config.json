@@ -1,0 +1,68 @@
+{
+  "tableColumns": {
+    "appointment": {
+      "admin": ["appointmentId", "appointmentDate", "client", "consultaionType", "service", "vet", "amountToPay", "appointmentStatus", "controls"],
+      "manager": ["appointmentId", "appointmentDate", "client", "consultaionType", "service", "vet", "amountToPay", "appointmentStatus", "controls"],
+      "vet": ["appointmentId", "appointmentDate", "client", "consultaionType", "service", "appointmentStatus", "controls"],
+      "frontDesk": ["appointmentId", "appointmentDate", "client", "consultaionType", "service", "vet", "amountToPay", "appointmentStatus", "controls"]
+    }
+  },
+  "lookup": {
+    "appointmentStatus": ["Pending", "Approved", "Completed", "Cancelled"],
+    "serviceType": [],
+    "consultaionType": ["Onsite", "Video"],
+    "paymentType": [{"paymentTypeId":"1", "name": "Cash"}, {"paymentTypeId":"2", "name": "G-Cash"}],
+    "roles": [
+      {
+        "roleId": "1",
+        "name": "Admin"
+      },
+      {
+        "roleId": "2",
+        "name": "Manager"
+      },
+      {
+        "roleId": "3",
+        "name": "Veterinarian"
+      },
+      {
+        "roleId": "4",
+        "name": "Front desk"
+      }]
+  },
+  "apiEndPoints": {
+    "auth": {
+      "login": "auth/login/client",
+      "logout": "auth/logout",
+      "register":"auth/register/client",
+      "findByUsername": "auth/findByUsername/",
+      "refreshToken": "auth/refresh-token"
+    },
+    "user": {
+      "getById": "users/",
+      "udpdate": "users/client"
+    },
+    "appointment": {
+      "get": "appointment",
+      "getById": "appointment/",
+      "createClientAppointment": "appointment/createClientAppointment",
+      "createClientCashlessAppointment": "appointment/createClientCashlessAppointment",
+      "rescheduleAppointment": "appointment/rescheduleAppointment"
+    },
+    "payment": {
+      "get": "payments",
+      "getById": "payments/",
+      "create": "payments"
+    },
+    "pet": {
+      "get": "pet",
+      "getByClientId": "pet/findByClientId/",
+      "getById": "pet/",
+      "create": "pet",
+      "update": "pet",
+      "delete": "pet/"
+    },
+    "petType": "pet-type/",
+    "petCategory": "pet-category/"
+  }
+}

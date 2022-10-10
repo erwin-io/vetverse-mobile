@@ -1,0 +1,77 @@
+ion-header::after {
+  background-image: none;
+}
+
+* {
+  font-family: "Inter-Bold", "Inter", sans-serif!important;
+}
+ion-content {
+  display: flex;
+  padding: 20px;
+  .details {
+    display: flex;
+    flex-direction: row;
+    box-sizing: border-box;
+    padding: 40px;
+    .profile {
+      display: flex;
+      flex-direction: column;
+      box-sizing: border-box;
+      .avatar {
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
+        padding: 20px 20px 0 20px;
+        img {
+          border-radius: 100%;
+          width: 148px!important;
+          height: 148px!important;
+        }
+      }
+      .title{
+        box-sizing: border-box;
+        font-weight: 700;
+        color: #000000;
+        font-size: 30px;
+        letter-spacing: 0px;
+        line-height: 1.2;
+        text-align: center;
+        margin: 0!important;
+        padding: 10px 0 0 0;
+      }
+    }
+    .info {
+      align-self: center;
+      display: flex;
+      flex-direction: column;
+      flex-grow: 1;
+      box-sizing: border-box;
+      font-weight: 300;
+      color: #000000;
+      font-size: 16px;
+      letter-spacing: 0px;
+      line-height: 1.2;
+      .info-row {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        column-gap: 10px;
+        font-size: 25px;
+        ion-icon {
+          font-size: 25px;
+        }
+      }
+    }
+  }
+  .records {
+    padding: 0px 40px;
+    display: flex;
+    .title {
+      font-weight: 700;
+      color: #000000;
+      font-size: 25px;
+      letter-spacing: 0px;
+      line-height: 1.2;
+    }
+  }
+}

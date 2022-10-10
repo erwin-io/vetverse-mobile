@@ -1,0 +1,119 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="cancel()" >
+        <ion-icon name="chevron-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title style="text-align: center">Add pet</ion-title>
+    <div slot="end" style="width: 48px"></div>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+  <form
+  id="petForm"
+  [formGroup]="petForm"
+  (ngSubmit)="petForm.valid ? onSubmit() : false">
+    <fieldset [disabled]="isSubmitting || isLoading">
+      <div class="form-field-group">
+        <mat-label>What tyoe of pet</mat-label>
+        <mat-form-field appearance="outline">
+          <mat-label>Pet type</mat-label>
+          <mat-select
+            formControlName="petTypeId"
+            [disabled]="isLoading || isSubmitted">
+            <mat-option *ngFor="let item of petTypeOption" value="{{item.petTypeId}}">{{item.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <span class="error" *ngIf="errorControls.petTypeId.touched && errorControls.petTypeId.errors && errorControls.petTypeId.errors.required">
+          Please select a type of pet
+        </span>
+      </div>
+      <div class="form-field-group" *ngIf="errorControls.petTypeId.value && errorControls.petTypeId.value !== ''">
+        <mat-label>Category </mat-label>
+        <mat-form-field appearance="outline">
+          <mat-label>Category</mat-label>
+          <mat-select
+            formControlName="petCategoryId"
+            [disabled]="isLoading || isSubmitted">
+            <mat-option *ngFor="let item of petCatgoryOption" value="{{item.petCategoryId}}">{{item.name}}</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <span class="error" *ngIf="errorControls.petCategoryId.touched && errorControls.petCategoryId.errors && errorControls.petCategoryId.errors.required">
+          Please select a category
+        </span>
+      </div>
+      <div class="form-field-group" *ngIf="errorControls.petCategoryId.value && errorControls.petCategoryId.value !== ''">
+        <mat-label>Name</mat-label>
+        <mat-form-field appearance="outline">
+          <mat-label>Name</mat-label>
+          <input
+            matInput
+            type="text"
+            placeholder="Name"
+            formControlName="name"
+          />
+        </mat-form-field>
+        <span class="error" *ngIf="errorControls.name.touched && errorControls.name.errors && errorControls.name.errors.required">
+          Name is required
+        </span>
+      </div>
+      <div class="form-field-group" *ngIf="errorControls.petCategoryId.value && errorControls.petCategoryId.value !== ''">
+        <mat-label>Gender</mat-label>
+        <mat-form-field appearance="outline">
+          <mat-label>Gender</mat-label>
+          <mat-select
+            formControlName="genderId"
+            [disabled]="isSubmitting || isLoading">
+            <mat-option value="1">Male</mat-option>
+            <mat-option value="2">Female</mat-option>
+            <mat-option value="3">Rather not say</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <span class="error" *ngIf="errorControls.genderId.touched && errorControls.genderId.errors && errorControls.genderId.errors.required">
+          Please select a gender
+        </span>
+      </div>
+      <div class="form-field-group" *ngIf="errorControls.petCategoryId.value && errorControls.petCategoryId.value !== ''">
+        <mat-label>Birthdate</mat-label>
+        <mat-form-field appearance="outline" (click)="picker.open()" style="cursor: pointer;">
+          <input
+            matInput
+            [matDatepicker]="picker"
+            placeholder="Birthdate"
+            formControlName="birthDate"
+            autocomplete="new-birthDate">
+          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+        <span class="error" *ngIf="errorControls.birthDate.touched && errorControls.birthDate.errors && errorControls.birthDate.errors.required">
+          Birthdate is required
+        </span>
+      </div>
+      <div class="form-field-group" *ngIf="errorControls.petCategoryId.value && errorControls.petCategoryId.value !== ''">
+        <mat-label>Weight</mat-label>
+        <mat-form-field appearance="outline">
+          <mat-label>Weight</mat-label>
+          <input
+            matInput
+            type="number"
+            placeholder="Weight"
+            formControlName="weight"
+          />
+        </mat-form-field>
+        <span class="error" *ngIf="errorControls.weight.touched && errorControls.weight.errors && errorControls.weight.errors.required">
+          Weight is required
+        </span>
+      </div>
+      <div class="action">
+        <ion-button
+          *ngIf="errorControls.petCategoryId.value && errorControls.petCategoryId.value !== ''"
+          type="submit"
+          mat-flat-button
+          color="primary"
+          [disabled]="isSubmitting"
+          >Save</ion-button>
+      </div>
+    </fieldset>
+  </form>
+</ion-content>

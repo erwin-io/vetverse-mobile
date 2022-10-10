@@ -1,0 +1,46 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="cancel()" >
+        <ion-icon name="chevron-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title style="text-align: center">Details</ion-title>
+    <div slot="end" style="width: 48px"></div>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div class="details">
+    <div class="profile">
+      <div class="avatar">
+        <img src="https://hips.hearstapps.com/hmg-prod/images/cute-dog-captions-1563456568.jpg?crop=0.668xw:1.00xh;0.241xw,0&resize=480:*" />
+      </div>
+      <h1 class="title">
+        {{details.name}}
+      </h1>
+    </div>
+    <div class="info">
+      <div class="info-row">
+        <ion-icon name="paw-outline"></ion-icon>
+        <h3>{{details.petCategory.name}}</h3>
+      </div>
+      <div class="info-row">
+        <ion-icon [name]="details.gender.genderId === '1' ?'male':'female' + '-outline'"></ion-icon>
+        <h3>
+          {{details.gender.name}}
+        </h3>
+      </div>
+      <div class="info-row">
+        <ion-icon name="time-outline"></ion-icon>
+        <h3>{{null|getAgeByBirthdate:details.birthDate}}</h3>
+      </div>
+      <div class="info-row">
+        <ion-icon name="scale-outline"></ion-icon>
+        <h3>{{details.weight}} kg</h3></div>
+    </div>
+  </div>
+  <div class="records">
+    <h2 class="title">Medical Records</h2>
+
+  </div>
+</ion-content>

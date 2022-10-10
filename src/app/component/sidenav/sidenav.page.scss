@@ -1,0 +1,80 @@
+.side-nav {
+  .profile-container {
+    /* Auto layout */
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    padding: 0px;
+    margin: 24px 24px 56px 24px;
+    gap: 8px;
+    .profile-avatar{
+      width: 44px;
+      height: 44px;
+      background: #078282;
+      border-radius: 50%;
+      flex-grow: 0;
+      display: flex;
+      text-align: center;
+      align-items: center;
+      justify-content: center;
+      span{
+        font-style: normal;
+        font-weight: 700;
+        font-size: 16px;
+        line-height: 22px;
+        text-align: center;
+        color: #FFFFFF;
+      }
+    }
+    .profile-text{
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 0px;
+      flex-grow: 1;
+      flex: none;
+      order: 1;
+      flex-grow: 0;
+      .name {
+        margin: 0;
+        padding: 0;
+        font-style: normal;
+        font-weight: 700;
+        font-size: 16px;
+        line-height: 22px;
+        color: #222133;
+        flex-grow: 1;
+      }
+      .username {
+        margin: 0;
+        padding: 0;
+        font-family: 'Open Sans';
+        font-style: normal;
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 19px;
+        color: #7C7C7A;
+        order: 1;
+        flex-grow: 1;
+      }
+    }
+  }
+  .nav-list {
+    display: flex;
+    flex-direction: column;
+    padding: 0px;
+    gap: 16px;
+    display: flex;
+    ion-item.active-menu::part(native){
+      background-color: #F5F5F5;
+    }
+    ion-item::part(native){
+      font-style: normal;
+      font-weight: 600;
+      font-size: 16px;
+      line-height: 140%;
+      color: #7C7C7A;
+    }
+  }
+}
