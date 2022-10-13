@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  apiBaseUrl: 'https://vetverse-api.herokuapp.com/api/v1/',
-  // apiBaseUrl: 'http://192.168.254.140:3000/api/v1/',
+  // apiBaseUrl: 'https://vetverse-api.herokuapp.com/api/v1/',
+  apiBaseUrl: 'http://192.168.254.140:3000/api/v1/',
 };
 
 /*

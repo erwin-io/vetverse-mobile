@@ -13,6 +13,8 @@
               </div>
             </div>
             <span class="login-text">Log into your account</span>
+          </div>
+          <div class="form-field-group">
             <mat-form-field appearance="outline">
               <mat-label>Username</mat-label>
               <input
@@ -23,6 +25,8 @@
                 oninput="this.value = this.value.toLowerCase()"
               />
             </mat-form-field>
+          </div>
+          <div class="form-field-group">
             <mat-form-field appearance="outline">
               <mat-label>Passowrd</mat-label>
               <input
@@ -38,6 +42,8 @@
                 style="cursor: pointer;"
                 matSuffix>{{ passowrd.type === 'password' ? 'visibility' : 'visibility_off' }}</mat-icon>
             </mat-form-field>
+          </div>
+          <div class="form-field-group">
             <mat-checkbox
               [disabled]="isSubmitting"
               formControlName="rememberMe"

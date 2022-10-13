@@ -14,10 +14,11 @@ import { IServices } from './interface/iservices';
 export class AppointmentService implements IServices {
   constructor(private http: HttpClient, private appconfig: AppConfigService) {}
 
-  get(): Observable<ApiResponse<Appointment[]>> {
+  getClientAppointmentsByStatus(params: any): Observable<ApiResponse<Appointment[]>> {
     return this.http
       .get<any>(
-        environment.apiBaseUrl + this.appconfig.config.apiEndPoints.appointment.get
+        environment.apiBaseUrl + this.appconfig.config.apiEndPoints.appointment.getClientAppointmentsByStatus,
+        {params}
       )
       .pipe(
         tap((_) => this.log('appointment')),

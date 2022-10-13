@@ -23,7 +23,7 @@
       }
     }
     .register-text {
-      margin-bottom: 30px!important;
+      text-align: center;
     }
     span, input {
       font-size: 16px;
@@ -36,8 +36,8 @@
       flex-direction: row;
       justify-content: center;
       align-items: center;
+      padding-bottom: 130px!important;
       .form-field-group {
-        margin-bottom: 130px;
       }
     }
     .register-footer {

@@ -36,7 +36,7 @@
       }
     }
     .login-text {
-      margin-bottom: 30px!important;
+      text-align: center;
     }
     span, input {
       font-size: 16px;
@@ -49,9 +49,6 @@
       flex-direction: row;
       justify-content: center;
       align-items: center;
-      .form-field-group {
-        margin-bottom: 30px;
-      }
       .action {
         flex-grow: 1;
         display: flex;

@@ -5,60 +5,41 @@
 </ion-header>
 
 <ion-content fullscreen>
-  <ion-item-divider sticky>
-    <ion-segment [(ngModel)]="type" (ionChange)="segmentChanged($event)" scrollable>
-      <ion-segment-button value="upcoming">
-        <ion-label>Upcoming</ion-label>
-      </ion-segment-button>
-      <ion-segment-button value="completed">
-        <ion-label>Completed</ion-label>
-      </ion-segment-button>
-    </ion-segment>
-</ion-item-divider>
-<div class="segement-content-holder">
-  <div class="segement-content" [ngSwitch]="type">
-    <div class="segement-content-inner" *ngSwitchCase="'upcoming'">
-      <div *ngFor="let a of appointment">
-        <ion-card >
-          <div class="sched-card">
-            <div class="card-header">
-              <span>{{a.appointmentDate | date: 'MMMM'}}</span>
-              <span class="date">12</span>
-              <span>Wed</span>
-            </div>
-            <div class="card-content">
-              <div class="content-row border">
-                <div class="field">
-                  <span class="label">Doctor</span>
-                  <span class="value">Dr. Erwin Ramirez</span>
-                </div>
-                <div class="field action">
-                  <ion-buttons slot="end">
-                    <ion-button (click)="showMenu()">
-                      <ion-icon name="ellipsis-vertical-sharp"></ion-icon>
-                    </ion-button>
-                  </ion-buttons>
-                </div>
+  <div>
+    <div *ngFor="let a of appointment">
+      <ion-card >
+        <div class="sched-card">
+          <div class="card-header">
+            <span>{{a.appointmentDate | date: 'MMMM'}}</span>
+            <h2 class="date">{{a.appointmentDate | date: 'dd'}}</h2>
+            <span><strong>{{a.appointmentDate + ' ' + a.timeStart | date: 'hh:mm a'}}</strong></span>
+            <span>{{a.appointmentDate | date: 'EEEE'}}</span>
+          </div>
+          <div class="card-content">
+            <div class="content-row border">
+              <div class="field vet">
+                <h3>Veterenarian</h3>
+                <h3 class="value"><strong>{{a.staff.fullName}}</strong></h3>
               </div>
-              <div class="content-row">
-                <div class="field">
-                  <span class="label">Type</span>
-                  <span class="value">Check up</span>
-                </div>
-                <div class="field">
-                  <span class="label">Time</span>
-                  <span class="value">05:00 PM</span>
-                </div>
+              <div class="field action">
+                <ion-buttons slot="end">
+                  <ion-button (click)="showMenu()">
+                    <ion-icon name="ellipsis-vertical-sharp"></ion-icon>
+                  </ion-button>
+                </ion-buttons>
+              </div>
+            </div>
+            <div class="content-row">
+              <div class="field type">
+                <h3>Type</h3>
+                <h3 class="value"><strong>{{a.serviceType.name}}</strong></h3>
               </div>
             </div>
           </div>
-        </ion-card>
-      </div>
-
+        </div>
+      </ion-card>
     </div>
-    <div *ngSwitchCase="'completed'"></div>
   </div>
-</div>
 </ion-content>
 <div class="sched-controls-bottom">
   <ion-button color="primary" size="large" expand="block" (click)="openAddModal()">Book new Appointment</ion-button>

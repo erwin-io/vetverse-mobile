@@ -13,11 +13,11 @@ import { AppointmentService } from 'src/app/core/services/appointment.service';
   styleUrls: ['./schedule.page.scss'],
 })
 export class SchedulePage implements OnInit {
+  selectedStatus: string[] = ['Pending'];
   currentUserId: string;
-  type;
   isLoading = false;
   appointment: Appointment[] = [];
-  message = 'This modal example uses the modalController to present and dismiss modals.';
+  message = '';
   constructor(private actionSheetController: ActionSheetController,
     private modalCtrl: ModalController,
     private alertController: AlertController,
@@ -28,33 +28,20 @@ export class SchedulePage implements OnInit {
     }
 
   ngOnInit() {
-    this.type = 'upcoming';
     this.getAppointment();
   }
 
   async getAppointment() {
     try{
       this.isLoading = true;
-      this.appointmentService.get()
+      this.appointmentService.getClientAppointmentsByStatus({
+        clientId: '1',
+        appointmentStatus: this.selectedStatus.toString()
+      })
       .subscribe(async res => {
         console.log(res);
         if(res.success){
-          // const data = res.data.filter(x=>!x.isWalkIn && x.clientAppointment.client.user.userId === this.currentUserId).map((a)=>({
-          //     appointmentId: a.appointmentId,
-          //     appointmentDate: a.appointmentDate,
-          //     timeStart: a.timeStart,
-          //     timeEnd: a.timeEnd,
-          //     isWalkIn: a.isWalkIn,
-          //     client: a.isWalkIn ? a.walkInAppointmentNotes : a.clientAppointment.client.fullName,
-          //     vet: a.staff.fullName,
-          //     vetUserId: a.staff.staffid,
-          //     consultaionType: a.consultaionType.name,
-          //     service: a.serviceType.name,
-          //     amountToPay: a.serviceType.price,
-          //     isPaid: a.isPaid,
-          //     appointmentStatus: a.appointmentStatus.name
-          //   }));
-          this.appointment = res.data.filter(x=>!x.isWalkIn && x.clientAppointment.client.user.userId === this.currentUserId);
+          this.appointment = res.data;
           this.isLoading = false;
           console.log(this.appointment);
         }

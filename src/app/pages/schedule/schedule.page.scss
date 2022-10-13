@@ -1,6 +1,10 @@
 ion-header::after {
   background-image: none;
   }
+
+  h1,h2,h3,h4,h5,h6 {
+    margin: 0!important;
+  }
 ::ng-deep .mat-tab-group {
   height: 100%;
   display: flex;
@@ -56,9 +60,10 @@ ion-item-divider {
         font-size: 16px;
         margin: 0;
       }
-      .month {
-      }
       .date {
+        display: flex;
+        line-height: 1;
+        margin: 0!important;
         font-size: 60px;
         color: var(--ion-color-danger-tint);
       }
@@ -74,21 +79,38 @@ ion-item-divider {
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        row-gap: 5px;
+        height: 75px;
         .label {
           font-size: 16px;
         }
-        .value {
-          font-size: 20px;
-          font-weight: 500;
-        }
         &.action{
+          width: 45px!important;
+          height: 45px!important;
           position: absolute;
           right: 3px;
           top: 5px;
-          ion-button {
-            --border-radius: 50%!important;
+          display: flex;
+          ion-buttons {
+            display: flex;
+            flex-grow: 1;
+            min-width: 45px!important;
+            ion-button {
+              flex-grow: 1;
+              min-width: 45px!important;
+              --border-radius: 50%!important;
+            }
           }
+        }
+        &.vet {
+        }
+        .value {
+          flex-grow: 1;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          -webkit-line-clamp: 2;
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          line-height: 25px;
         }
       }
       .content-row {

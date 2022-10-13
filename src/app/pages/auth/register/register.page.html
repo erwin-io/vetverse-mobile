@@ -14,6 +14,8 @@
               </div>
             </div>
             <span class="register-text">Create account</span>
+          </div>
+          <div class="form-field-group">
             <mat-form-field appearance="outline">
               <mat-label>First name</mat-label>
               <input
@@ -24,6 +26,8 @@
                 autocomplete="new-firstName"
               />
             </mat-form-field>
+          </div>
+          <div class="form-field-group">
             <mat-form-field appearance="outline">
               <mat-label>Middle name</mat-label>
               <input
@@ -34,6 +38,8 @@
                 autocomplete="new-middleName"
               />
             </mat-form-field>
+          </div>
+          <div class="form-field-group">
             <mat-form-field appearance="outline">
               <mat-label>Last name</mat-label>
               <input
@@ -44,6 +50,8 @@
                 autocomplete="new-lastName"
               />
             </mat-form-field>
+          </div>
+          <div class="form-field-group">
             <mat-form-field appearance="outline">
               <mat-label>Email</mat-label>
               <input
@@ -54,6 +62,8 @@
                 autocomplete="new-email"
               />
             </mat-form-field>
+          </div>
+          <div class="form-field-group">
             <mat-form-field appearance="outline">
               <mat-label>Mobile number</mat-label>
               <input
@@ -64,6 +74,8 @@
                 autocomplete="new-mobileNumber"
               />
             </mat-form-field>
+          </div>
+          <div class="form-field-group">
             <mat-form-field appearance="outline">
               <mat-label>Address</mat-label>
               <textarea
@@ -73,6 +85,8 @@
                 formControlName="address"
               ></textarea>
             </mat-form-field>
+          </div>
+          <div class="form-field-group">
             <mat-form-field appearance="outline" (click)="picker.open()" style="cursor: pointer;">
               <mat-label>Birthdate</mat-label>
               <input
@@ -84,6 +98,8 @@
               <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
               <mat-datepicker #picker></mat-datepicker>
             </mat-form-field>
+          </div>
+          <div class="form-field-group">
             <mat-form-field appearance="outline">
               <mat-label>Gender</mat-label>
               <mat-select
@@ -94,6 +110,8 @@
                 <mat-option value="3">Rather not say</mat-option>
               </mat-select>
             </mat-form-field>
+          </div>
+          <div class="form-field-group">
             <mat-form-field appearance="outline">
               <mat-label>Username</mat-label>
               <input
@@ -104,6 +122,8 @@
                 autocomplete="new-username"
               />
             </mat-form-field>
+          </div>
+          <div class="form-field-group">
             <mat-form-field appearance="outline">
               <mat-label>Passowrd</mat-label>
               <input
@@ -120,6 +140,8 @@
                 style="cursor: pointer;"
                 matSuffix>{{ passowrd.type === 'password' ? 'visibility' : 'visibility_off' }}</mat-icon>
             </mat-form-field>
+          </div>
+          <div class="form-field-group">
             <mat-form-field appearance="outline">
               <mat-label>Confirm passowrd</mat-label>
               <input

@@ -43,7 +43,7 @@
       "udpdate": "users/client"
     },
     "appointment": {
-      "get": "appointment",
+      "getClientAppointmentsByStatus": "appointment/getClientAppointmentsByStatus",
       "getById": "appointment/",
       "createClientAppointment": "appointment/createClientAppointment",
       "createClientCashlessAppointment": "appointment/createClientCashlessAppointment",
