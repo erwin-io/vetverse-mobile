@@ -1,5 +1,7 @@
+/* eslint-disable no-underscore-dangle */
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { CapacitorException, ExceptionCode } from '@capacitor/core';
 import { Observable, of } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
 import { environment } from '../../../environments/environment';
@@ -13,7 +15,9 @@ import { IServices } from './interface/iservices';
 })
 export class PetService implements IServices {
 
-  constructor(private http: HttpClient, private appconfig: AppConfigService) { }
+  constructor(private http: HttpClient, private appconfig: AppConfigService) {
+
+  }
 
   get(): Observable<ApiResponse<Pet[]>> {
     return this.http.get<any>(environment.apiBaseUrl + this.appconfig.config.apiEndPoints.pet.get)

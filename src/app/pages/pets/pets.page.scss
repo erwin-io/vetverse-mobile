@@ -1,8 +1,24 @@
-
+ion-header::after {
+  background-image: none;
+}
 
 * {
 
   font-family: Roboto, "Helvetica Neue", sans-serif!important;
+}
+::ng-deep ion-searchbar {
+  padding: 0!important;
+  &.searchbar-has-focus {
+    .searchbar-input-container {
+      border-color: #26A69A!important;
+    }
+  }
+  .searchbar-input-container {
+    margin: 0 20px;
+    border-radius: 3px;
+    --box-shadow: none!important;
+    border: 2px solid #E0E0E0!important;
+  }
 }
 
   ion-col {
@@ -20,11 +36,11 @@
         border-radius: 40px;
         padding: 10px 20px;
         border: 2px solid #E0E0E0!important;
-        font-size: inherit;
+        font-size: 18px!important;
         font-weight: 400;
         line-height: 1.125;
         letter-spacing: normal;
-        // background-color: #E0F2F1!important;
+        background-color: #ffffff!important;
         transition: border-color 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
         &:focus,
         &:active,
@@ -88,7 +104,6 @@
   }
   .pet-list-container {
     display: flex;
-    justify-content: center;
     flex-direction: column;
     .list-title {
       padding: 0 20px!important;
@@ -96,7 +111,6 @@
     .pet-list {
       overflow: scroll;
       display: flex;
-      gap: 20px;
       flex-grow: 1;
       flex-flow: nowrap;
       flex-direction: column;
@@ -150,10 +164,22 @@
                 color: #0097A7!important;
               }
             }
-            ion-buttons {
-              // margin-right: -20px!important;
-              // margin-right: -20px!important;
-              ion-button {
+            .action{
+              width: 45px!important;
+              height: 45px!important;
+              position: absolute;
+              right: 3px;
+              top: 5px;
+              display: flex;
+              ion-buttons {
+                display: flex;
+                flex-grow: 1;
+                min-width: 45px!important;
+                ion-button {
+                  flex-grow: 1;
+                  min-width: 45px!important;
+                  --border-radius: 50%!important;
+                }
               }
             }
           }

@@ -2,76 +2,86 @@
   <ion-toolbar>
     <ion-title class="ion-text-center">My Pets</ion-title>
   </ion-toolbar>
-  <ion-row class="filter-row">
+  <ion-toolbar>
+    <ion-searchbar placeholder="Search pet..."
+    [formControl]="keywordCtrl" class="search-bar"></ion-searchbar>
+  </ion-toolbar>
+  <!-- <ion-row class="filter-row">
       <ion-col>
         <div class="search-bar">
           <input
           [formControl]="keywordCtrl"
-          type="search" placeholder="search pet..."/>
+          type="search" placeholder="Search pet..."/>
         </div>
       </ion-col>
-  </ion-row>
+  </ion-row> -->
 </ion-header>
-<ion-content>
+<ion-content style="display: flex">
   <ion-refresher *ngIf="!isLoading" slot="fixed" (ionRefresh)="doRefresh($event)" class="refresher-custom">
     <ion-refresher-content >
     </ion-refresher-content>
   </ion-refresher>
   <ion-fab vertical="bottom" horizontal="end" slot="fixed">
-    <ion-fab-button (click)="openAddModal()">
+    <ion-fab-button [disabled]="isLoading" (click)="openAddModal()">
       <ion-icon name="add"></ion-icon>
     </ion-fab-button>
   </ion-fab>
-  <div class="pet-list-container" >
-    <div class="pet-list" *ngIf="!isLoading; else elseLoadingPet">
-      <ion-card *ngFor="let pet of data | filterPet:keywordCtrl.value" class="pet-card ion-activatable">
-        <div class="card-header">
-          <ion-avatar>
-            <img alt="" src="../../../assets/img/pet_default.png" />
-          </ion-avatar>
+  <div class="pet-list-container" style="flex-grow: 1;height: 100%;" >
+    <div *ngIf="!isLoading; else elseLoadingPet" style="flex-grow: 1 ">
+      <div *ngIf="data.length > 0; else elseNoData">
+        <div class="pet-list" *ngFor="let pet of data | filterPet:keywordCtrl.value" >
+          <ion-card class="pet-card ion-activatable">
+            <div class="card-header">
+              <ion-avatar>
+                <img alt="" src="../../../assets/img/vetverse_icon.png" />
+              </ion-avatar>
+            </div>
+            <div class="card-content">
+              <div class="card-content-header">
+                <h3 class="title">{{pet.name}}</h3>
+                <div class="action">
+                  <ion-buttons slot="primary">
+                    <ion-button (click)="more(pet)">
+                      <ion-icon slot="icon-only" ios="ellipsis-vertical" md="ellipsis-vertical"></ion-icon>
+                    </ion-button>
+                  </ion-buttons>
+                </div>
+              </div>
+              <div class="description">
+                <span>{{pet.petCategory.name}}</span>
+                <span>{{null| getAgeByBirthdate:pet.birthDate}}</span>
+              </div>
+            </div>
+          </ion-card>
         </div>
-        <div class="card-content">
-          <div class="card-content-header">
-            <h3 class="title">{{pet.name}}</h3>
-            <ion-buttons slot="primary">
-              <ion-button (click)="more(pet)">
-                <ion-icon slot="icon-only" ios="ellipsis-vertical" md="ellipsis-vertical"></ion-icon>
-              </ion-button>
-            </ion-buttons>
-          </div>
-          <div class="description">
-            <span>{{pet.petCategory.name}}</span>
-            <span>{{null| getAgeByBirthdate:pet.birthDate}}</span>
-          </div>
+      </div>
+      <ng-template #elseNoData >
+        <div class="no-records">
+          <h3 class="text">No pet available</h3>
         </div>
-      </ion-card>
+      </ng-template>
     </div>
     <ng-template #elseLoadingPet >
-      <div class="pet-list">
-        <ion-card *ngFor="let i of [1,2,3,4,5]" class="pet-card">
-          <div class="card-header">
-            <ion-avatar>
-              <ion-skeleton-text [animated]="true"></ion-skeleton-text>
-            </ion-avatar>
-          </div>
-          <div class="card-content">
-            <div class="card-content-header">
-              <h3 class="title"><ion-skeleton-text [animated]="true"></ion-skeleton-text></h3>
-              <ion-buttons slot="primary">
-                <ion-button disabled>
-                  <ion-icon slot="icon-only" ios="ellipsis-vertical" md="ellipsis-vertical"></ion-icon>
-                </ion-button>
-              </ion-buttons>
+      <div >
+        <div class="pet-list" *ngFor="let i of [1]">
+          <ion-card class="pet-card">
+            <div class="card-header">
+              <ion-avatar>
+                <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+              </ion-avatar>
             </div>
-            <div class="description">
-              <span><ion-skeleton-text [animated]="true"></ion-skeleton-text></span>
-              <span><ion-skeleton-text [animated]="true"></ion-skeleton-text></span>
+            <div class="card-content">
+              <div class="card-content-header">
+                <h3 class="title"><ion-skeleton-text [animated]="true"></ion-skeleton-text></h3>
+              </div>
+              <div class="description">
+                <span><ion-skeleton-text [animated]="true"></ion-skeleton-text></span>
+                <span><ion-skeleton-text [animated]="true"></ion-skeleton-text></span>
+              </div>
             </div>
-          </div>
-        </ion-card>
+          </ion-card>
+        </div>
       </div>
     </ng-template>
-
   </div>
-
 </ion-content>

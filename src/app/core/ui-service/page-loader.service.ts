@@ -10,9 +10,13 @@ export class PageLoaderService {
   constructor(private modalCtrl: ModalController) {}
 
   async open(message) {
+    if(this.modal){
+      this.modal.dismiss();
+    }
     this.modal = await this.modalCtrl.create({
       component: PageLoaderComponent,
       cssClass: 'modal-fullscreen',
+      canDismiss: false,
       componentProps: {
         message
       },
@@ -21,7 +25,10 @@ export class PageLoaderService {
   }
   async close() {
     setTimeout(async ()=>{
-      this.modal.dismiss();
+      if(this.modal){
+        this.modal.canDismiss = true;
+        this.modal.dismiss();
+      }
     },500);
   }
 }

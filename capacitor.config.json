@@ -1,0 +1,28 @@
+{
+  "appId": "io.ionic.starter",
+  "appName": "Vetverse",
+  "bundledWebRuntime": false,
+  "npmClient": "npm",
+  "webDir": "www",
+  "server": "http://localhost:8100/",
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 0
+    },
+    "plugins": {
+      "LocalNotifications": {
+        "smallIcon": "ic_launcher_round",
+        "largeIcon": "ic_launcher_round",
+        "iconColor": "#488AFF"
+      }
+    },
+    "PushNotifications": {
+      "presentationOptions": [
+        "badge",
+        "sound",
+        "alert"
+      ]
+    }
+  },
+  "cordova": {}
+}

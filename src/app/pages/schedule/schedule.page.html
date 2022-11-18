@@ -1,46 +1,127 @@
 <ion-header no-border no-shadow>
-  <ion-toolbar>
+  <!-- <ion-toolbar>
     <ion-title class="ion-text-center">Schedule</ion-title>
+  </ion-toolbar> -->
+  <ion-toolbar>
+    <div slot="start" style="width: 48px"></div>
+    <ion-title style="text-align: center">Schedule</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="history()" >
+        <ion-icon name="document-text"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content fullscreen>
+  <ion-refresher *ngIf="!isLoading" slot="fixed" (ionRefresh)="doRefresh($event)" class="refresher-custom">
+    <ion-refresher-content >
+    </ion-refresher-content>
+  </ion-refresher>
   <div>
-    <div *ngFor="let a of appointment">
-      <ion-card >
-        <div class="sched-card">
-          <div class="card-header">
-            <span>{{a.appointmentDate | date: 'MMMM'}}</span>
-            <h2 class="date">{{a.appointmentDate | date: 'dd'}}</h2>
-            <span><strong>{{a.appointmentDate + ' ' + a.timeStart | date: 'hh:mm a'}}</strong></span>
-            <span>{{a.appointmentDate | date: 'EEEE'}}</span>
-          </div>
-          <div class="card-content">
-            <div class="content-row border">
-              <div class="field vet">
-                <h3>Veterenarian</h3>
-                <h3 class="value"><strong>{{a.staff.fullName}}</strong></h3>
-              </div>
-              <div class="field action">
-                <ion-buttons slot="end">
-                  <ion-button (click)="showMenu()">
-                    <ion-icon name="ellipsis-vertical-sharp"></ion-icon>
-                  </ion-button>
-                </ion-buttons>
-              </div>
-            </div>
-            <div class="content-row">
-              <div class="field type">
-                <h3>Type</h3>
-                <h3 class="value"><strong>{{a.serviceType.name}}</strong></h3>
-              </div>
-            </div>
-          </div>
-        </div>
-      </ion-card>
-    </div>
+    <ion-card >
+      <ion-list lines="none" >
+        <ion-item *ngIf="!isLoading; else elseLoadingPending" button (click)="onOpenPending()">
+          <ion-label><h2>Pending</h2></ion-label>
+          <ion-badge color="primary">{{ totalPending }}</ion-badge>
+        </ion-item>
+        <ng-template #elseLoadingPending>
+          <ion-item >
+            <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+          </ion-item>
+        </ng-template>
+      </ion-list>
+    </ion-card>
   </div>
+  <div *ngIf="!isLoading; else elseLoading">
+    <h2 class="list-title">Appointments</h2>
+    <div *ngIf="appointment.length > 0; else elseNoData">
+      <div *ngFor="let a of appointment">
+        <ion-card >
+          <div class="sched-card">
+            <div class="card-header">
+              <span>{{a.appointmentDate | date: 'MMMM'}}</span>
+              <h2 class="date">{{a.appointmentDate | date: 'dd'}}</h2>
+              <span><strong>{{a.appointmentDate + ' ' + a.timeStart | date: 'hh:mm a'}}</strong></span>
+              <span>{{a.appointmentDate | date: 'EEEE'}}</span>
+            </div>
+            <div class="card-content">
+              <div class="content-row border">
+                <div class="field vet">
+                  <h3>Veterenarian</h3>
+                  <h3 class="value"><strong>{{a.staff.fullName}}</strong></h3>
+                </div>
+                <div class="field action">
+                  <ion-buttons slot="end">
+                    <ion-button (click)="showMenu(a)">
+                      <ion-icon name="ellipsis-vertical-sharp"></ion-icon>
+                    </ion-button>
+                  </ion-buttons>
+                </div>
+              </div>
+              <div class="content-row">
+                <div class="field type">
+                  <h3 class="value"><strong>{{a.consultaionType.name}}</strong></h3>
+                </div>
+              </div>
+              <div class="content-row">
+                <div class="field type">
+                  <h3>Type</h3>
+                  <h3 class="value"><strong>{{a.serviceType.name}}</strong></h3>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ion-card>
+      </div>
+    </div>
+    <ng-template #elseNoData >
+      <div class="no-records">
+        <h3 class="text">No appointments to show</h3>
+      </div>
+    </ng-template>
+  </div>
+  <ng-template #elseLoading>
+    <div>
+      <div *ngFor="let a of [1]">
+        <ion-card >
+          <div class="sched-card">
+            <div class="card-header" style="width: 90px!important">
+              <span style="width: 100%!important">
+                <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+              </span>
+              <h2 class="date" style="width: 100%!important">
+                <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+              </h2>
+              <span style="width: 100%!important">
+                <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+              </span>
+              <span style="width: 100%!important">
+                <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+              </span>
+            </div>
+            <div class="card-content">
+              <div class="content-row border">
+                <div class="field vet" style="width: 100%!important">
+                  <h3 class="value" >
+                    <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+                  </h3>
+                </div>
+              </div>
+              <div class="content-row">
+                <div class="field type" style="width: 100%!important">
+                  <h3 class="value" >
+                    <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+                  </h3>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ion-card>
+      </div>
+    </div>
+  </ng-template>
 </ion-content>
 <div class="sched-controls-bottom">
-  <ion-button color="primary" size="large" expand="block" (click)="openAddModal()">Book new Appointment</ion-button>
+  <ion-button [disabled]="isLoading" color="primary" size="large" expand="block" (click)="onOpenAdd()">Book new Appointment</ion-button>
 </div>

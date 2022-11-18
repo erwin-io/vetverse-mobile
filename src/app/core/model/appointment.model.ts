@@ -5,7 +5,7 @@ import { Staff } from './staff.model';
 
 export class Appointment {
   appointmentId: string;
-  appointmentDate: string;
+  appointmentDate: Date;
   comments: string;
   timeStart: string;
   timeEnd: string;
@@ -19,6 +19,7 @@ export class Appointment {
   payments: Payment[];
   clientAppointment?: ClientAppointment;
   petAppointment?: PetAppointment;
+  conferencePeerId: string;
 }
 
 export class ConsultaionType {

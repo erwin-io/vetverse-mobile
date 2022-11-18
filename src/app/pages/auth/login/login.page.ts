@@ -9,6 +9,7 @@ import { LoginResult } from 'src/app/core/model/loginresult.model';
 import { LoaderService } from 'src/app/core/ui-service/loader.service';
 import { UserService } from 'src/app/core/services/user.service';
 import { PageLoaderService } from 'src/app/core/ui-service/page-loader.service';
+import { PetService } from 'src/app/core/services/pet.service';
 
 @Component({
   selector: 'app-login',
@@ -27,6 +28,7 @@ export class LoginPage implements OnInit {
     private alertController: AlertController,
     private storageService: StorageService,
     private loaderService: LoaderService,
+    private petService: PetService,
     private pageLoaderService: PageLoaderService,
     ) { }
 
@@ -39,6 +41,7 @@ export class LoginPage implements OnInit {
   }
 
   async onFormSubmit(form: NgForm) {
+    const date = new Date();
     if(!this.loginForm.valid){
       return;
     }
@@ -49,13 +52,13 @@ export class LoginPage implements OnInit {
       this.authService.login(form)
         .subscribe(async res => {
           if (res.success) {
+            await this.pageLoaderService.close();
             this.storageService.saveRefreshToken(res.data.accessToken);
             this.storageService.saveAccessToken(res.data.refreshToken);
             const userData: LoginResult = res.data;
             this.storageService.saveLoginUser(userData);
             this.router.navigate(['/'], { replaceUrl: true });
             this.isSubmitting = false;
-            await this.pageLoaderService.close();
           } else {
             this.isSubmitting = false;
             await this.pageLoaderService.close();

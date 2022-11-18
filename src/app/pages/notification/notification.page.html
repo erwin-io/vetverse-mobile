@@ -1,0 +1,33 @@
+<ion-header no-border no-shadow>
+  <ion-toolbar>
+    <ion-title class="ion-text-center">Notification</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher *ngIf="!isLoading" slot="fixed" (ionRefresh)="doRefresh($event)" class="refresher-custom">
+    <ion-refresher-content >
+    </ion-refresher-content>
+  </ion-refresher>
+  <ion-list *ngIf="data.length > 0; else elseNoData">
+    <ion-item [color]="item.isRead ? '':'light'" *ngFor="let item of data"  button detail="true" [ngClass]="{'un-read': item.isRead}" (click)="openDetails(item)">
+      <ion-icon name="notifications-outline" slot="start"></ion-icon>
+      <ion-label>
+        <h3 *ngIf="item.isRead; else elseUnRead" class="title">{{item.title}}</h3>
+        <ng-template #elseUnRead >
+          <h3 class="title"><strong>{{item.title}}</strong></h3>
+        </ng-template>
+        <p>{{item.description}}</p>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+  <ion-button *ngIf="data && data.length >= limit" fill="clear" size="small" expand="full" (click)="loadMore()">Load more...</ion-button>
+
+
+  <ng-template #elseNoData >
+    <div class="no-records">
+      <ion-icon name="notifications-off-outline"></ion-icon>
+      <h3 class="text">No notification to show</h3>
+    </div>
+  </ng-template>
+</ion-content>

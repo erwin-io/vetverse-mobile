@@ -10,25 +10,8 @@
   "lookup": {
     "appointmentStatus": ["Pending", "Approved", "Completed", "Cancelled"],
     "serviceType": [],
-    "consultaionType": ["Onsite", "Video"],
-    "paymentType": [{"paymentTypeId":"1", "name": "Cash"}, {"paymentTypeId":"2", "name": "G-Cash"}],
-    "roles": [
-      {
-        "roleId": "1",
-        "name": "Admin"
-      },
-      {
-        "roleId": "2",
-        "name": "Manager"
-      },
-      {
-        "roleId": "3",
-        "name": "Veterinarian"
-      },
-      {
-        "roleId": "4",
-        "name": "Front desk"
-      }]
+    "consultaionType": [{"consultaionTypeId":"1", "name": "Onsite"}, {"consultaionTypeId":"2", "name": "Video"}],
+    "paymentType": [{"paymentTypeId":"1", "name": "Cash"}, {"paymentTypeId":"2", "name": "G-Cash"}]
   },
   "apiEndPoints": {
     "auth": {
@@ -38,16 +21,27 @@
       "findByUsername": "auth/findByUsername/",
       "refreshToken": "auth/refresh-token"
     },
+    "gateway": {
+      "gcash": {
+        "getPayments": "https://g.payx.ph/api/payexpress/getprs?",
+        "payprotc": "https://g.payx.ph/api/payexpress/payprotc/",
+        "requestPayment": "https://g.payx.ph/payment_request/"
+      }
+    },
     "user": {
       "getById": "users/",
-      "udpdate": "users/client"
+      "getStaffByAdvanceSearch": "users/getStaffByAdvanceSearch",
+      "udpdate": "users/client",
+      "updateFirebaseToken": "users/updateFirebaseToken"
     },
+    "serviceType": "service-type/",
     "appointment": {
       "getClientAppointmentsByStatus": "appointment/getClientAppointmentsByStatus",
       "getById": "appointment/",
       "createClientAppointment": "appointment/createClientAppointment",
       "createClientCashlessAppointment": "appointment/createClientCashlessAppointment",
-      "rescheduleAppointment": "appointment/rescheduleAppointment"
+      "rescheduleAppointment": "appointment/rescheduleAppointment",
+      "updateAppointmentStatus": "appointment/updateAppointmentStatus"
     },
     "payment": {
       "get": "payments",
@@ -63,6 +57,10 @@
       "delete": "pet/"
     },
     "petType": "pet-type/",
-    "petCategory": "pet-category/"
+    "petCategory": "pet-category/",
+    "notification": {
+      "getAllByClientIdPage": "notification/getAllByClientIdPage",
+      "updateReadStatus": "notification/updateReadStatus"
+    }
   }
 }

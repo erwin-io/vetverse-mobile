@@ -12,13 +12,14 @@ export class ProfilePage implements OnInit {
 
   user: LoginResult;
   constructor(private router: Router,
-               private storageService: StorageService) { }
+               private storageService: StorageService) {
+                this.user = this.storageService.getLoginUser();
+              }
 
   ngOnInit() {
-    this.user = this.storageService.getLoginUser();
   }
   onShowSettings(){
-    this.router.navigate(['settings']);
+    this.router.navigate(['settings'], { replaceUrl: true });
   }
 
 }

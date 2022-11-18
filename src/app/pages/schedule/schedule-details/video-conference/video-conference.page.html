@@ -1,0 +1,19 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="cancel()" >
+        <ion-icon name="chevron-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title style="text-align: center">Video Conference</ion-title>
+    <div slot="end" style="width: 48px"></div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="remote-video-holder">
+    <video id="partner-video" autoplay playsinline></video>
+    <div class="video-call-actions"></div>
+  </div>
+  <video id="my-video" #localVideo autoplay playsinline [muted]=true></video>
+</ion-content>

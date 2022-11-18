@@ -1,0 +1,181 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="cancel()" >
+        <ion-icon name="chevron-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title style="text-align: center">Details</ion-title>
+    <div slot="end" style="width: 48px"></div>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+  <div *ngIf="!isLoading; else loading" class="details-container">
+    <ion-item *ngIf="isVideoConferenceAvailable" button class="item" (click)="joinVideoConference()">
+      <ion-label text-wrap>
+        <span>Join video conference</span>
+      </ion-label>
+      <ion-icon name="videocam"></ion-icon>
+    </ion-item>
+    <ion-item class="item" >
+      <ion-label text-wrap>
+          <h3 class="sub">
+            <strong>
+              <ion-text
+                [color]="(details.appointmentStatus.appointmentStatusId === '1' || details.appointmentStatus.appointmentStatusId === '4' ? 'danger' : '') ||
+                (details.appointmentStatus.appointmentStatusId === '2' ? 'primary' : '') ||
+                (details.appointmentStatus.appointmentStatusId === '3' ?? 'tertiary')">
+                {{details.appointmentStatus.name}}
+              </ion-text>
+            </strong>
+          </h3>
+        <h3 class="desc">Status</h3>
+      </ion-label>
+    </ion-item>
+    <ion-item class="item" >
+      <ion-label text-wrap>
+        <div class="item type">
+          <h1 class="title">{{details.serviceType.name}}</h1>
+          <h3 class="sub">₱{{details.serviceType.price}}</h3>
+        </div>
+      </ion-label>
+    </ion-item>
+    <ion-item class="item" >
+      <ion-icon name="today" slot="start"></ion-icon>
+      <ion-label text-wrap>
+        <h3 class="sub">{{appointmentDate}}</h3>
+        <h3 class="sub">{{time}}</h3>
+      </ion-label>
+    </ion-item>
+    <ion-item class="item" >
+      <ion-icon name="location" slot="start"></ion-icon>
+      <ion-label text-wrap>
+        <h3 class="sub">{{details.consultaionType.name}}</h3>
+      </ion-label>
+    </ion-item>
+    <ion-item class="item" >
+      <ion-icon name="medkit" slot="start"></ion-icon>
+      <ion-label text-wrap>
+        <h2 class="title">{{details.staff.fullName}}</h2>
+        <span class="desc">Veterinarian</span>
+      </ion-label>
+    </ion-item>
+    <ion-item class="item" >
+      <ion-icon name="pricetag" slot="start"></ion-icon>
+      <ion-label text-wrap>
+        <h2 class="title">{{details.comments}}</h2>
+        <span class="desc">{{details.comments !=='' ? 'Message' : 'No message/comments'}}</span>
+      </ion-label>
+    </ion-item>
+    <ion-item class="item" lines="none">
+      <ion-label text-wrap>
+        <h3>Pet details</h3>
+      </ion-label>
+    </ion-item>
+    <ion-item class="item" >
+      <ion-icon name="paw" slot="start"></ion-icon>
+      <ion-label text-wrap>
+        <h2 class="title">{{!isLoading?details.petAppointment.pet.name : ''}}</h2>
+        <span class="desc">{{!isLoading?details.petAppointment.pet.petCategory.name : ''}}</span>
+      </ion-label>
+    </ion-item>
+  </div>
+  <ng-template #loading>
+    <div class="details-container" >
+    <ion-item class="item" >
+      <ion-label text-wrap>
+          <h3 class="sub">
+            <strong>
+              <ion-text>
+                <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+              </ion-text>
+            </strong>
+          </h3>
+        <h3 class="desc">
+          <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+        </h3>
+      </ion-label>
+    </ion-item>
+    <ion-item class="item" >
+      <ion-label text-wrap>
+        <div class="item type">
+          <h1 class="title">
+            <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+          </h1>
+          <h3 class="sub">
+            <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+          </h3>
+        </div>
+      </ion-label>
+    </ion-item>
+    <ion-item class="item" >
+      <ion-icon name="today" slot="start"></ion-icon>
+      <ion-label text-wrap>
+        <h3 class="sub">
+          <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+        </h3>
+        <h3 class="sub">
+          <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+        </h3>
+      </ion-label>
+    </ion-item>
+    <ion-item class="item" >
+      <ion-icon name="location" slot="start"></ion-icon>
+      <ion-label text-wrap>
+        <h3 class="sub">
+          <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+        </h3>
+      </ion-label>
+    </ion-item>
+    <ion-item class="item" >
+      <ion-icon name="medkit" slot="start"></ion-icon>
+      <ion-label text-wrap>
+        <h2 class="title">
+          <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+        </h2>
+        <span class="desc">
+          <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+        </span>
+      </ion-label>
+    </ion-item>
+    <ion-item class="item" >
+      <ion-icon name="chatbox-ellipses" slot="start"></ion-icon>
+      <ion-label text-wrap>
+        <h2 class="title">
+          <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+        </h2>
+        <span class="desc">
+          <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+        </span>
+      </ion-label>
+    </ion-item>
+    <ion-item class="item" lines="none">
+      <ion-label text-wrap>
+        <h3>
+          <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+        </h3>
+      </ion-label>
+    </ion-item>
+    <ion-item class="item" >
+      <ion-icon name="paw" slot="start"></ion-icon>
+      <ion-label text-wrap>
+        <h2 class="title">
+          <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+        </h2>
+        <span class="desc">
+          <ion-skeleton-text [animated]="true"></ion-skeleton-text>
+        </span>
+      </ion-label>
+    </ion-item>
+    </div>
+  </ng-template>
+  <div class="appointment-action" *ngIf="!isLoading">
+  <ion-button
+    *ngIf="details.appointmentStatus.appointmentStatusId === '1'"
+    color="danger"
+    expand="block"
+    fill="outline"
+    (click)="onCancelAppointment()">Cancel appointment</ion-button>
+  </div>
+
+</ion-content>

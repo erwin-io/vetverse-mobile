@@ -1,15 +1,205 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-button (click)="cancel()">
-        <ion-icon slot="icon-only" ios="arrow-back" md="arrow-back"></ion-icon>
+      <ion-button (click)="cancel()" >
+        <ion-icon name="chevron-back"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title>New Appointment</ion-title>
+    <ion-title style="text-align: center">New Appointment</ion-title>
+    <div slot="end" style="width: 48px"></div>
   </ion-toolbar>
 </ion-header>
 <ion-content class="ion-padding">
+  <mat-stepper animationDuration="200" [linear]="false" #appointmentStepper>
+    <mat-step [stepControl]="appointmentForm">
+      <form
+      id="appointmentForm"
+      [formGroup]="appointmentForm"
+      (ngSubmit)="appointmentForm.valid ? appointmentStepper.next() : false">
+        <fieldset [disabled]="isSubmitting || isLoading">
+          <div class="form-field-group inline" >
+            <mat-label>What type of appointment</mat-label>
+            <ion-radio-group formControlName="consultaionTypeId" value="1">
+              <ion-item fill="outline" lines="none">
+                <ion-icon name="home-outline" slot="start"></ion-icon>
+                <ion-label>Onsite</ion-label>
+                <ion-radio [disabled]="isLoading" slot="end" value="1"></ion-radio>
+              </ion-item>
+              <ion-item fill="outline" lines="none">
+                <ion-icon name="videocam-outline" slot="start"></ion-icon>
+                <ion-label>Video</ion-label>
+                <ion-radio [disabled]="isLoading" slot="end" value="2"></ion-radio>
+              </ion-item>
+            </ion-radio-group>
+            <span class="error" *ngIf="errorControls.consultaionTypeId.touched && errorControls.consultaionTypeId.errors && errorControls.consultaionTypeId.errors.required">
+              Please select a type of appointment
+            </span>
+          </div>
+          <div class="form-field-group">
+            <mat-label slot="start">What type of Service</mat-label>
+            <ion-item [disabled]="isLoading" fill="outline">
+              <ion-select slot="start" formControlName="serviceType" placeholder="Select type" >
+                <ion-select-option slot="start" [value]="item" *ngFor="let item of serviceTypeOption">{{item.name}}</ion-select-option>
+                <ion-select-option disabled slot="start" *ngIf="serviceTypeOption.length === 0">No service type available</ion-select-option>
+              </ion-select>
+              <h3>₱{{serviceTypeOption.length > 0 && formData.serviceType ? (formData.serviceType.price | number : '1.2-2') : (0 | number : '1.2-2')}}</h3>
+            </ion-item>
+            <span class="error" *ngIf="errorControls.serviceType.touched && errorControls.serviceType.errors && errorControls.serviceType.errors.required">
+              Please select a type of service
+            </span>
+          </div>
+          <div class="form-field-group">
+            <mat-label slot="start">Pet</mat-label>
+            <ion-item [disabled]="isLoading" fill="outline">
+              <ion-select slot="start" formControlName="petId" placeholder="Select pet" >
+                <ion-select-option slot="start" [value]="pet.petId" *ngFor="let pet of petOption">{{pet.name}}</ion-select-option>
+                <ion-select-option disabled slot="start" *ngIf="petOption.length === 0">No pet available</ion-select-option>
+              </ion-select>
+            </ion-item>
+
+            <span class="error" *ngIf="errorControls.petId.touched && errorControls.petId.errors && errorControls.petId.errors.required">
+              No pet selected
+            </span>
+          </div>
+          <div class="form-field-group">
+            <mat-label slot="start">Veterenarian</mat-label>
+            <ion-item [disabled]="isLoading" fill="outline">
+              <ion-select slot="start" formControlName="veterenarianId" placeholder="Select Veterenarian" >
+                <ion-select-option slot="start" [value]="vet.staffid" *ngFor="let vet of vetOption">{{vet.fullName}}</ion-select-option>
+                <ion-select-option  classs="no-result-option" disabled slot="start" *ngIf="vetOption.length === 0">No Vet available</ion-select-option>
+              </ion-select>
+            </ion-item>
+
+            <span class="error" *ngIf="errorControls.veterenarianId.touched && errorControls.veterenarianId.errors && errorControls.veterenarianId.errors.required">
+              No vet selected
+            </span>
+          </div>
+          <div class="form-field-group">
+            <mat-label slot="start">Select appointment date</mat-label>
+            <ion-item id="open-appointment-date-picker" [disabled]="isLoading" fill="outline" lines="none">
+              <ion-label>{{formData.appointmentDate | date: 'MMMM dd, yyyy'}}</ion-label>
+            </ion-item>
+            <ion-modal trigger="open-appointment-date-picker" [cssClass]="'bottom-end'">
+              <ng-template>
+                <ion-datetime
+                  [min]="minDate"
+                  presentation="date"
+                  size="cover"
+                  formControlName="appointmentDate"
+                  [showDefaultButtons]="true"
+                ></ion-datetime>
+              </ng-template>
+            </ion-modal>
+          </div>
+          <div class="form-field-group">
+            <mat-label slot="start">Select appointment time</mat-label>
+            <ion-item id="open-appointment-time-picker" [disabled]="isLoading" fill="outline" lines="none">
+              <ion-label>{{appointmentForm.controls.time.value | date: 'hh:mm a'}}</ion-label>
+            </ion-item>
+            <ion-modal trigger="open-appointment-time-picker" [cssClass]="'bottom-end'">
+              <ng-template>
+                <ion-datetime
+                  presentation="time"
+                  size="cover"
+                  formControlName="time"
+                  [showDefaultButtons]="true"
+                ></ion-datetime>
+              </ng-template>
+            </ion-modal>
+          </div>
+          <div class="form-field-group" >
+            <mat-label>Comments</mat-label>
+            <mat-form-field appearance="outline">
+              <mat-label>Comments</mat-label>
+              <textarea
+                matInput
+                type="text"
+                placeholder="Comments"
+                formControlName="comments"
+              ></textarea>
+            </mat-form-field>
+            <span class="error" *ngIf="errorControls.comments.touched && errorControls.comments.errors && errorControls.comments.errors.required">
+              Please add comments or notes
+            </span>
+          </div>
+        </fieldset>
+      </form>
+    </mat-step>
+    <mat-step [stepControl]="paymentForm" label="Fill out your address">
+      <form [formGroup]="paymentForm">
+        <fieldset [disabled]="isSubmitting || isLoading">
+          <div class="form-field-group" >
+            <mat-label>Select payment method</mat-label>
+            <ion-radio-group formControlName="paymentTypeId" value="1">
+              <ion-item fill="outline" lines="none">
+                <ion-thumbnail slot="start">
+                  <img alt="Cash Logo" src="../../../../assets/img/cash_logo.png" />
+                </ion-thumbnail>
+                <ion-label>Cash on site</ion-label>
+                <ion-radio [disabled]="isLoading" slot="end" value="1"></ion-radio>
+              </ion-item>
+              <ion-item fill="outline" lines="none">
+                <ion-thumbnail slot="start">
+                  <img alt="GCash Logo" src="../../../../assets/img/gcash_logo.png" />
+                </ion-thumbnail>
+                <ion-label>GCash</ion-label>
+                <ion-radio [disabled]="isLoading" slot="end" value="2"></ion-radio>
+              </ion-item>
+            </ion-radio-group>
+            <span class="error" *ngIf="errorControls.paymentTypeId.touched && errorControls.paymentTypeId.errors && errorControls.paymentTypeId.errors.required">
+              Please select a payment method
+            </span>
+          </div>
+          <div class="form-field-group" >
+            <ion-item fill="outline" lines="none">
+              <ion-label style="display: flex;">
+                <h2 style="flex-grow: 1;">{{formData.serviceType?formData.serviceType.name:''}}</h2>
+                <h2>{{(formData.serviceType?formData.serviceType.price : 0) | number : '1.2-2'}}</h2>
+              </ion-label>
+            </ion-item>
+          </div>
+          <div class="form-field-group" >
+            <ion-item fill="outline" lines="none">
+              <ion-label style="display: flex;">
+                <h2 style="flex-grow: 1;"><strong>Total</strong></h2>
+                <h2><strong>{{(formData.serviceType?formData.serviceType.price : 0) | number : '1.2-2'}}</strong></h2>
+              </ion-label>
+            </ion-item>
+          </div>
+        </fieldset>
+      </form>
+      <!-- <iframe width="100%" height="100%" frameBorder="0" [src]="url | urlSafePipe"></iframe> -->
+    </mat-step>
+    <mat-step>
+      <ng-template matStepLabel>Done</ng-template>
+      <p>You are now done.</p>
+      <div>
+        <button mat-button matStepperPrevious>Back</button>
+        <button mat-button >Reset</button>
+      </div>
+    </mat-step>
+  </mat-stepper>
 </ion-content>
 <div class="sched-controls-bottom">
-  <ion-button color="primary" size="large" expand="block" (click)="confirm()">Book now</ion-button>
+  <ion-button
+    [disabled]="isLoading || !appointmentForm.valid"
+    *ngIf="appointmentStepper.selectedIndex === 0"
+    color="primary"
+    size="large"
+    expand="block"
+    (click)="appointmentStepper.next();">Continue to payment</ion-button>
+    <ion-button
+      [disabled]="isLoading || !paymentForm.valid"
+      *ngIf="appointmentStepper.selectedIndex === 1"
+      color="primary"
+      size="large"
+      expand="block"
+      (click)="payNow()">{{formData.paymentTypeId === '1' ? 'Complete booking' : 'Pay now'}}</ion-button>
+    <ion-button
+      *ngIf="appointmentStepper.selectedIndex === 1"
+      color="primary"
+      size="large"
+      expand="block"
+      fill="outline"
+      (click)="appointmentStepper.previous()">Back</ion-button>
 </div>

@@ -105,8 +105,8 @@ export class UserService implements IServices {
     );
   }
 
-  toggleEnable(data: any): Observable<ApiResponse<Staff>> {
-    return this.http.put<any>(environment.apiBaseUrl + this.appconfig.config.apiEndPoints.user.toggleEnable, data)
+  updateFirebaseToken(data: any): Observable<ApiResponse<Staff>> {
+    return this.http.put<any>(environment.apiBaseUrl + this.appconfig.config.apiEndPoints.user.updateFirebaseToken, data)
     .pipe(
       tap(_ => this.log('user')),
       catchError(this.handleError('user', []))

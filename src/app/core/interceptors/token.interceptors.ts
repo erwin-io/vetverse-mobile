@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { StorageService } from '../storage/storage.service';
 import { AuthService } from '../services/auth.service';
+import { environment } from 'src/environments/environment.prod';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
@@ -20,6 +21,7 @@ export class TokenInterceptor implements HttpInterceptor {
   private refreshTokenSubject: BehaviorSubject<any> = new BehaviorSubject<any>(
     null
   );
+  private hiddenURLKeyword = ['g.payx.ph'];
   constructor(
     private router: Router,
     public toastController: ToastController,
@@ -31,36 +33,39 @@ export class TokenInterceptor implements HttpInterceptor {
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    const token = this.storageService.getAccessToken();
 
-    if (token) {
-      request = this.addTokenHeader(request, token);
-    }
+    if(this.hiddenURLKeyword.filter(x=>request.url.includes(x)).length <= 0) {
+      const token = this.storageService.getAccessToken();
 
-    if (!request.headers.has('Content-Type')) {
+      if (token) {
+        request = this.addTokenHeader(request, token);
+      }
+
       request = request.clone({
-        setHeaders: {
-          'content-type': 'application/json',
-        },
+        headers: request.headers.set('Accept', 'application/json'),
       });
+      if (!request.headers.has('Content-Type')) {
+        request = request.clone({
+          setHeaders: {
+            'content-type': 'application/json',
+          },
+        });
+      }
+      return next.handle(request).pipe(
+        catchError((error) => {
+          if (
+            error instanceof HttpErrorResponse &&
+            !request.url.includes('auth/signin') &&
+            error.status === 401
+          ) {
+            return this.handle401Error(request, next);
+          }
+          return throwError(error);
+        })
+      );
+    }else {
+      return next.handle(request).pipe(catchError((error) => throwError(error)));
     }
-
-    request = request.clone({
-      headers: request.headers.set('Accept', 'application/json'),
-    });
-
-    return next.handle(request).pipe(
-      catchError((error) => {
-        if (
-          error instanceof HttpErrorResponse &&
-          !request.url.includes('auth/signin') &&
-          error.status === 401
-        ) {
-          return this.handle401Error(request, next);
-        }
-        return throwError(error);
-      })
-    );
   }
 
   private handle401Error(request: HttpRequest<any>, next: HttpHandler) {
@@ -124,11 +129,11 @@ export class TokenInterceptor implements HttpInterceptor {
   }
 
   private handleLogout() {
-    // this.authService.logout();
-    // this.storageService.saveAccessToken(null);
-    // this.storageService.saveRefreshToken(null);
-    // this.storageService.saveLoginUser(null);
-    // this.presentToast('Session expired');
+    this.authService.logout();
+    this.storageService.saveAccessToken(null);
+    this.storageService.saveRefreshToken(null);
+    this.storageService.saveLoginUser(null);
+    this.presentToast('Session expired');
     this.router.navigate(['auth/login'], { replaceUrl: true });
   }
 

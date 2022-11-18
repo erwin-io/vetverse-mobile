@@ -38,5 +38,12 @@
 
     <!-- Permissions -->
 
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+    <uses-feature android:name="android.hardware.camera2.full" />
+    <uses-feature android:name="android.hardware.camera2.autofocus" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.webkit.PermissionRequest" />
     <uses-permission android:name="android.permission.INTERNET" />
 </manifest>

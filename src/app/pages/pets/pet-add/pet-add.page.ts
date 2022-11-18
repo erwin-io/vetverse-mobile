@@ -209,7 +209,7 @@ export class PetAddPage implements OnInit {
   }
 
   cancel() {
-    return this.modal.dismiss(null, 'cancel');
+    this.modal.dismiss(null, 'cancel');
   }
 
   async presentAlert(options: any) {

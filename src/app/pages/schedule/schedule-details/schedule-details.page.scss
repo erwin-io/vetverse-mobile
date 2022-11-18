@@ -1,0 +1,29 @@
+ion-header::after {
+  background-image: none;
+}
+
+.details-container {
+  // display: flex;
+  // flex-direction: column;
+  .item {
+    color: #000!important;
+    display: flex;
+    flex-direction: column;
+    .title,.sub {
+      margin: 5px 0!important;
+    }
+    .desc {
+      color: #999999!important;
+    }
+    &.type {
+      .title {
+        font-weight: 500;
+      }
+    }
+  }
+}
+.appointment-action {
+  display: flex;
+  box-sizing: border-box;
+
+}

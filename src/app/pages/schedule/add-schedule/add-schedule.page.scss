@@ -1,4 +1,12 @@
 
+ion-header::after {
+  background-image: none;
+}
+h1,h2,h3,h4,h5,h6,
+p,span,label {
+  margin: 0!important;
+}
+
 .sched-controls-bottom {
   position: relative;
   display: block;
@@ -6,6 +14,17 @@
   background: #ffffff;
   padding: 5px 10px;
   ion-button {
-
+    height: 45px;
+    font-size: 15px;
   }
+}
+
+::ng-deep mat-stepper {
+  .mat-horizontal-stepper-header-container {
+    display: none!important;
+  }
+  .mat-horizontal-content-container {
+    padding: 0!important;
+  }
+
 }

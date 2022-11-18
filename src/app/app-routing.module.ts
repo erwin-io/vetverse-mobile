@@ -26,8 +26,8 @@ const routes: Routes = [
         canActivate: [AuthGuard]
       },
       {
-        path: 'chats',
-        loadChildren: () => import('./pages/chats/chats.module').then(m => m.ChatsPageModule),
+        path: 'notification',
+        loadChildren: () => import('./pages/notification/notification.module').then( m => m.NotificationPageModule),
         canActivate: [AuthGuard]
       },
       {
@@ -39,16 +39,23 @@ const routes: Routes = [
   },
   {
     path: 'login',
-    loadChildren: () => import('./pages/auth/login/login.module').then( m => m.LoginPageModule)
+    loadChildren: () => import('./pages/auth/login/login.module').then( m => m.LoginPageModule),
+    data: {
+      auth: true
+    }
   },
   {
     path: 'signup',
-    loadChildren: () => import('./pages/auth/register/register.module').then( m => m.RegisterPageModule)
+    loadChildren: () => import('./pages/auth/register/register.module').then( m => m.RegisterPageModule),
+    data: {
+      auth: true
+    }
   },
   {
     path: 'settings',
     loadChildren: () => import('./pages/settings/settings.module').then( m => m.SettingsPageModule)
   }
+
 
 ];
 

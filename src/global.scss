@@ -25,7 +25,6 @@
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
 
-
 html, body {
     font-family: "Inter",sans-serif !important;
     background-color: #ffffff!important;
@@ -58,6 +57,7 @@ html, body {
     flex-grow: 1;
     display: flex;
     fieldset {
+      min-width: 0!important;
       flex-grow: 1;
       display: flex;
       border: none!important;
@@ -128,6 +128,16 @@ html, body {
 
 ion-modal {
   --backdrop-opacity: 0.4!important;
+
+  &.bottom-end {
+    align-items: flex-end;
+    --height: auto;
+    .ion-page {
+      position: relative;
+      display: block;
+      contain: content;
+    }
+  }
 }
 
 ion-item {
@@ -141,3 +151,80 @@ ion-item.item-has-focus.ion-valid {
 .mat-select-panel{
   font-size: 18px!important;
 }
+
+.no-records {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  flex-grow: 1;
+  height: 100%;
+  flex-direction: column;
+  justify-content: center;
+
+  .text {
+    text-align: center;
+    width: 100%;
+  }
+}
+.form-field-group {
+  mat-label {
+    margin-bottom: 5px!important;
+  }
+  ion-item {
+    min-width: 0!important;
+    &.item-fill-outline {
+      button {
+        padding-left: 0!important;
+      }
+      ion-select {
+        display: flex;
+        flex-grow: 1;
+        width: 100%!important;
+        margin: 0!important;
+      }
+    }
+  }
+  ion-radio-group {
+    margin-bottom: 10px;
+    margin: 0 3px!important;
+    row-gap: 10px;
+    display: flex;
+    flex-direction: column;
+    ion-item {
+      &.item-fill-outline {
+        --border-width: 0px!important;
+        --border-color: transparent!important;
+        outline: 1px solid rgba(0,0,0,0.1);
+        border-radius: 3px!important;
+        &.item-radio-checked {
+          outline-width: 2px!important;
+          outline-color: #26A69A!important;
+          ion-icon {
+            color: #26A69A!important;
+          }
+        }
+      }
+    }
+  }
+  &.inline {
+    ion-radio-group {
+      margin: 0 3px!important;
+      column-gap: 10px;
+      flex-direction: row!important;
+      display: flex!important;
+      ion-item {
+        margin-bottom: 0px!important;
+        flex-grow: 1!important;
+      }
+    }
+  }
+}
+ion-alert {
+  &.select-alert {
+    padding: 0 10px!important;
+    .alert-wrapper {
+      min-width: 100%!important;
+    }
+  }
+}
+

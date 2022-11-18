@@ -16,7 +16,9 @@ import { NavigationPageModule } from './component/navigation/navigation/navigati
 import { MaterialModule } from './material/material.module';
 import { AppConfigService } from './core/services/app-config.service';
 import { PageLoaderModule } from './component/page-loader/page-loader.module';
-import { SelectPetTypeComponent } from './component/select-pet-type/select-pet-type.component';
+import { DirectiveModule } from './core/directive/directive.module';
+import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
+import { AndroidPermissions } from '@awesome-cordova-plugins/android-permissions/ngx';
 
 @NgModule({
   declarations: [AppComponent],
@@ -31,8 +33,11 @@ import { SelectPetTypeComponent } from './component/select-pet-type/select-pet-t
     HttpClientModule,
     MaterialModule,
     PageLoaderModule,
+    DirectiveModule,
   ],
   providers: [
+    InAppBrowser,
+    AndroidPermissions,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
     {

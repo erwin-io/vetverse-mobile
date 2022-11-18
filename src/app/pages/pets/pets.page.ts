@@ -16,7 +16,6 @@ import { PetAddPage } from './pet-add/pet-add.page';
   encapsulation: ViewEncapsulation.Emulated
 })
 export class PetsPage implements OnInit {
-  message = 'This modal example uses the modalController to present and dismiss modals.';
   currentUser: LoginResult;
   data: Pet[] = [];
   keywordCtrl = new FormControl('');
@@ -33,17 +32,18 @@ export class PetsPage implements OnInit {
     this.currentUser = this.storageService.getLoginUser();
     this.loadPet(this.currentUser.clientId);
   }
+
   ngOnInit() {
   }
 
-  loadPet(clientId: string){
+  async loadPet(clientId: string){
     try {
       this.isLoading = true;
-      this.petService.getByClientId(clientId).subscribe((res)=>{
+      this.petService.getByClientId(clientId).subscribe((res)=> {
         if(res.success){
           console.log(res.data);
           this.data = res.data;
-          if(this.refreshEvent){
+          if(this.refreshEvent) {
             this.refreshEvent.target.complete();
             this.refreshEvent = null;
           }
@@ -54,30 +54,20 @@ export class PetsPage implements OnInit {
             ? res.message[0]
             : res.message;
           this.presentAlert(this.error);
-          if (this.error.toLowerCase().includes('not found')) {
-            this.router.navigate(['/appointments/']);
-          }
         }
       },
-        async (err) => {
-          this.isLoading = false;
-          this.error = Array.isArray(err.message)
-            ? err.message[0]
-            : err.message;
-          this.presentAlert(this.error);
-          if (this.error.toLowerCase().includes('not found')) {
-            this.router.navigate(['/appointments/']);
-          }
-        }
-        );
-      } catch (e) {
+      async (err) => {
         this.isLoading = false;
-        this.error = Array.isArray(e.message) ? e.message[0] : e.message;
+        this.error = Array.isArray(err.message)
+          ? err.message[0]
+          : err.message;
         this.presentAlert(this.error);
-        if (this.error.toLowerCase().includes('not found')) {
-          this.router.navigate(['/appointments/']);
-        }
-      }
+      });
+    } catch (e) {
+      this.isLoading = false;
+      this.error = Array.isArray(e.message) ? e.message[0] : e.message;
+      this.presentAlert(this.error);
+    }
   }
 
   filter() {
@@ -91,9 +81,9 @@ export class PetsPage implements OnInit {
     this.isLoading = false;
   }
 
-  doRefresh(event){
+   async doRefresh(event){
     this.refreshEvent = event;
-    this.loadPet(this.currentUser.clientId);
+    await this.loadPet(this.currentUser.clientId);
   }
 
   async openAddModal() {
@@ -147,16 +137,16 @@ export class PetsPage implements OnInit {
       buttons: [
         {
           text: 'Details',
-          data: {details: true},
+          data: {isDetails: true},
         },
         {
           text: 'Edit',
-          data: {edit: true},
+          data: {isEdit: true},
         },
         {
           text: 'Delete',
           role: 'destructive',
-          data: {delete: true},
+          data: {isDelete: true},
           handler: async ()=> {
             await this.presentAlert({
               header: 'Delete pet?',
@@ -177,7 +167,7 @@ export class PetsPage implements OnInit {
           }
         },
         {
-          text: 'Cancel',
+          text: 'Back',
           role: 'cancel',
         },
       ],
@@ -187,9 +177,9 @@ export class PetsPage implements OnInit {
 
     const result = await actionSheet.onDidDismiss();
     console.log(result);
-    if(result.data && result.data.details) {
+    if(result.data && result.data.isDetails) {
       this.details(details);
-    } else if(result.data && result.data.edit){
+    } else if(result.data && result.data.isEdit){
       this.edit(details);
     }
   }
