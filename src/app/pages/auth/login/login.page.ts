@@ -55,6 +55,7 @@ export class LoginPage implements OnInit {
             await this.pageLoaderService.close();
             this.storageService.saveRefreshToken(res.data.accessToken);
             this.storageService.saveAccessToken(res.data.refreshToken);
+            this.storageService.saveTotalUnreadNotif(res.data.totalUnreadNotif);
             const userData: LoginResult = res.data;
             this.storageService.saveLoginUser(userData);
             this.router.navigate(['/'], { replaceUrl: true });

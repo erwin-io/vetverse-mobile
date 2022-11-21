@@ -41,6 +41,21 @@
   </div>
   <div class="records">
     <h2 class="title">Medical Records</h2>
-
+    <ion-list *ngIf="records.length > 0; else elseNoData">
+      <ion-item *ngFor="let item of records"  button (click)="recordDetails(item.appointment)">
+        <ion-label>
+          <p class="date"><strong>{{item.appointment.appointmentDate | date:'MMMM dd, yyyy'}}</strong></p>
+          <p class="service"><i>{{item.appointment.serviceType.name}}</i></p>
+          <p class="diagnosi-treatment">{{item.appointment.diagnosiAndTreatment && item.appointment.diagnosiAndTreatment !== '' ? item.appointment.diagnosiAndTreatment : 'No diagnosis& treatment'}}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
   </div>
+
+  <ng-template #elseNoData >
+    <div class="no-records">
+      <ion-icon name="document-outline"></ion-icon>
+      <h3 class="text">No records to show</h3>
+    </div>
+  </ng-template>
 </ion-content>

@@ -20,6 +20,7 @@ export class Appointment {
   clientAppointment?: ClientAppointment;
   petAppointment?: PetAppointment;
   conferencePeerId: string;
+  diagnosiAndTreatment: string;
 }
 
 export class ConsultaionType {
@@ -55,11 +56,12 @@ export class PaymentType {
 
 export class AppointmentStatus {
   appointmentStatusId: string;
+  appointment: string;
   name: string;
 }
 
 export class PetAppointment {
-  appointmentId: string;
+  appointment: Appointment;
   pet: Pet;
 }
 
@@ -72,6 +74,7 @@ export class Pet {
   entityStatusId: string;
   petCategory: PetCategory;
   gender: Gender;
+  petAppointments?: PetAppointment[];
 }
 
 export class PetCategory {

@@ -17,4 +17,5 @@ export class LoginResult {
   gender: Gender;
   role: Role;
   userTypeIdentityId: string;
+  totalUnreadNotif: number;
 }

@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  conferenceHost: 'vetverse-web.herokuapp.com/',
-  apiBaseUrl: 'https://vetverse-api2.herokuapp.com/api/v1/'
+  conferenceHost: 'https://vetverse-web.herokuapp.com/',
+  apiBaseUrl: 'https://vetverse-api.herokuapp.com/api/v1/'
 };

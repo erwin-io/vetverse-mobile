@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { GetAgeByBirthdatePipe } from './get-age-by-birthdate.pipe';
 import { FilterPetPipe } from './filter-pet.pipe';
 import { FilterPetCategoryPipe } from './filter-pet-category.pipe';
+import { TimeAgoPipe } from './time-ago.pipe';
 
 
 
@@ -10,10 +11,12 @@ import { FilterPetCategoryPipe } from './filter-pet-category.pipe';
   declarations: [
     GetAgeByBirthdatePipe,
     FilterPetPipe,
-    FilterPetCategoryPipe],
+    FilterPetCategoryPipe,
+    TimeAgoPipe],
   exports: [
     GetAgeByBirthdatePipe,
     FilterPetPipe,
-    FilterPetCategoryPipe]
+    FilterPetCategoryPipe,
+    TimeAgoPipe]
 })
 export class PipeModule { }

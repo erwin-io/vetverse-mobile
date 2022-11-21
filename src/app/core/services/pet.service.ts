@@ -35,6 +35,14 @@ export class PetService implements IServices {
     );
   }
 
+  getPetMedicalRecords(petId: string): Observable<ApiResponse<Pet>> {
+    return this.http.get<any>(environment.apiBaseUrl + this.appconfig.config.apiEndPoints.pet.getPetMedicalRecords + petId)
+    .pipe(
+      tap(_ => this.log('pet')),
+      catchError(this.handleError('pet', []))
+    );
+  }
+
   getById(petId: string): Observable<ApiResponse<Pet>> {
     return this.http.get<any>(environment.apiBaseUrl + this.appconfig.config.apiEndPoints.pet.getById + petId)
     .pipe(

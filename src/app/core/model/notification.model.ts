@@ -5,6 +5,7 @@ import { User } from './user.model';
 
 export class Notifications {
   notificationId: string;
+  date: Date;
   title: string;
   description: any;
   isRead: boolean;

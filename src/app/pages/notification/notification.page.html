@@ -13,11 +13,18 @@
     <ion-item [color]="item.isRead ? '':'light'" *ngFor="let item of data"  button detail="true" [ngClass]="{'un-read': item.isRead}" (click)="openDetails(item)">
       <ion-icon name="notifications-outline" slot="start"></ion-icon>
       <ion-label>
-        <h3 *ngIf="item.isRead; else elseUnRead" class="title">{{item.title}}</h3>
+        <div *ngIf="item.isRead; else elseUnRead">
+          <h3 class="title">{{item.title}}</h3>
+          <p>{{item.description}}</p>
+          <p>{{item.date | timeAgo}}</p>
+        </div>
         <ng-template #elseUnRead >
-          <h3 class="title"><strong>{{item.title}}</strong></h3>
+          <div>
+            <h3 class="title"><strong>{{item.title}}</strong></h3>
+            <p>{{item.description}}</p>
+            <p style="color:#4DB6AC"><strong>{{item.date | timeAgo}}</strong></p>
+          </div>
         </ng-template>
-        <p>{{item.description}}</p>
       </ion-label>
     </ion-item>
   </ion-list>

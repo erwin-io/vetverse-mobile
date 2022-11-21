@@ -8,6 +8,8 @@ import { VideoConferencePage } from './video-conference/video-conference.page';
 import { WebrtcService } from 'src/app/core/services/webrtc.service';
 import { InAppBrowserObject, InAppBrowser } from '@ionic-native/in-app-browser';
 import { environment } from 'src/environments/environment';
+import { Browser } from '@capacitor/browser';
+
 @Component({
   selector: 'app-schedule-details',
   templateUrl: './schedule-details.page.html',
@@ -167,7 +169,9 @@ export class ScheduleDetailsPage implements OnInit {
     // const { data, role } = await modal.onWillDismiss();
 
 
-    window.open(this.conferenceWebURL);
+    // window.open(this.conferenceWebURL);
+
+    await Browser.open({ url: this.conferenceWebURL });
 
   }
 

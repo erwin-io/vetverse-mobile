@@ -24,11 +24,9 @@ export class PageLoaderService {
     this.modal.present();
   }
   async close() {
-    setTimeout(async ()=>{
-      if(this.modal){
-        this.modal.canDismiss = true;
-        this.modal.dismiss();
-      }
-    },500);
+    if(this.modal){
+      this.modal.canDismiss = true;
+      this.modal.dismiss();
+    }
   }
 }

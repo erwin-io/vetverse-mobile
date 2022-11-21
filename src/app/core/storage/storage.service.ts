@@ -31,6 +31,12 @@ export class StorageService {
   saveRefreshToken(value: any){
     return this.set('refreshToken', value);
   }
+  getTotalUnreadNotif(){
+    return this.get('totalUnreadNotif');
+  }
+  saveTotalUnreadNotif(value: any){
+    return this.set('totalUnreadNotif', value);
+  }
   private set(key: string, value: any){
     localStorage.setItem(key, value);
   }

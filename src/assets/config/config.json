@@ -51,6 +51,7 @@
     "pet": {
       "get": "pet",
       "getByClientId": "pet/findByClientId/",
+      "getPetMedicalRecords": "pet/getPetMedicalRecords/",
       "getById": "pet/",
       "create": "pet",
       "update": "pet",
@@ -60,6 +61,7 @@
     "petCategory": "pet-category/",
     "notification": {
       "getAllByClientIdPage": "notification/getAllByClientIdPage",
+      "getTotalUnreadByClientId": "notification/getTotalUnreadByClientId",
       "updateReadStatus": "notification/updateReadStatus"
     }
   }
