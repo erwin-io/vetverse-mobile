@@ -1,14 +1,18 @@
 <ion-header no-border no-shadow>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="settings" ios="ios-arrow-back" md="md-arrow-back"></ion-back-button>
+      <ion-button (click)="close()" >
+        <ion-icon name="chevron-back"></ion-icon>
+      </ion-button>
     </ion-buttons>
-    <ion-title class="ion-text-center">Theme Settings</ion-title>
+    <ion-title class="ion-text-center">Theme settings</ion-title>
     <div slot="end" style="width: 48px"></div>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
-  <div class="content">
-  </div>
+  <ion-item>
+    <ion-label>Enable dark mode</ion-label>
+    <ion-toggle (ionChange)="toggleDarkMode()" #toggleDarkModeCtrl [checked]="isDarkEnable" [disabled]="isLoading" slot="end"></ion-toggle>
+  </ion-item>
 </ion-content>

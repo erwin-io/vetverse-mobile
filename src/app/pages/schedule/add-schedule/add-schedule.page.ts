@@ -2,7 +2,7 @@
 import { Component, ElementRef, OnInit, AfterViewInit, ViewChild, ChangeDetectorRef, AfterViewChecked, Input } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatStepper } from '@angular/material/stepper';
-import { AlertController, IonModal, ModalController, Platform } from '@ionic/angular';
+import { AlertController, IonDatetime, IonModal, ModalController, Platform } from '@ionic/angular';
 import { IonSlides} from '@ionic/angular';
 import { forkJoin, Subscription } from 'rxjs';
 import { Appointment, ConsultaionType, PaymentType, Pet, ServiceType } from 'src/app/core/model/appointment.model';
@@ -26,12 +26,15 @@ import { LoginResult } from 'src/app/core/model/loginresult.model';
 })
 export class AddSchedulePage implements OnInit {
   @ViewChild('appointmentStepper') appointmentStepper: MatStepper;
+  @ViewChild(IonModal) timeSlotModal: IonModal;
+  @ViewChild('selectTimeSlotDateCtrl', { static: true }) selectTimeSlotDateCtrl: ElementRef<IonDatetime>;
   isNew = false;
   modal: HTMLIonModalElement;
   currentUser: LoginResult;
   name: string;
   details: Appointment = {} as any;
   pets: Pet[] = [];
+  selectTimeSlotForm: FormGroup;
   appointmentForm: FormGroup;
   paymentForm: FormGroup;
   isSubmitting = false;
@@ -46,6 +49,9 @@ export class AddSchedulePage implements OnInit {
   petRefreshEvent: any;
   subscription: Subscription;
   allowToClose = false;
+  isTimeSlotModalOpen = false;
+  isLoadingTimeSlot = false;
+  availableTimeSlot = [];
 
   currentDate = new Date();
   minDate: string = new Date(new Date().setDate(this.currentDate.getDate() + 1)).toISOString();
@@ -66,8 +72,10 @@ export class AddSchedulePage implements OnInit {
       ...this.appointmentForm.value,
       ...this.paymentForm.value,
       serviceTypeId: this.appointmentForm.valid ? this.appointmentForm.value.serviceType.serviceTypeId : null,
-      appointmentDate: moment(this.appointmentForm.value.appointmentDate).format('YYYY-MM-DD'),
-      time: moment(this.appointmentForm.value.time).format('HH:mm'),
+      appointmentDate: this.appointmentForm.value.appointmentDate ?
+        moment(this.appointmentForm.value.appointmentDate).format('YYYY-MM-DD') : null,
+      time: this.appointmentForm.value.appointmentDate ?
+        moment(this.appointmentForm.value.time).format('HH:mm') : null,
       clientId: this.currentUser.clientId,
     };
   }
@@ -81,11 +89,15 @@ export class AddSchedulePage implements OnInit {
 
   ngOnInit() {
     console.log(this.minDate);
+    this.selectTimeSlotForm = this.formBuilder.group({
+      selectTimeSlotDate: [this.minDate, Validators.required],
+      selectTime: [null, Validators.required],
+    });
     this.appointmentForm = this.formBuilder.group({
+      appointmentDate: [null, Validators.required],
+      time: [null, Validators.required],
       consultaionTypeId: ['', Validators.required],
       serviceType: ['', Validators.required],
-      appointmentDate: [this.minDate, Validators.required],
-      time: [this.currentDate.toISOString(), Validators.required],
       petId: ['', Validators.required],
       veterenarianId: ['', Validators.required],
       comments: ['', Validators.required],
@@ -219,12 +231,14 @@ export class AddSchedulePage implements OnInit {
 
   async showPaymentRequest(){
     const service = this.serviceTypeOption.filter(x=>x.serviceTypeId === this.formData.serviceType.serviceTypeId)[0];
-    const url = 'https://getpaid.gcash.com/paynow?'
-    + 'public_key=' + 'pk_c53cadc7fec19fc887c63717c22955fa'
-    + '&amount=' + service.price
-    + '&fee=0'
-    + '&expiry=6'
-    + '&description=' + service.name;
+    const publicKey = `public_key=${this.appconfig.config.gCashConfig.publicKey}`;
+    const gCashAmount = `&amount=${service.price}`;
+    const gCashFee = `&fee=${this.appconfig.config.gCashConfig.fee}`;
+    const gCashExpiry = `&expiry=${this.appconfig.config.gCashConfig.expiry}`;
+    const dateStr = `${this.formData.appointmentDate} ${this.formData.time}`;
+    // eslint-disable-next-line max-len
+    const gCashDesc = `&description=Payments for appointment with service type: ${service.name}, on ${moment(dateStr).format('MMMM DD, YYYY h:mm a')}`;
+    const url = `${this.appconfig.config.gCashConfig.url}${publicKey}${gCashAmount}${gCashFee}${gCashExpiry}${gCashDesc}`;
     let browserURL = '';
     const browser: InAppBrowserObject = InAppBrowser.create(url,'_blank',{location:'no',clearcache:'yes',toolbar:'no'});
     browser.show();
@@ -348,6 +362,136 @@ export class AddSchedulePage implements OnInit {
     }
   }
 
+  async openTimeSlotModal() {
+    this.isTimeSlotModalOpen = this.appointmentForm.value.serviceType.serviceTypeId ? true : false;
+    if(this.isTimeSlotModalOpen) {
+      const selectedDate = this.selectTimeSlotForm.value.selectTimeSlotDate;
+      const durationInHours = this.appointmentForm.value.serviceType.durationInHours;
+      await this.getAppointmentsForADay(moment(selectedDate).format('YYYY-MM-DD'), this.timeSlotOptions(durationInHours));
+      this.selectTimeSlotForm.get('selectTimeSlotDate').valueChanges.subscribe(async selectedValue => {
+        this.selectTimeSlotForm.controls.selectTime.setValue(null);
+        const dayOfWeek = new Date(selectedValue).toLocaleDateString('en-US', { weekday: 'long' });
+        const isDayAvailable = this.appconfig.config.appointmentConfig.dayOfWeekNotAvailable
+                                .filter(x=>x.toLowerCase().includes(dayOfWeek.toLowerCase())).length <= 0;
+        if(isDayAvailable) {
+          await this.getAppointmentsForADay(moment(selectedValue).format('YYYY-MM-DD'), this.timeSlotOptions(durationInHours));
+        } else {
+          this.availableTimeSlot = [];
+        }
+      });
+    }
+  }
+
+  confirmSelectedTimeSlot() {
+    const selectedTimeSlotData = this.selectTimeSlotForm.value;
+    const appointmentDateAndTime = new Date(
+      moment(
+        moment(selectedTimeSlotData.selectTimeSlotDate).format('YYYY-MM-DD') +
+      ' ' +
+      selectedTimeSlotData.selectTime).format('YYYY-MM-DD HH:mm')).toISOString();
+    this.appointmentForm.controls.appointmentDate.setValue(appointmentDateAndTime);
+    this.appointmentForm.controls.time.setValue(appointmentDateAndTime);
+    this.isTimeSlotModalOpen = false;
+  }
+
+  closeSelectedTimeSlot() {
+    this.isTimeSlotModalOpen = false;
+    if(!this.formData.appointmentDate && !this.formData.time) {
+      this.selectTimeSlotForm.controls.selectTime.setValue(null);
+    }
+  }
+
+  onTimeSlotWillDismiss(event) {
+    console.log(event);
+  }
+
+  cancelTimeSlotModal() {
+    this.timeSlotModal.dismiss(null, 'cancel');
+  }
+
+  toMinutes = str => str.split(':').reduce((h, m) => h * 60 + +m);
+
+  toString = min => (Math.floor(min / 60) + ':' + (min % 60))
+                         .replace(/\b\d\b/, '0$&');
+
+  // eslint-disable-next-line @typescript-eslint/member-ordering
+  timeSlotOptions(hours = 1) {
+    const notAvailableHours = this.appconfig.config.appointmentConfig.timeSlotNotAvailableHours;
+    const start = this.toMinutes(this.appconfig.config.appointmentConfig.timeSlotHours.start);
+    const end = this.toMinutes(this.appconfig.config.appointmentConfig.timeSlotHours.end);
+    const slotOptions = Array.from({length: Math.floor((end - start) / (60 * Number(hours))) + 1}, (_, i) =>
+    this.toString(start + i * (60 * Number(hours))));
+    return slotOptions.filter(x=> !notAvailableHours.includes(x));
+  }
+
+  tConvert(time) {
+    if(time.toLowerCase().includes('invalid date')) {return;};
+    time = time.split(':')[1].charAt(1) ? time : time + '0';
+    // Check correct time format and split into components
+    time = time.toString().match (/^([01]\d|2[0-3])(:)([0-5]\d)(:[0-5]\d)?$/) || [time];
+
+    if (time.length > 1) { // If time format correct
+      time = time.slice (1);  // Remove full string match value
+      time[5] = +time[0] < 12 ? ' AM' : ' PM'; // Set AM/PM
+      time[0] = +time[0] % 12 || 12; // Adjust hours
+    }
+    return time.join(''); // return adjusted time or original string
+  }
+
+  async getAppointmentsForADay(dateString: string, timeSlotOptions: string[]) {
+    try{
+      this.isLoading = true;
+      await this.appointmentService.getAppointmentsForADay(dateString)
+      .subscribe(async res => {
+        if(res.success){
+          const hSlotTaken = res.data.map((a)=> {
+            const appointmentTimeStart = moment(`${a.appointmentDate} ${a.timeStart}`).format('HH');
+            const appointmentTimeEnd = moment(`${a.appointmentDate} ${a.timeEnd}`).format('HH');
+            return {
+              appointmentTimeStart,
+              appointmentTimeEnd
+            };
+          });
+
+          this.availableTimeSlot = timeSlotOptions.map((t)=> {
+            const h = t.split(':')[0];
+            if(hSlotTaken
+            .filter(x=> Number(h) >= Number(x.appointmentTimeStart) && Number(h) < Number(x.appointmentTimeEnd)).length <= 0) {
+              return t;
+            }
+          }).filter(x=>x !== null && x !== undefined && x !== '');
+
+          this.isLoading = false;
+        }
+        else{
+          await this.presentAlert({
+            header: 'Try again!',
+            subHeader: '',
+            message: Array.isArray(res.message) ? res.message[0] : res.message,
+            buttons: ['OK']
+          });
+          this.isLoading = false;
+        }
+      }, async (e) => {
+        await this.presentAlert({
+          header: 'Try again!',
+          subHeader: '',
+          message: Array.isArray(e.message) ? e.message[0] : e.message,
+          buttons: ['OK']
+        });
+        this.isLoading = false;
+      });
+    }
+    catch(e){
+      console.log(e);
+      await this.presentAlert({
+        header: 'Try again!',
+        subHeader: '',
+        message: Array.isArray(e.message) ? e.message[0] : e.message,
+        buttons: ['OK']
+      });
+    }
+  }
 
   async presentAlert(options: any) {
     const alert = await this.alertController.create(options);

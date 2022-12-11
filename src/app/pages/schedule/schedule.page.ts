@@ -15,6 +15,8 @@ import { PetService } from 'src/app/core/services/pet.service';
 import { UserService } from 'src/app/core/services/user.service';
 import { Staff } from 'src/app/core/model/staff.model';
 import { Router } from '@angular/router';
+import { ScheduleHistoryPage } from './schedule-history/schedule-history.page';
+import { AppConfigService } from 'src/app/core/services/app-config.service';
 
 @Component({
   selector: 'app-schedule',
@@ -44,6 +46,7 @@ export class SchedulePage implements OnInit {
     private appointmentService: AppointmentService,
     private navController: NavController,
     private router: Router,
+    private appconfig: AppConfigService,
     public platform: Platform) {
       this.currentUser = this.storageService.getLoginUser();
       this.getAppointment(this.currentUser.clientId);
@@ -58,7 +61,24 @@ export class SchedulePage implements OnInit {
     return this.appointmentData.filter(x=>x.appointmentStatus.appointmentStatusId === '1').length;
   }
 
+  get isBookingAvailable() {
+    if(this.isLoading) {
+      return false;
+    } else {
+      const today: any = new Date();
+      const date: any = new Date(this.currentUser.lastCancelledDate);
+      const diffTime = Math.abs(today - date);
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      return Number(this.currentUser.numberOfCancelledAttempt) >= Number(this.appconfig.config.appointmentConfig.maxCancellation) ?
+      diffDays > Number(this.appconfig.config.appointmentConfig.daysCancellationLimitReset) : true;
+    }
+  }
+
   async ngOnInit() {
+  }
+
+  ionViewWillEnter(){
+    console.log('visited');
   }
 
   ionViewDidEnter() {
@@ -111,7 +131,6 @@ export class SchedulePage implements OnInit {
         appointmentStatus: this.selectedStatus.toString()
       })
       .subscribe(async res => {
-        console.log(res);
         if(res.success){
           this.appointmentData = res.data;
           if(this.refreshEvent) {
@@ -166,13 +185,6 @@ export class SchedulePage implements OnInit {
           }
         },
         {
-          text: 'Edit',
-          handler:async () => {
-            this.onOpenEdit(details);
-            actionSheet.dismiss();
-          },
-        },
-        {
           text: 'Back',
           handler:async () => {
             actionSheet.dismiss();
@@ -216,25 +228,19 @@ export class SchedulePage implements OnInit {
     }
   }
 
-  async onOpenEdit(details) {
-    const modal = await this.modalCtrl.create({
-      component: AddSchedulePage,
-    });
-    modal.present();
-
-    const { data, role } = await modal.onWillDismiss();
-
-    if (role === 'confirm') {
-      this.message = `Hello, ${data}!`;
-    }
-  }
-
   async onOpenPending() {
     let modal: any = null;
     modal = await this.modalCtrl.create({
       component: SchedulePendingPage,
       cssClass: 'modal-fullscreen',
-      componentProps: { currentClientId: this.currentUser.clientId },
+      componentProps: { currentUser: this.currentUser },
+    });
+    modal.onWillDismiss().then((res) => {
+      if(res.data) {
+        this.initLookup().then(()=> {
+          this.getAppointment(this.currentUser.clientId);
+        });
+      }
     });
     modal.present();
     await modal.onWillDismiss();
@@ -244,14 +250,21 @@ export class SchedulePage implements OnInit {
     const modal = await this.modalCtrl.create({
       component: ScheduleDetailsPage,
       cssClass: 'modal-fullscreen',
-      componentProps: { details },
+      componentProps: { details, currentUser: this.currentUser },
     });
     modal.present();
     await modal.onWillDismiss();
   }
 
   async history() {
-
+    let modal: any = null;
+    modal = await this.modalCtrl.create({
+      component: ScheduleHistoryPage,
+      cssClass: 'modal-fullscreen',
+      componentProps: { currentUser: this.currentUser },
+    });
+    modal.present();
+    await modal.onWillDismiss();
   }
 
   async presentAlert(options: any) {

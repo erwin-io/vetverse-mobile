@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-button (click)="cancel()" >
+      <ion-button [disabled]="isLoading" (click)="cancel()" >
         <ion-icon name="chevron-back"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -11,9 +11,16 @@
 </ion-header>
 <ion-content class="ion-padding">
   <div *ngIf="!isLoading; else loading" class="details-container">
-    <ion-item *ngIf="details.consultaionType.consultaionTypeId === '2' && details.appointmentStatus.appointmentStatusId === '2'" button class="item" (click)="joinVideoConference()">
+    <ion-item class="item" >
       <ion-label text-wrap>
-        <span>Join video conference</span>
+        <div class="item">
+          <h2 class="title"># <strong>{{details.appointmentId | numberLeadZero: 5}}</strong></h2>
+        </div>
+      </ion-label>
+    </ion-item>
+    <ion-item [disabled]="!isVideoConferenceAvailable" *ngIf="details.consultaionType.consultaionTypeId === '2' && details.appointmentStatus.appointmentStatusId === '2'" button class="item video-conference-button" [ngClass]="{'disabled' : !isVideoConferenceAvailable }" (click)="joinVideoConference()">
+      <ion-label text-wrap>
+        <span>{{isVideoConferenceAvailable ? 'Join video conference' : 'Video conference not available'}}</span>
       </ion-label>
       <ion-icon name="videocam"></ion-icon>
     </ion-item>
@@ -64,14 +71,14 @@
       <ion-icon name="pricetag" slot="start"></ion-icon>
       <ion-label text-wrap>
         <h2 class="title">{{details.comments}}</h2>
-        <span class="desc">{{details.comments !=='' ? 'Message' : 'No message/comments'}}</span>
+        <span class="desc">{{details.comments !=='' ? 'Comments' : 'No Comments'}}</span>
       </ion-label>
     </ion-item>
-    <ion-item class="item" >
-      <ion-icon name="chatbox-ellipses" slot="start"></ion-icon>
+    <ion-item class="item" *ngIf="details.appointmentStatus.appointmentStatusId === '2'">
+      <ion-icon name="receipt" slot="start"></ion-icon>
       <ion-label text-wrap>
-        <h2 class="title">{{details.diagnosiAndTreatment}}</h2>
-        <span class="desc">{{details.diagnosiAndTreatment !=='' ? 'Diagnosi & Treatment' : 'No Diagnosi & Treatment'}}</span>
+        <h2 class="title">{{details.diagnosisAndTreatment}}</h2>
+        <span class="desc">{{details.diagnosisAndTreatment !=='' ? 'Diagnosis & Treatment' : 'No Diagnosis & Treatment'}}</span>
       </ion-label>
     </ion-item>
     <ion-item class="item" lines="none">
@@ -156,8 +163,8 @@
         </span>
       </ion-label>
     </ion-item>
-    <ion-item class="item" >
-      <ion-icon name="chatbox-ellipses" slot="start"></ion-icon>
+    <!-- <ion-item class="item" >
+      <ion-icon name="receipt" slot="start"></ion-icon>
       <ion-label text-wrap>
         <h2 class="title">
           <ion-skeleton-text [animated]="true"></ion-skeleton-text>
@@ -166,7 +173,7 @@
           <ion-skeleton-text [animated]="true"></ion-skeleton-text>
         </span>
       </ion-label>
-    </ion-item>
+    </ion-item> -->
     <ion-item class="item" lines="none">
       <ion-label text-wrap>
         <h3>
@@ -187,13 +194,21 @@
     </ion-item>
     </div>
   </ng-template>
-  <div class="appointment-action" *ngIf="!isLoading">
+
+</ion-content>
+
+<div class="sched-controls-bottom">
   <ion-button
-    *ngIf="details.appointmentStatus.appointmentStatusId === '1'"
+    *ngIf="details.appointmentStatus.appointmentStatusId === '1' || details.appointmentStatus.appointmentStatusId === '2'"
+    color="primary"
+    expand="block"
+    fill="outline">Message(1)
+  </ion-button>
+  <ion-button
+    [disabled]="isLoading"
+    *ngIf="details.appointmentStatus.appointmentStatusId === '1' && isCancellationAvailable"
     color="danger"
     expand="block"
     fill="outline"
     (click)="onCancelAppointment()">Cancel appointment</ion-button>
-  </div>
-
-</ion-content>
+</div>

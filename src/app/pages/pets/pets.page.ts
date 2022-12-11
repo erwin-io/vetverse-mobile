@@ -70,6 +70,10 @@ export class PetsPage implements OnInit {
     }
   }
 
+  ionViewWillEnter(){
+    console.log('visited');
+  }
+
   filter() {
     this.isLoading = true;
     const keyword = this.keywordCtrl.value.toLowerCase();

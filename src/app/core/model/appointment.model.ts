@@ -20,7 +20,8 @@ export class Appointment {
   clientAppointment?: ClientAppointment;
   petAppointment?: PetAppointment;
   conferencePeerId: string;
-  diagnosiAndTreatment: string;
+  diagnosisAndTreatment: string;
+  serviceRate: number;
 }
 
 export class ConsultaionType {

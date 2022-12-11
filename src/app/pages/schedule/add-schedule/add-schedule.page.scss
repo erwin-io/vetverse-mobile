@@ -28,3 +28,30 @@ p,span,label {
   }
 
 }
+
+ion-radio-group {
+  &.hide-radio-controls {
+    ion-radio {
+      visibility: hidden!important;
+    }
+  }
+}
+#schedForm {
+  display: flex!important;
+  height: 100%;
+  fieldset {
+    flex-grow: 1;
+    display: flex!important;
+    .form-field-group {
+      flex-grow: 0!important;
+    }
+    .no-time-slot-available {
+      flex-grow: 1;
+      display: flex!important;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      justify-content: center;
+    }
+  }
+}

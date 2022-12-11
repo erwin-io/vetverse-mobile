@@ -8,6 +8,7 @@ import { SchedulePageRoutingModule } from './schedule-routing.module';
 
 import { SchedulePage } from './schedule.page';
 import { MaterialModule } from '../../material/material.module';
+import { PipeModule } from 'src/app/core/pipe/pipe.module';
 
 @NgModule({
   imports: [
@@ -16,7 +17,8 @@ import { MaterialModule } from '../../material/material.module';
     IonicModule,
     ReactiveFormsModule,
     SchedulePageRoutingModule,
-    MaterialModule
+    MaterialModule,
+    PipeModule
   ],
   declarations: [SchedulePage]
 })

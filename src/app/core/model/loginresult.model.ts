@@ -18,4 +18,6 @@ export class LoginResult {
   role: Role;
   userTypeIdentityId: string;
   totalUnreadNotif: number;
+  lastCancelledDate: Date;
+  numberOfCancelledAttempt: string;
 }

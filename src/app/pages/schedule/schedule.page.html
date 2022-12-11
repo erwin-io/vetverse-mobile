@@ -1,13 +1,10 @@
 <ion-header no-border no-shadow>
-  <!-- <ion-toolbar>
-    <ion-title class="ion-text-center">Schedule</ion-title>
-  </ion-toolbar> -->
   <ion-toolbar>
     <div slot="start" style="width: 48px"></div>
     <ion-title style="text-align: center">Schedule</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="history()" >
-        <ion-icon name="document-text"></ion-icon>
+        <ion-icon name="time-outline"></ion-icon>
       </ion-button>
     </ion-buttons>
   </ion-toolbar>
@@ -47,6 +44,11 @@
             </div>
             <div class="card-content">
               <div class="content-row border">
+                <div class="field ">
+                  <h3 class="value"><strong>ID #: {{a.appointmentId | numberLeadZero:5}}</strong></h3>
+                </div>
+              </div>
+              <div class="content-row">
                 <div class="field vet">
                   <h3>Veterenarian</h3>
                   <h3 class="value"><strong>{{a.staff.fullName}}</strong></h3>
@@ -59,7 +61,7 @@
                   </ion-buttons>
                 </div>
               </div>
-              <div class="content-row">
+              <div class="content-row border">
                 <div class="field type">
                   <h3 class="value"><strong>{{a.consultaionType.name}}</strong></h3>
                 </div>
@@ -123,5 +125,5 @@
   </ng-template>
 </ion-content>
 <div class="sched-controls-bottom">
-  <ion-button [disabled]="isLoading" color="primary" size="large" expand="block" (click)="onOpenAdd()">Book new Appointment</ion-button>
+  <ion-button [disabled]="isLoading || !isBookingAvailable" color="primary" size="large" expand="block" (click)="onOpenAdd()">Book new Appointment</ion-button>
 </div>

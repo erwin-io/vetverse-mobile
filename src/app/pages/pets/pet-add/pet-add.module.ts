@@ -9,6 +9,7 @@ import { PetAddPageRoutingModule } from './pet-add-routing.module';
 import { PetAddPage } from './pet-add.page';
 import { MaterialModule } from 'src/app/material/material.module';
 import { PipeModule } from 'src/app/core/pipe/pipe.module';
+import { DirectiveModule } from 'src/app/core/directive/directive.module';
 
 @NgModule({
   imports: [
@@ -18,6 +19,7 @@ import { PipeModule } from 'src/app/core/pipe/pipe.module';
     IonicModule,
     MaterialModule,
     PetAddPageRoutingModule,
+    DirectiveModule,
     PipeModule
   ],
   declarations: [PetAddPage]

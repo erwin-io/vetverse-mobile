@@ -75,37 +75,15 @@
             </span>
           </div>
           <div class="form-field-group">
-            <mat-label slot="start">Select appointment date</mat-label>
-            <ion-item id="open-appointment-date-picker" [disabled]="isLoading" fill="outline" lines="none">
-              <ion-label>{{formData.appointmentDate | date: 'MMMM dd, yyyy'}}</ion-label>
-            </ion-item>
-            <ion-modal trigger="open-appointment-date-picker" [cssClass]="'bottom-end'">
-              <ng-template>
-                <ion-datetime
-                  [min]="minDate"
-                  presentation="date"
-                  size="cover"
-                  formControlName="appointmentDate"
-                  [showDefaultButtons]="true"
-                ></ion-datetime>
+            <mat-label slot="start">Select a time slot</mat-label>
+            <ion-item (click)="openTimeSlotModal()" [disabled]="isLoading" fill="outline" lines="none">
+              <ion-label *ngIf="selectTimeSlotForm.valid && formData.appointmentDate && formData.time; else elseNoTimeSlotSelected">
+                {{formData.appointmentDate | date: 'MMMM dd, yyyy'}} {{tConvert(formData.time)}}
+              </ion-label>
+              <ng-template #elseNoTimeSlotSelected>
+                <ion-label style="color: #c3c3c3!important">Search for available time slot</ion-label>
               </ng-template>
-            </ion-modal>
-          </div>
-          <div class="form-field-group">
-            <mat-label slot="start">Select appointment time</mat-label>
-            <ion-item id="open-appointment-time-picker" [disabled]="isLoading" fill="outline" lines="none">
-              <ion-label>{{appointmentForm.controls.time.value | date: 'hh:mm a'}}</ion-label>
             </ion-item>
-            <ion-modal trigger="open-appointment-time-picker" [cssClass]="'bottom-end'">
-              <ng-template>
-                <ion-datetime
-                  presentation="time"
-                  size="cover"
-                  formControlName="time"
-                  [showDefaultButtons]="true"
-                ></ion-datetime>
-              </ng-template>
-            </ion-modal>
           </div>
           <div class="form-field-group" >
             <mat-label>Comments</mat-label>
@@ -131,7 +109,7 @@
           <div class="form-field-group" >
             <mat-label>Select payment method</mat-label>
             <ion-radio-group formControlName="paymentTypeId" value="1">
-              <ion-item fill="outline" lines="none">
+              <ion-item fill="outline" lines="none" *ngIf="formData.consultaionTypeId && formData.consultaionTypeId !== '2'">
                 <ion-thumbnail slot="start">
                   <img alt="Cash Logo" src="../../../../assets/img/cash_logo.png" />
                 </ion-thumbnail>
@@ -179,6 +157,73 @@
       </div>
     </mat-step>
   </mat-stepper>
+
+  <ion-modal [isOpen]="isTimeSlotModalOpen">
+    <ng-template>
+      <ion-header>
+        <ion-toolbar>
+          <ion-buttons slot="start">
+            <ion-button (click)="closeSelectedTimeSlot()" >
+              <ion-icon name="chevron-back"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+          <ion-title style="text-align: center">Select time slot</ion-title>
+          <div slot="end" style="width: 48px"></div>
+        </ion-toolbar>
+      </ion-header>
+
+      <ion-content class="ion-padding">
+        <form
+        id="schedForm"
+        [formGroup]="selectTimeSlotForm"
+        (ngSubmit)="selectTimeSlotForm.valid ? appointmentStepper.next() : false">
+          <fieldset [disabled]="isSubmitting || isLoading">
+            <div class="form-field-group">
+              <mat-label slot="start">Select appointment date</mat-label>
+              <ion-item id="open-appointment-date-picker" [disabled]="isLoading" fill="outline" lines="none">
+                <ion-label>{{selectTimeSlotForm.value.selectTimeSlotDate | date: 'EEEE, MMMM d, y'}}</ion-label>
+              </ion-item>
+              <ion-modal trigger="open-appointment-date-picker" [cssClass]="'bottom-end'">
+                <ng-template>
+                  <ion-datetime
+                    #selectTimeSlotDateCtrl
+                    [min]="minDate"
+                    presentation="date"
+                    size="cover"
+                    formControlName="selectTimeSlotDate"
+                    [showDefaultButtons]="true"
+                  ></ion-datetime>
+                </ng-template>
+              </ion-modal>
+            </div>
+            <div class="form-field-group" *ngIf="availableTimeSlot.length > 0; else elseNoTimeSlotAvailable" >
+              <mat-label>Select time slot</mat-label>
+              <ion-radio-group [disabled]="isLoading" formControlName="selectTime">
+                <ion-item fill="outline" lines="none" *ngFor="let timeSlot of availableTimeSlot">
+                  <ion-label>{{tConvert(timeSlot)}}</ion-label>
+                  <ion-radio slot="end" [value]="timeSlot"></ion-radio>
+                </ion-item>
+              </ion-radio-group>
+            </div>
+            <ng-template #elseNoTimeSlotAvailable>
+              <div class="no-time-slot-available">
+                <span>Sorry!<br>No available time slot to show, <br>try another date</span>
+              </div>
+            </ng-template>
+          </fieldset>
+        </form>
+      </ion-content>
+      <div class="sched-controls-bottom">
+        <ion-button
+          [disabled]="isLoadingTimeSlot || !selectTimeSlotForm.valid"
+          color="primary"
+          size="large"
+          expand="block"
+          (click)="confirmSelectedTimeSlot()">Done</ion-button>
+      </div>
+    </ng-template>
+  </ion-modal>
+
 </ion-content>
 <div class="sched-controls-bottom">
   <ion-button

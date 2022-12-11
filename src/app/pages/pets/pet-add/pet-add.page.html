@@ -16,29 +16,27 @@
   (ngSubmit)="petForm.valid ? onSubmit() : false">
     <fieldset [disabled]="isSubmitting || isLoading">
       <div class="form-field-group">
-        <mat-label>What tyoe of pet</mat-label>
-        <mat-form-field appearance="outline">
-          <mat-label>Pet type</mat-label>
-          <mat-select
-            formControlName="petTypeId"
-            [disabled]="isLoading || isSubmitted">
-            <mat-option *ngFor="let item of petTypeOption" value="{{item.petTypeId}}">{{item.name}}</mat-option>
-          </mat-select>
-        </mat-form-field>
+        <mat-label>What type of pet</mat-label>
+        <ion-item [disabled]="isLoading || isSubmitted" fill="outline">
+          <ion-select slot="start" formControlName="petTypeId" placeholder="Select Pet type" >
+            <ion-select-option slot="start" [value]="item.petTypeId" *ngFor="let item of petTypeOption">{{item.name}}</ion-select-option>
+            <ion-select-option disabled slot="start" *ngIf="petTypeOption.length === 0">No pet type available</ion-select-option>
+          </ion-select>
+        </ion-item>
         <span class="error" *ngIf="errorControls.petTypeId.touched && errorControls.petTypeId.errors && errorControls.petTypeId.errors.required">
           Please select a type of pet
         </span>
       </div>
-      <div class="form-field-group" *ngIf="errorControls.petTypeId.value && errorControls.petTypeId.value !== ''">
+
+
+      <div class="form-field-group"  *ngIf="errorControls.petTypeId.value && errorControls.petTypeId.value !== ''">
         <mat-label>Category </mat-label>
-        <mat-form-field appearance="outline">
-          <mat-label>Category</mat-label>
-          <mat-select
-            formControlName="petCategoryId"
-            [disabled]="isLoading || isSubmitted">
-            <mat-option *ngFor="let item of petCatgoryOption" value="{{item.petCategoryId}}">{{item.name}}</mat-option>
-          </mat-select>
-        </mat-form-field>
+        <ion-item [disabled]="isLoading || isSubmitted" fill="outline">
+          <ion-select slot="start" formControlName="petCategoryId" placeholder="Select Category" >
+            <ion-select-option slot="start" [value]="item.petCategoryId" *ngFor="let item of petCatgoryOption">{{item.name}}</ion-select-option>
+            <ion-select-option disabled slot="start" *ngIf="petCatgoryOption.length === 0">No category available</ion-select-option>
+          </ion-select>
+        </ion-item>
         <span class="error" *ngIf="errorControls.petCategoryId.touched && errorControls.petCategoryId.errors && errorControls.petCategoryId.errors.required">
           Please select a category
         </span>
@@ -59,22 +57,38 @@
         </span>
       </div>
       <div class="form-field-group" *ngIf="errorControls.petCategoryId.value && errorControls.petCategoryId.value !== ''">
-        <mat-label>Gender</mat-label>
-        <mat-form-field appearance="outline">
-          <mat-label>Gender</mat-label>
-          <mat-select
-            formControlName="genderId"
-            [disabled]="isSubmitting || isLoading">
-            <mat-option value="1">Male</mat-option>
-            <mat-option value="2">Female</mat-option>
-            <mat-option value="3">Rather not say</mat-option>
-          </mat-select>
-        </mat-form-field>
+        <mat-label>Gender </mat-label>
+        <ion-item [disabled]="isLoading || isSubmitted" fill="outline">
+          <ion-select slot="start" formControlName="genderId" placeholder="Select Gender" >
+            <ion-select-option slot="start" value="1">Male</ion-select-option>
+            <ion-select-option slot="start" value="2">Female</ion-select-option>
+            <ion-select-option slot="start" value="3">Rather not say</ion-select-option>
+          </ion-select>
+        </ion-item>
         <span class="error" *ngIf="errorControls.genderId.touched && errorControls.genderId.errors && errorControls.genderId.errors.required">
           Please select a gender
         </span>
       </div>
+
+
       <div class="form-field-group" *ngIf="errorControls.petCategoryId.value && errorControls.petCategoryId.value !== ''">
+        <mat-label slot="start">Birthdate</mat-label>
+        <ion-item id="open-birthDate-date-picker" [disabled]="isLoading" fill="outline" lines="none">
+          <ion-label>{{formData.birthDate | date: 'MMMM dd, yyyy'}}</ion-label>
+        </ion-item>
+        <ion-modal trigger="open-birthDate-date-picker" [cssClass]="'bottom-end'">
+          <ng-template>
+            <ion-datetime
+              presentation="date"
+              size="cover"
+              formControlName="birthDate"
+              [showDefaultButtons]="true"
+            ></ion-datetime>
+          </ng-template>
+        </ion-modal>
+      </div>
+
+      <!-- <div class="form-field-group" *ngIf="errorControls.petCategoryId.value && errorControls.petCategoryId.value !== ''">
         <mat-label>Birthdate</mat-label>
         <mat-form-field appearance="outline" (click)="picker.open()" style="cursor: pointer;">
           <input
@@ -89,7 +103,7 @@
         <span class="error" *ngIf="errorControls.birthDate.touched && errorControls.birthDate.errors && errorControls.birthDate.errors.required">
           Birthdate is required
         </span>
-      </div>
+      </div> -->
       <div class="form-field-group" *ngIf="errorControls.petCategoryId.value && errorControls.petCategoryId.value !== ''">
         <mat-label>Weight</mat-label>
         <mat-form-field appearance="outline">

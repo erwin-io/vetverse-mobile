@@ -19,7 +19,11 @@ const routes: Routes = [
   {
     path: 'schedule-pending',
     loadChildren: () => import('./schedule-pending/schedule-pending.module').then( m => m.SchedulePendingPageModule)
+  },  {
+    path: 'schedule-history',
+    loadChildren: () => import('./schedule-history/schedule-history.module').then( m => m.ScheduleHistoryPageModule)
   }
+
 
 ];
 

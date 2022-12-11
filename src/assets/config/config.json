@@ -1,4 +1,23 @@
 {
+  "sessionConfig": {
+    "sessionTimeout": "1800"
+  },
+  "appointmentConfig": {
+    "maxCancellation": "3",
+    "daysCancellationLimitReset": "5",
+    "timeSlotHours": {
+      "start": "09:00",
+      "end": "17:00"
+    },
+    "timeSlotNotAvailableHours": ["12:00"],
+    "dayOfWeekNotAvailable": ["Sunday", "Wednesday", "Saturday"]
+  },
+  "gCashConfig": {
+    "url": "https://getpaid.gcash.com/paynow?",
+    "publicKey": "pk_110d253c490c150538dd04b3a622fd52",
+    "fee": "0",
+    "expiry": "6"
+  },
   "tableColumns": {
     "appointment": {
       "admin": ["appointmentId", "appointmentDate", "client", "consultaionType", "service", "vet", "amountToPay", "appointmentStatus", "controls"],
@@ -38,6 +57,7 @@
     "appointment": {
       "getClientAppointmentsByStatus": "appointment/getClientAppointmentsByStatus",
       "getById": "appointment/",
+      "getAppointmentsForADay": "appointment/getAppointmentsForADay/",
       "createClientAppointment": "appointment/createClientAppointment",
       "createClientCashlessAppointment": "appointment/createClientCashlessAppointment",
       "rescheduleAppointment": "appointment/rescheduleAppointment",

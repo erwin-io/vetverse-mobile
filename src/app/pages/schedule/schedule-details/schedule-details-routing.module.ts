@@ -11,6 +11,10 @@ const routes: Routes = [
   {
     path: 'video-conference',
     loadChildren: () => import('./video-conference/video-conference.module').then( m => m.VideoConferencePageModule)
+  },
+  {
+    path: 'contact-vet',
+    loadChildren: () => import('./contact-vet/contact-vet.module').then( m => m.ContactVetPageModule)
   }
 ];
 

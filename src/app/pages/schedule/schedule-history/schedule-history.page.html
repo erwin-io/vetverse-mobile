@@ -1,0 +1,51 @@
+<ion-header no-border no-shadow>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button [disabled]="isLoading" (click)="cancel()" >
+        <ion-icon name="chevron-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title style="text-align: center">History</ion-title>
+    <div slot="end" style="width: 48px"></div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ion-refresher *ngIf="!isLoading" slot="fixed" (ionRefresh)="doRefresh($event)" class="refresher-custom">
+    <ion-refresher-content >
+    </ion-refresher-content>
+  </ion-refresher>
+  <div *ngIf="!isLoading; else elseLoading">
+    <ion-list *ngIf="appointment.length > 0; else elseNoData">
+      <ion-item *ngFor="let a of appointment"  button detail="true" (click)="onOpenDetails(a)">
+        <ion-label>
+          <div>
+            <h3><strong>ID #: {{a.appointmentId | numberLeadZero:5}}</strong></h3>
+            <p><strong>{{a.serviceType.name}}</strong></p>
+            <p>{{a.appointmentDate | date: 'MMMM dd, yyyy'}} {{a.appointmentDate + ' ' + a.timeStart | date: 'hh:mm a'}}</p>
+          </div>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+    <ion-button *ngIf="appointment && appointment.length >= limit" fill="clear" size="small" expand="full" (click)="loadMore()">Load more...</ion-button>
+  </div>
+  <ng-template #elseLoading >
+    <ion-list>
+      <ion-item >
+        <ion-label>
+          <div>
+            <h3 style="width: 50%;" class="title"><ion-skeleton-text [animated]="true"></ion-skeleton-text></h3>
+            <p><ion-skeleton-text [animated]="true"></ion-skeleton-text></p>
+            <p style="width: 40%;"><ion-skeleton-text [animated]="true"></ion-skeleton-text></p>
+          </div>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </ng-template>
+  <ng-template #elseNoData >
+    <div class="no-records">
+      <ion-icon name="notifications-off-outline"></ion-icon>
+      <h3 class="text">No notification to show</h3>
+    </div>
+  </ng-template>
+</ion-content>

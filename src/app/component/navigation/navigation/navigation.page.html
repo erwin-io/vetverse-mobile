@@ -16,9 +16,9 @@
     </ion-tab-button>
 
     <ion-tab-button tab="notification">
-      <ion-icon name="notifications{{ active === 'chats' ? '' : '-outline' }}"></ion-icon>
+      <ion-icon name="notifications{{ active === 'notification' ? '' : '-outline' }}"></ion-icon>
       <ion-label>Notification</ion-label>
-      <ion-badge>{{totalUnreadNotification}}</ion-badge>
+      <ion-badge *ngIf="totalUnreadNotification > 0">{{totalUnreadNotification}}</ion-badge>
     </ion-tab-button>
   </ion-tab-bar>
 </ion-tabs>

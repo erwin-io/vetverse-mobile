@@ -46,7 +46,7 @@
         <ion-label>
           <p class="date"><strong>{{item.appointment.appointmentDate | date:'MMMM dd, yyyy'}}</strong></p>
           <p class="service"><i>{{item.appointment.serviceType.name}}</i></p>
-          <p class="diagnosi-treatment">{{item.appointment.diagnosiAndTreatment && item.appointment.diagnosiAndTreatment !== '' ? item.appointment.diagnosiAndTreatment : 'No diagnosis& treatment'}}</p>
+          <p class="diagnosi-treatment">{{item.appointment.diagnosisAndTreatment && item.appointment.diagnosisAndTreatment !== '' ? item.appointment.diagnosisAndTreatment : 'No diagnosis& treatment'}}</p>
         </ion-label>
       </ion-item>
     </ion-list>

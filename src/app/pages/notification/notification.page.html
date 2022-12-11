@@ -9,28 +9,42 @@
     <ion-refresher-content >
     </ion-refresher-content>
   </ion-refresher>
-  <ion-list *ngIf="data.length > 0; else elseNoData">
-    <ion-item [color]="item.isRead ? '':'light'" *ngFor="let item of data"  button detail="true" [ngClass]="{'un-read': item.isRead}" (click)="openDetails(item)">
-      <ion-icon name="notifications-outline" slot="start"></ion-icon>
-      <ion-label>
-        <div *ngIf="item.isRead; else elseUnRead">
-          <h3 class="title">{{item.title}}</h3>
-          <p>{{item.description}}</p>
-          <p>{{item.date | timeAgo}}</p>
-        </div>
-        <ng-template #elseUnRead >
-          <div>
-            <h3 class="title"><strong>{{item.title}}</strong></h3>
+  <div *ngIf="!isLoading; else elseLoading">
+    <ion-list *ngIf="data.length > 0; else elseNoData">
+      <ion-item [color]="item.isRead ? '':'light'" *ngFor="let item of data"  button detail="true" [ngClass]="{'un-read': item.isRead}" (click)="openDetails(item)">
+        <ion-icon name="notifications-outline" slot="start"></ion-icon>
+        <ion-label>
+          <div *ngIf="item.isRead; else elseUnRead">
+            <h3 class="title">{{item.title}}</h3>
             <p>{{item.description}}</p>
-            <p style="color:#4DB6AC"><strong>{{item.date | timeAgo}}</strong></p>
+            <p>{{item.date | timeAgo}}</p>
           </div>
-        </ng-template>
-      </ion-label>
-    </ion-item>
-  </ion-list>
-  <ion-button *ngIf="data && data.length >= limit" fill="clear" size="small" expand="full" (click)="loadMore()">Load more...</ion-button>
-
-
+          <ng-template #elseUnRead >
+            <div>
+              <h3 class="title"><strong>{{item.title}}</strong></h3>
+              <p>{{item.description}}</p>
+              <p style="color:#4DB6AC"><strong>{{item.date | timeAgo}}</strong></p>
+            </div>
+          </ng-template>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+    <ion-button *ngIf="data && data.length >= limit" fill="clear" size="small" expand="full" (click)="loadMore()">Load more...</ion-button>
+  </div>
+  <ng-template #elseLoading >
+    <ion-list>
+      <ion-item >
+        <ion-icon name="notifications-outline" slot="start"></ion-icon>
+        <ion-label>
+          <div>
+            <h3 style="width: 50%;" class="title"><ion-skeleton-text [animated]="true"></ion-skeleton-text></h3>
+            <p><ion-skeleton-text [animated]="true"></ion-skeleton-text></p>
+            <p style="width: 40%;"><ion-skeleton-text [animated]="true"></ion-skeleton-text></p>
+          </div>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </ng-template>
   <ng-template #elseNoData >
     <div class="no-records">
       <ion-icon name="notifications-off-outline"></ion-icon>

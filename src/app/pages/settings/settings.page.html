@@ -1,7 +1,9 @@
 <ion-header no-border no-shadow>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="profile" ios="ios-arrow-back" md="md-arrow-back"></ion-back-button>
+      <ion-button (click)="close()" >
+        <ion-icon name="chevron-back"></ion-icon>
+      </ion-button>
     </ion-buttons>
     <ion-title class="ion-text-center">Settings</ion-title>
     <div slot="end" style="width: 48px"></div>
@@ -24,17 +26,13 @@
     </div>
     <div class="row" style="display:flex">
       <ion-list lines="none" class="nav-list">
-        <ion-item (click)="onSettingsMenuClick('notification-settings')">
-          <ion-icon slot="start" name="notifications-outline"></ion-icon>
-          <ion-label>Notification Settings</ion-label>
-        </ion-item>
-        <ion-item (click)="onSettingsMenuClick('account-settings')">
+        <ion-item (click)="onSettingsMenuClick('profile-settings')">
           <ion-icon slot="start" name="person-outline"></ion-icon>
-          <ion-label>Account Settings</ion-label>
+          <ion-label>Profile Settings</ion-label>
         </ion-item>
-        <ion-item (click)="onSettingsMenuClick('theme-settings')">
-          <ion-icon slot="start" name="color-palette-outline"></ion-icon>
-          <ion-label>Theme Settings</ion-label>
+        <ion-item (click)="onSettingsMenuClick('password-and-security')">
+          <ion-icon slot="start" name="shield-checkmark-outline"></ion-icon>
+          <ion-label>Password and security</ion-label>
         </ion-item>
         <ion-item (click)="signout()">
           <ion-icon slot="start" name="exit-outline"></ion-icon>
@@ -42,12 +40,5 @@
         </ion-item>
       </ion-list>
     </div>
-    <div class="row" style="display:flex">
-        <ion-buttons slot="secondary">
-          <ion-button>
-            <ion-icon slot="icon-only" name="contact">Sign out</ion-icon>
-          </ion-button>
-        </ion-buttons>
-        </div>
   </div>
 </ion-content>

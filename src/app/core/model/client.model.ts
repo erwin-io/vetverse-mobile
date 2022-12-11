@@ -14,4 +14,6 @@ export class Client {
   age: string;
   gender: Gender;
   user: User;
+  lastCancelledDate: Date;
+  numberOfCancelledAttempt: string;
 }

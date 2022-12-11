@@ -37,6 +37,18 @@ export class StorageService {
   saveTotalUnreadNotif(value: any){
     return this.set('totalUnreadNotif', value);
   }
+  getSessionExpiredDate(){
+    return this.get('sessionExpiredDate');
+  }
+  saveSessionExpiredDate(value: any){
+    return this.set('sessionExpiredDate', value);
+  }
+  getThemeIsDarkMode(): any{
+    return this.get('themeIsDarkMode') && this.get('themeIsDarkMode').toLowerCase().includes('true');
+  }
+  saveThemeIsDarkMode(value: any){
+    return this.set('themeIsDarkMode', value);
+  }
   private set(key: string, value: any){
     localStorage.setItem(key, value);
   }

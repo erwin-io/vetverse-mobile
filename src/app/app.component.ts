@@ -1,5 +1,5 @@
 /* eslint-disable max-len */
-import { Component, Optional } from '@angular/core';
+import { Component, OnInit, Optional } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { App } from '@capacitor/app';
 import { LocalNotifications } from '@capacitor/local-notifications';
@@ -24,12 +24,11 @@ import { AndroidPermissions } from '@awesome-cordova-plugins/android-permissions
   templateUrl: 'app.component.html',
   styleUrls: ['app.component.scss'],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
 
   constructor(
     private platform: Platform,
     private alertController: AlertController,
-    private router: Router,
     private authService: AuthService,
     private userService: UserService,
     private route: ActivatedRoute,
@@ -37,6 +36,7 @@ export class AppComponent {
     private androidPermissions: AndroidPermissions,
     @Optional() private routerOutlet?: IonRouterOutlet
   ) {
+    this.toggleDarkMode(this.storageService.getThemeIsDarkMode());
 
     this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.CAMERA).then(
       result => console.log('Has permission?',result.hasPermission),
@@ -66,6 +66,18 @@ export class AppComponent {
   //         }
   //     ]
   // });
+  }
+  ngOnInit() {
+  }
+
+  toggleDarkMode(isDarkEnable: boolean) {
+    console.log('isDarkEnable', isDarkEnable);
+    document.body.classList.toggle('dark', isDarkEnable);
+    if (isDarkEnable) {
+      document.body.setAttribute('data-theme', 'dark');
+    } else {
+      document.body.setAttribute('data-theme', 'light');
+    }
   }
 
 
@@ -121,4 +133,5 @@ export class AppComponent {
       }
     );
   }
+
 }

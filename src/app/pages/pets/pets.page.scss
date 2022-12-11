@@ -109,6 +109,7 @@ ion-header::after {
       padding: 0 20px!important;
     }
     .pet-list {
+      row-gap: 20px;
       overflow: scroll;
       display: flex;
       flex-grow: 1;

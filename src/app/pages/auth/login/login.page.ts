@@ -10,16 +10,18 @@ import { LoaderService } from 'src/app/core/ui-service/loader.service';
 import { UserService } from 'src/app/core/services/user.service';
 import { PageLoaderService } from 'src/app/core/ui-service/page-loader.service';
 import { PetService } from 'src/app/core/services/pet.service';
+import { AppConfigService } from 'src/app/core/services/app-config.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.page.html',
   styleUrls: ['./login.page.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class LoginPage implements OnInit {
   isSubmitting = false;
   loginForm: FormGroup;
-
+  sessionTimeout;
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
@@ -29,8 +31,13 @@ export class LoginPage implements OnInit {
     private storageService: StorageService,
     private loaderService: LoaderService,
     private petService: PetService,
+    private appconfig: AppConfigService,
     private pageLoaderService: PageLoaderService,
-    ) { }
+    ) {
+      this.sessionTimeout = Number(
+        this.appconfig.config.sessionConfig.sessionTimeout
+      );
+    }
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
@@ -56,6 +63,9 @@ export class LoginPage implements OnInit {
             this.storageService.saveRefreshToken(res.data.accessToken);
             this.storageService.saveAccessToken(res.data.refreshToken);
             this.storageService.saveTotalUnreadNotif(res.data.totalUnreadNotif);
+            const today = new Date();
+            today.setTime(today.getTime() + this.sessionTimeout * 1000);
+            this.storageService.saveSessionExpiredDate(today);
             const userData: LoginResult = res.data;
             this.storageService.saveLoginUser(userData);
             this.router.navigate(['/'], { replaceUrl: true });

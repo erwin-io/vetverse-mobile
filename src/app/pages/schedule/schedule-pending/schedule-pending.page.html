@@ -1,7 +1,7 @@
 <ion-header no-border no-shadow>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-button (click)="cancel()" >
+      <ion-button [disabled]="isLoading" (click)="cancel()" >
         <ion-icon name="chevron-back"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -26,7 +26,12 @@
               <span>{{a.appointmentDate | date: 'EEEE'}}</span>
             </div>
             <div class="card-content">
-              <div class="content-row border">
+              <div class="content-row c">
+                <div class="field ">
+                  <h3 class="value"><strong>ID #: {{a.appointmentId | numberLeadZero:5}}</strong></h3>
+                </div>
+              </div>
+              <div class="content-row">
                 <div class="field vet">
                   <h3>Veterenarian</h3>
                   <h3 class="value"><strong>{{a.staff.fullName}}</strong></h3>

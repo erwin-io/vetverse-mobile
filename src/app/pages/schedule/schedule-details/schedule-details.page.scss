@@ -2,6 +2,27 @@ ion-header::after {
   background-image: none;
 }
 
+.message-header-button {
+  ion-badge {
+    position: absolute;
+    z-index: 9;
+    top: 0;
+    right: -10px;
+    font-size: 12px;
+  }
+}
+
+.video-conference-button {
+  &.disabled {
+    ion-icon {
+      color: rgba(0,0,0,0.2)!important;
+    }
+  }
+  ion-icon {
+    color: #26A69A;
+  }
+}
+
 .details-container {
   // display: flex;
   // flex-direction: column;
@@ -22,8 +43,15 @@ ion-header::after {
     }
   }
 }
-.appointment-action {
-  display: flex;
-  box-sizing: border-box;
 
+.sched-controls-bottom {
+  position: relative;
+  display: block;
+  width: 100%;
+  background: #ffffff;
+  padding: 5px 10px;
+  ion-button {
+    height: 45px;
+    font-size: 15px;
+  }
 }

@@ -19,4 +19,8 @@ export class NotificationSettingsPage implements OnInit {
     this.user = this.storageService.getLoginUser();
   }
 
+  ionViewWillEnter(){
+    console.log('visited');
+  }
+
 }

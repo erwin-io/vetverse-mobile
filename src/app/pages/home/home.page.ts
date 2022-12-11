@@ -14,4 +14,8 @@ export class HomePage implements OnInit {
 
   logoutUser(){
   }
+
+  ionViewWillEnter(){
+    console.log('visited');
+  }
 }

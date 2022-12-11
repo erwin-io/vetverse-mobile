@@ -1,59 +1,9 @@
 ion-header::after {
   background-image: none;
 }
-  .content {
-    padding-left: 15px;
-    padding-right: 15px;
-    display: flex;
-    flex-direction: column;
-    .row {
-      display: flex;
-      flex-grow: 1;
-      .col{
-        display: flex;
-      }
-    }
-    .profile {
-      margin-top: 10px;
-      flex-direction: column;
-      align-items: center;
-      .avatar {
-        display: flex;
-        padding: 5px;
-        ion-avatar {
-          width: 103px;
-          height: 103px;
-        }
-      }
-      .welcome {
-        flex-grow: 1;
-        display: flex;
-        flex-direction: column;
-        row-gap: 11px;
-        .name {
-          text-align: center;
-          display: flex;
-          flex-direction: column;
-          justify-content: flex-end;
-          * {
-            font-weight: 700;
-            color: #000000;
-            font-size: 18px;
-            letter-spacing: 0px;
-            line-height: 1.2;
-          }
-        }
-        .description {
-          display: flex;
-          flex-direction: column;
-          justify-content: flex-start;
-          * {
-            color: #000000;
-            font-size: 16px;
-            letter-spacing: 0px;
-            line-height: 1.2;
-          }
-        }
-      }
-    }
+ion-item {
+  font-size: 20px;
+  ion-icon {
+    font-size: 28px;
   }
+}

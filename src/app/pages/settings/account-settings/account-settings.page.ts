@@ -10,6 +10,7 @@ import { StorageService } from '../../../core/storage/storage.service';
 })
 export class AccountSettingsPage implements OnInit {
   user = {};
+  modal;
   constructor(
     private router: Router,
     private navCtrl: NavController,
@@ -17,5 +18,13 @@ export class AccountSettingsPage implements OnInit {
 
   ngOnInit() {
     this.user = this.storageService.getLoginUser();
+  }
+
+  ionViewWillEnter(){
+    console.log('visited');
+  }
+
+  close() {
+    this.modal.dismiss(null, 'cancel');
   }
 }

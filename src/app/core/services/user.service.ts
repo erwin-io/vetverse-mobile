@@ -65,7 +65,7 @@ export class UserService implements IServices {
     );
   }
 
-  getById(userId: string): Observable<any> {
+  getById(userId: string): Observable<ApiResponse<Client>> {
     return this.http.get<any>(environment.apiBaseUrl + this.appconfig.config.apiEndPoints.user.getById + userId)
     .pipe(
       tap(_ => this.log('user')),
@@ -73,16 +73,8 @@ export class UserService implements IServices {
     );
   }
 
-  createClient(data: any): Observable<ApiResponse<Staff>> {
+  createClient(data: any): Observable<ApiResponse<Client>> {
     return this.http.post<any>(environment.apiBaseUrl + this.appconfig.config.apiEndPoints.user.createClient, data)
-    .pipe(
-      tap(_ => this.log('user')),
-      catchError(this.handleError('user', []))
-    );
-  }
-
-  createStaff(data: any): Observable<ApiResponse<Staff>> {
-    return this.http.post<any>(environment.apiBaseUrl + this.appconfig.config.apiEndPoints.user.createStaff, data)
     .pipe(
       tap(_ => this.log('user')),
       catchError(this.handleError('user', []))
@@ -97,15 +89,7 @@ export class UserService implements IServices {
     );
   }
 
-  udpdateStaff(data: any): Observable<ApiResponse<Staff>> {
-    return this.http.put<any>(environment.apiBaseUrl + this.appconfig.config.apiEndPoints.user.udpdateStaff, data)
-    .pipe(
-      tap(_ => this.log('user')),
-      catchError(this.handleError('user', []))
-    );
-  }
-
-  updateFirebaseToken(data: any): Observable<ApiResponse<Staff>> {
+  updateFirebaseToken(data: any): Observable<ApiResponse<Client>> {
     return this.http.put<any>(environment.apiBaseUrl + this.appconfig.config.apiEndPoints.user.updateFirebaseToken, data)
     .pipe(
       tap(_ => this.log('user')),

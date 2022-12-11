@@ -46,7 +46,7 @@ export class NotificationPage implements OnInit {
   }
 
 
-  initNotification(clientId){
+  initNotification(clientId: string){
     this.isLoading = true;
     forkJoin(
       this.notificationService.getAllByClientIdPage({ clientId, page: this.currentPage, limit: this.limit }),
@@ -78,51 +78,18 @@ export class NotificationPage implements OnInit {
     }
   }
 
-  async openDetails(notifDetails) {
-    try{
-      await this.pageLoaderService.open('Please wait!...');
-      this.isLoading = true;
-      this.notificationService.updateReadStatus({ notificationId : notifDetails.notificationId })
-        .subscribe(async res => {
-          if (res.success) {
-            this.data.filter(x=>x.notificationId === notifDetails.notificationId)[0].isRead = true;
-            await this.pageLoaderService.close();
-            this.isLoading = false;
-            const modal = await this.modalCtrl.create({
-              component: ScheduleDetailsPage,
-              cssClass: 'modal-fullscreen',
-              componentProps: { details: notifDetails.appointment },
-            });
-            modal.present();
-            await modal.onWillDismiss();
-            this.getTotalUnreadNotif(this.currentUser.clientId);
-          } else {
-            await this.pageLoaderService.close();
-            this.isLoading = false;
-            await this.presentAlert({
-              header: 'Try again!',
-              message: Array.isArray(res.message) ? res.message[0] : res.message,
-              buttons: ['OK']
-            });
-          }
-        }, async (err) => {
-          await this.pageLoaderService.close();
-          this.isLoading = false;
-          await this.presentAlert({
-            header: 'Try again!',
-            message: Array.isArray(err.message) ? err.message[0] : err.message,
-            buttons: ['OK']
-          });
-        });
-    } catch (e){
-      await this.pageLoaderService.close();
-      this.isLoading = false;
-      await this.presentAlert({
-        header: 'Try again!',
-        message: Array.isArray(e.message) ? e.message[0] : e.message,
-        buttons: ['OK']
-      });
-    }
+  async openDetails(notifDetails: { appointment: any; notificationId: string }) {
+    const modal = await this.modalCtrl.create({
+      component: ScheduleDetailsPage,
+      cssClass: 'modal-fullscreen',
+      componentProps: { details: notifDetails.appointment },
+    });
+    modal.onWillDismiss().then(() => {
+      if(!this.data.filter(x=>x.notificationId === notifDetails.notificationId)[0].isRead) {
+        this.markNotifAsRead(notifDetails);
+      }
+    });
+    modal.present();
   }
 
   async getTotalUnreadNotif(clientId: string){
@@ -165,7 +132,7 @@ export class NotificationPage implements OnInit {
     this.initNotification(this.currentUser.clientId);
   }
 
-  async doRefresh(event){
+  async doRefresh(event: any){
     this.data = [];
     this.currentPage = 1;
     this.refreshEvent = event;
@@ -175,5 +142,39 @@ export class NotificationPage implements OnInit {
   async presentAlert(options: any) {
     const alert = await this.alertController.create(options);
     await alert.present();
+  }
+
+  async markNotifAsRead(notifDetails: { notificationId: string }) {
+    try{
+      this.notificationService.updateReadStatus({ notificationId: notifDetails.notificationId })
+        .subscribe(async res => {
+          if (res.success) {
+            this.data.filter(x=>x.notificationId === notifDetails.notificationId)[0].isRead = true;
+            this.storageService.saveTotalUnreadNotif(res.data.total);
+          } else {
+            await this.presentAlert({
+              header: 'Try again!',
+              message: Array.isArray(res.message) ? res.message[0] : res.message,
+              buttons: ['OK']
+            });
+          }
+        }, async (err) => {
+          await this.presentAlert({
+            header: 'Try again!',
+            message: Array.isArray(err.message) ? err.message[0] : err.message,
+            buttons: ['OK']
+          });
+        });
+    } catch (e){
+      await this.presentAlert({
+        header: 'Try again!',
+        message: Array.isArray(e.message) ? e.message[0] : e.message,
+        buttons: ['OK']
+      });
+    }
+  }
+
+  ionViewWillEnter(){
+    console.log('visited');
   }
 }

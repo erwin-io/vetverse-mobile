@@ -39,6 +39,19 @@ export class AppointmentService implements IServices {
       );
   }
 
+  getAppointmentsForADay(dateString: string): Observable<ApiResponse<Appointment[]>> {
+    return this.http
+      .get<any>(
+        environment.apiBaseUrl +
+          this.appconfig.config.apiEndPoints.appointment.getAppointmentsForADay +
+          dateString
+      )
+      .pipe(
+        tap((_) => this.log('appointment')),
+        catchError(this.handleError('appointment', []))
+      );
+  }
+
   createClientAppointment(data: any): Observable<ApiResponse<Appointment>> {
     return this.http
       .post<any>(

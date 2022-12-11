@@ -4,6 +4,7 @@ import { GetAgeByBirthdatePipe } from './get-age-by-birthdate.pipe';
 import { FilterPetPipe } from './filter-pet.pipe';
 import { FilterPetCategoryPipe } from './filter-pet-category.pipe';
 import { TimeAgoPipe } from './time-ago.pipe';
+import { NumberLeadZeroPipe } from './number-lead-zero.pipe';
 
 
 
@@ -12,11 +13,13 @@ import { TimeAgoPipe } from './time-ago.pipe';
     GetAgeByBirthdatePipe,
     FilterPetPipe,
     FilterPetCategoryPipe,
-    TimeAgoPipe],
+    TimeAgoPipe,
+    NumberLeadZeroPipe],
   exports: [
     GetAgeByBirthdatePipe,
     FilterPetPipe,
     FilterPetCategoryPipe,
-    TimeAgoPipe]
+    TimeAgoPipe,
+    NumberLeadZeroPipe]
 })
 export class PipeModule { }

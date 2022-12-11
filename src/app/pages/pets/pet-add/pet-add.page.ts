@@ -9,6 +9,7 @@ import { PetCategoryService } from 'src/app/core/services/pet-category.service';
 import { PetTypeService } from 'src/app/core/services/pet-type.service';
 import { PetService } from 'src/app/core/services/pet.service';
 import { PageLoaderService } from 'src/app/core/ui-service/page-loader.service';
+import * as moment from 'moment';
 
 export class PetAddModel {
   petId?: string;
@@ -56,6 +57,7 @@ export class PetAddPage implements OnInit {
       petId: this.details.petId,
       clientId: this.details.clientId,
       ...this.petForm.value,
+      birthDate: moment(this.petForm.value.birthDate).format('YYYY-MM-DD')
     };
   }
 
@@ -96,7 +98,7 @@ export class PetAddPage implements OnInit {
       petCategoryId: [this.details.petCategoryId, Validators.required],
       name: [this.details.name, [Validators.required, Validators.minLength(2)]],
       genderId: [this.details.genderId, Validators.required],
-      birthDate: [this.details.birthDate, Validators.required],
+      birthDate: [this.details.birthDate ? this.details.birthDate.toISOString() : new Date().toISOString(), Validators.required],
       weight: [this.details.weight, Validators.required],
     });
   }

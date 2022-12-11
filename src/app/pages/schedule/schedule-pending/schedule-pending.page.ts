@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { ActionSheetController, AlertController, ModalController } from '@ionic/angular';
 import { Appointment } from 'src/app/core/model/appointment.model';
+import { LoginResult } from 'src/app/core/model/loginresult.model';
 import { AppointmentService } from 'src/app/core/services/appointment.service';
 import { ScheduleDetailsPage } from '../schedule-details/schedule-details.page';
 
@@ -10,7 +11,8 @@ import { ScheduleDetailsPage } from '../schedule-details/schedule-details.page';
   styleUrls: ['./schedule-pending.page.scss']
 })
 export class SchedulePendingPage implements OnInit {
-  currentClientId: string;
+  hasChanges = false;
+  currentUser: LoginResult;
   isLoading = false;
   appointment: Appointment[] = [];
   message = '';
@@ -22,7 +24,7 @@ export class SchedulePendingPage implements OnInit {
   }
 
   ngOnInit() {
-    this.getAppointment(this.currentClientId);
+    this.getAppointment(this.currentUser.clientId);
   }
 
   async getAppointment(clientId: string) {
@@ -73,7 +75,7 @@ export class SchedulePendingPage implements OnInit {
 
   async doRefresh(event){
     this.refreshEvent = event;
-    await this.getAppointment(this.currentClientId);
+    await this.getAppointment(this.currentUser.clientId);
   }
 
   async showMenu(details){
@@ -87,7 +89,7 @@ export class SchedulePendingPage implements OnInit {
           }
         },
         {
-          text: 'Cancel',
+          text: 'Back',
           handler:async () => {
             actionSheet.dismiss();
           }
@@ -104,14 +106,20 @@ export class SchedulePendingPage implements OnInit {
     const modal = await this.modalCtrl.create({
       component: ScheduleDetailsPage,
       cssClass: 'modal-fullscreen',
-      componentProps: { details },
+      componentProps: { details, currentUser: this.currentUser },
+    });
+    modal.onWillDismiss().then((res) => {
+      if(res.data) {
+        this.hasChanges = res.data;
+        this.getAppointment(this.currentUser.clientId);
+      }
     });
     modal.present();
     await modal.onWillDismiss();
   }
 
   cancel() {
-    return this.modalCtrl.dismiss(null, 'cancel');
+    return this.modalCtrl.dismiss(this.hasChanges ? this.hasChanges : null, 'cancel');
   }
 
 

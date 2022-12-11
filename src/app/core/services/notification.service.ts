@@ -38,7 +38,7 @@ export class NotificationService {
       );
   }
 
-  updateReadStatus(data: any): Observable<ApiResponse<Notifications>> {
+  updateReadStatus(data: any): Observable<ApiResponse<{ total: number}>> {
     return this.http.put<any>(environment.apiBaseUrl + this.appconfig.config.apiEndPoints.notification.updateReadStatus, data)
     .pipe(
       tap(_ => this.log('notification')),

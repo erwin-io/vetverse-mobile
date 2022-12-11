@@ -9,6 +9,7 @@ import { SchedulePendingPageRoutingModule } from './schedule-pending-routing.mod
 import { SchedulePendingPage } from './schedule-pending.page';
 import { DirectiveModule } from 'src/app/core/directive/directive.module';
 import { MaterialModule } from 'src/app/material/material.module';
+import { PipeModule } from 'src/app/core/pipe/pipe.module';
 
 @NgModule({
   imports: [
@@ -19,6 +20,7 @@ import { MaterialModule } from 'src/app/material/material.module';
     SchedulePendingPageRoutingModule,
     MaterialModule,
     DirectiveModule,
+    PipeModule
   ],
   declarations: [SchedulePendingPage]
 })

@@ -1,13 +1,14 @@
 <ion-header no-border no-shadow>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-back-button defaultHref="settings" ios="ios-arrow-back" md="md-arrow-back"></ion-back-button>
+      <ion-button (click)="close()" >
+        <ion-icon name="chevron-back"></ion-icon>
+      </ion-button>
     </ion-buttons>
     <ion-title class="ion-text-center">Account Settings</ion-title>
     <div slot="end" style="width: 48px"></div>
   </ion-toolbar>
 </ion-header>
-
 <ion-content>
   <div class="content">
   </div>

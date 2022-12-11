@@ -7,7 +7,15 @@ const routes: Routes = [
   {
     path: '',
     component: SettingsPage
+  },  {
+    path: 'profile-settings',
+    loadChildren: () => import('./profile-settings/profile-settings.module').then( m => m.ProfileSettingsPageModule)
+  },
+  {
+    path: 'password-and-security',
+    loadChildren: () => import('./password-and-security/password-and-security.module').then( m => m.PasswordAndSecurityPageModule)
   }
+
 ];
 
 @NgModule({

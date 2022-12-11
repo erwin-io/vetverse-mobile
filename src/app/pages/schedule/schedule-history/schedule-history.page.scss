@@ -1,0 +1,29 @@
+ion-header::after {
+  background-image: none;
+  }
+
+  ion-item {
+    background: #cccc!important;
+    button {
+      background: #cccc!important;
+    }
+  }
+  ion-label {
+    h1,h2,h3,h4,h5,h6,p {
+      margin: 0!important;
+    }
+  }
+
+   .no-records {
+    ion-icon {
+      font-size: 50px;
+    }
+   }
+
+   ::ng-deep ion-item {
+    .un-read {
+      .title {
+        font-weight: 800px!important;
+      }
+     }
+   }
