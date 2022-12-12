@@ -199,7 +199,7 @@
 
 <div class="sched-controls-bottom">
   <ion-button
-    *ngIf="details.appointmentStatus.appointmentStatusId === '1' || details.appointmentStatus.appointmentStatusId === '2'"
+    *ngIf="!isLoading && details.consultaionType.consultaionTypeId === '2' && (details.appointmentStatus.appointmentStatusId === '1' || details.appointmentStatus.appointmentStatusId === '2')"
     color="primary"
     expand="block"
     (click)="openVetConnect()"
