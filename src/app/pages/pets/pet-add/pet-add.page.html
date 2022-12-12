@@ -73,10 +73,10 @@
 
       <div class="form-field-group" *ngIf="errorControls.petCategoryId.value && errorControls.petCategoryId.value !== ''">
         <mat-label slot="start">Birthdate</mat-label>
-        <ion-item id="open-birthDate-date-picker" [disabled]="isLoading" fill="outline" lines="none">
+        <ion-item id="open-birthDate-picker" [disabled]="isLoading" fill="outline" lines="none">
           <ion-label>{{formData.birthDate | date: 'MMMM dd, yyyy'}}</ion-label>
         </ion-item>
-        <ion-modal trigger="open-birthDate-date-picker" [cssClass]="'bottom-end'">
+        <ion-modal trigger="open-birthDate-picker" [cssClass]="'bottom-end'">
           <ng-template>
             <ion-datetime
               presentation="date"
@@ -87,23 +87,6 @@
           </ng-template>
         </ion-modal>
       </div>
-
-      <!-- <div class="form-field-group" *ngIf="errorControls.petCategoryId.value && errorControls.petCategoryId.value !== ''">
-        <mat-label>Birthdate</mat-label>
-        <mat-form-field appearance="outline" (click)="picker.open()" style="cursor: pointer;">
-          <input
-            matInput
-            [matDatepicker]="picker"
-            placeholder="Birthdate"
-            formControlName="birthDate"
-            autocomplete="new-birthDate">
-          <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
-        </mat-form-field>
-        <span class="error" *ngIf="errorControls.birthDate.touched && errorControls.birthDate.errors && errorControls.birthDate.errors.required">
-          Birthdate is required
-        </span>
-      </div> -->
       <div class="form-field-group" *ngIf="errorControls.petCategoryId.value && errorControls.petCategoryId.value !== ''">
         <mat-label>Weight</mat-label>
         <mat-form-field appearance="outline">
@@ -124,8 +107,9 @@
           *ngIf="errorControls.petCategoryId.value && errorControls.petCategoryId.value !== ''"
           type="submit"
           mat-flat-button
+          form="petForm"
           color="primary"
-          [disabled]="isSubmitting"
+          [disabled]="!petForm.valid || !isFormDirty || isSubmitting"
           >Save</ion-button>
       </div>
     </fieldset>

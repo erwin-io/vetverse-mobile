@@ -20,14 +20,23 @@
       <ion-item *ngFor="let a of appointment"  button detail="true" (click)="onOpenDetails(a)">
         <ion-label>
           <div>
-            <h3><strong>ID #: {{a.appointmentId | numberLeadZero:5}}</strong></h3>
+            <h3>
+              <strong>ID #: {{a.appointmentId | numberLeadZero:5}}
+              <ion-text
+              [color]="(a.appointmentStatus.appointmentStatusId === '1' || a.appointmentStatus.appointmentStatusId === '4' ? 'danger' : '') ||
+              (a.appointmentStatus.appointmentStatusId === '2' ? 'primary' : '') ||
+              (a.appointmentStatus.appointmentStatusId === '3' ?? 'tertiary')">
+              {{a.appointmentStatus.name}}
+            </ion-text>
+              </strong>
+            </h3>
             <p><strong>{{a.serviceType.name}}</strong></p>
             <p>{{a.appointmentDate | date: 'MMMM dd, yyyy'}} {{a.appointmentDate + ' ' + a.timeStart | date: 'hh:mm a'}}</p>
           </div>
         </ion-label>
       </ion-item>
     </ion-list>
-    <ion-button *ngIf="appointment && appointment.length >= limit" fill="clear" size="small" expand="full" (click)="loadMore()">Load more...</ion-button>
+    <!-- <ion-button *ngIf="appointment && appointment.length >= limit" fill="clear" size="small" expand="full" (click)="loadMore()">Load more...</ion-button> -->
   </div>
   <ng-template #elseLoading >
     <ion-list>

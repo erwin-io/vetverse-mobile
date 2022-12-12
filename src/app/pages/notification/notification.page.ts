@@ -82,7 +82,7 @@ export class NotificationPage implements OnInit {
     const modal = await this.modalCtrl.create({
       component: ScheduleDetailsPage,
       cssClass: 'modal-fullscreen',
-      componentProps: { details: notifDetails.appointment },
+      componentProps: { details: notifDetails.appointment, currentUser: this.currentUser },
     });
     modal.onWillDismiss().then(() => {
       if(!this.data.filter(x=>x.notificationId === notifDetails.notificationId)[0].isRead) {

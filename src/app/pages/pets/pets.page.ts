@@ -108,10 +108,10 @@ export class PetsPage implements OnInit {
     modal = await this.modalCtrl.create({
       component: PetAddPage,
       cssClass: 'modal-fullscreen',
-      componentProps: { modal, details: {
+      componentProps: { modal, isNew: false, details: {
         petId: details.petId,
         name: details.name,
-        birthDate: details.birthDate,
+        birthDate: new Date(details.birthDate),
         weight: details.weight,
         clientId: details.client.clientId,
         petTypeId: details.petCategory.petType.petTypeId,

@@ -1,9 +1,50 @@
-<ion-header>
+<ion-header no-border no-shadow>
   <ion-toolbar>
-    <ion-title>contact-vet</ion-title>
+    <ion-buttons slot="start">
+      <ion-button (click)="close()" >
+        <ion-icon name="chevron-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title class="ion-text-center">Vet connect</ion-title>
+    <div slot="end" style="width: 48px"></div>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
 
+<ion-content>
+  <ion-fab slot="fixed" vertical="top" horizontal="end" [edge]="true">
+    <ion-fab-button (click)="joinVideoConference()">
+      <ion-icon name="videocam"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
+
+  <div class="convo-section">
+    <ul class="message-list">
+      <li *ngFor="let message of messages" [ngClass]="{ 'from-me' : message.fromUser.userId === currentUser.userId, 'is-client' : message.isClient }">
+        <div class="chat-item-box">
+          <span>{{ message.message }}</span>
+        </div>
+      </li>
+      <li class="load-more">
+        <button mat-flat-button *ngIf="!loadingMessage && messages.length > 39" (click)="loadMoreMessage()">
+          <mat-icon>keyboard_arrow_up</mat-icon>
+          Click here to load more message
+        </button>
+        <div class="message-loader-indicator" *ngIf="loadingMessage" fxLayout="row" fxLayoutAlign="center center" fxLayoutGap="10">
+          <mat-spinner diameter="30"></mat-spinner>
+          <h3>Loading in please wait...</h3>
+        </div>
+      </li>
+    </ul>
+  </div>
 </ion-content>
+<ion-footer>
+  <form class="chat-input">
+    <input
+      #messageInput
+      placeholder="Message">
+    <button [disabled]="!messageInput.value || messageInput.value === ''" mat-icon-button color="primary" aria-label="Send" (click)="sendMessage(messageInput)">
+      <mat-icon>send</mat-icon>
+    </button>
+  </form>
+</ion-footer>

@@ -1,0 +1,93 @@
+
+
+.convo-section {
+  display: flex;
+  height: 100%;
+  flex-direction: column-reverse;
+  overflow: auto;
+  padding: 0px 20px 0 20px;
+  .message-list {
+    margin: 0 10px 20px 0!important;
+    padding: 0;
+    display: flex;
+    row-gap: 10px;
+    flex-direction: column-reverse;
+    li {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      .chat-item-box {
+        display: flex;
+        padding: 8px 12px!important;
+        margin: 0!important;
+        background-color: #E4E6EB;
+        border-radius: 18px;
+        max-width: 500px;
+      }
+      .from-label {
+        font-size: 80%!important;
+      }
+      &.from-me {
+        align-items: flex-end;
+        .chat-item-box {
+          background: #009688!important;
+          color:#FFFFFF!important;
+        }
+      }
+      &.load-more {
+        display: flex;
+        align-items: center;
+        .message-loader-indicator {
+          position: absolute;
+          top: 20px;
+          display: flex;
+          h3 {
+            margin: 0!important;
+          }
+        }
+      }
+    }
+  }
+}
+::ng-deep ion-footer {
+  display: flex;
+  position: relative;
+  width: 100%;
+  padding: 10px 0;
+  height: 55px;
+  box-sizing: border-box;
+  button {
+    display: flex!important;
+    justify-content: center;
+    align-items: center;
+    height: 100%!important;
+    margin-right: 5px!important;
+    .mat-button-wrapper {
+      display: flex;
+      mat-icon {
+        display: flex;
+        font-size: 30px!important;
+        width: 100%;
+        flex-grow: 1;
+      }
+    }
+  }
+  .chat-input {
+    width: 100%;
+    display: flex;
+    align-items: stretch;
+    flex-grow: 1;
+    input {
+      flex-grow: 1;
+      display: flex !important;
+      font-size: inherit !important;
+      margin-left: 10px;
+      border-radius: 15px;
+      padding: 5px 10px;
+      border: 2px solid #00000059;
+      &:focus {
+        outline: none!important;
+      }
+    }
+  }
+}

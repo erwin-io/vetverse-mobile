@@ -8,13 +8,14 @@ export class LoginResult {
   username: string;
   userType: UserType;
   fullName: string;
-  firtstName: string;
+  firstName: string;
   middleName: string;
   lastName: string;
   email: string;
   mobileNumber: string;
   address: string;
   gender: Gender;
+  birthDate: Date;
   role: Role;
   userTypeIdentityId: string;
   totalUnreadNotif: number;

@@ -34,7 +34,7 @@ export class ScheduleHistoryPage implements OnInit {
       this.isLoading = true;
       this.appointmentService.getClientAppointmentsByStatus({
         clientId,
-        appointmentStatus: 'Pending'
+        appointmentStatus: 'Completed,Cancelled'
       })
       .subscribe(async res => {
         console.log(res);

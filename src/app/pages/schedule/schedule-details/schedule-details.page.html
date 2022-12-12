@@ -202,7 +202,8 @@
     *ngIf="details.appointmentStatus.appointmentStatusId === '1' || details.appointmentStatus.appointmentStatusId === '2'"
     color="primary"
     expand="block"
-    fill="outline">Message(1)
+    (click)="openVetConnect()"
+    fill="outline">Message
   </ion-button>
   <ion-button
     [disabled]="isLoading"

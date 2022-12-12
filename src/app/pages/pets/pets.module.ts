@@ -10,15 +10,17 @@ import { PetsPage } from './pets.page';
 import { MaterialModule } from 'src/app/material/material.module';
 import { FilterPetPipe } from 'src/app/core/pipe/filter-pet.pipe';
 import { PipeModule } from 'src/app/core/pipe/pipe.module';
+import { DirectiveModule } from 'src/app/core/directive/directive.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
-    IonicModule,
     ReactiveFormsModule,
+    IonicModule,
     PetsPageRoutingModule,
     MaterialModule,
+    DirectiveModule,
     PipeModule,
   ],
   declarations: [PetsPage]

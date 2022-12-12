@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import { ModalController, NavController } from '@ionic/angular';
 import { LoginResult } from 'src/app/core/model/loginresult.model';
 import { StorageService } from '../../core/storage/storage.service';
-import { AccountSettingsPage } from './account-settings/account-settings.page';
 import { PasswordAndSecurityPage } from './password-and-security/password-and-security.page';
 import { ProfileSettingsPage } from './profile-settings/profile-settings.page';
 import { ThemeSettingsPage } from './theme-settings/theme-settings.page';
@@ -21,7 +20,8 @@ export class SettingsPage implements OnInit {
     private navCtrl: NavController,
     private modalCtrl: ModalController,
     private storageService: StorageService
-  ) {}
+  ) {
+  }
 
   ngOnInit() {
     this.user = this.storageService.getLoginUser();
@@ -38,6 +38,11 @@ export class SettingsPage implements OnInit {
           backdropDismiss: false,
           canDismiss: true,
           componentProps: { modal },
+        });
+        modal.onWillDismiss().then((res: { data: any; role: string }) => {
+          if(res.data && res.role === 'confirm') {
+            this.user = this.storageService.getLoginUser();
+          }
         });
         modal.present();
         break;
@@ -62,8 +67,7 @@ export class SettingsPage implements OnInit {
     this.close();
   }
 
-  ionViewWillEnter() {
-    console.log('visited');
+  ionViewWillEnter() {;
   }
 
   close() {

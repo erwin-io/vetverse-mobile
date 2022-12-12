@@ -7,7 +7,8 @@ const routes: Routes = [
   {
     path: '',
     component: PetsPage
-  },  {
+  },
+  {
     path: 'pet-details',
     loadChildren: () => import('./pet-details/pet-details.module').then( m => m.PetDetailsPageModule)
   },
@@ -15,7 +16,6 @@ const routes: Routes = [
     path: 'pet-add',
     loadChildren: () => import('./pet-add/pet-add.module').then( m => m.PetAddPageModule)
   }
-
 
 ];
 

@@ -38,7 +38,6 @@ export class PetAddPage implements OnInit {
   isSubmitting = false;
   isLoading = false;
 
-
   private _petTypeData: PetType[] = [];
   private _petCategoryData: PetCategory[] = [];
 
@@ -59,6 +58,15 @@ export class PetAddPage implements OnInit {
       ...this.petForm.value,
       birthDate: moment(this.petForm.value.birthDate).format('YYYY-MM-DD')
     };
+  }
+
+  get isFormDirty() {
+    return this.details.petTypeId !== this.formData.petTypeId ||
+    this.details.petCategoryId !== this.formData.petCategoryId ||
+    this.details.name !== this.formData.name ||
+    this.details.genderId !== this.formData.genderId ||
+    this.details.weight !== this.formData.weight ||
+    moment(this.details.birthDate).format('YYYY-MM-DD').toString() !== moment(this.formData.birthDate).format('YYYY-MM-DD');
   }
 
   get errorControls() {
@@ -86,20 +94,27 @@ export class PetAddPage implements OnInit {
       },
       (error) => console.error(error),
       () => {
+        if(!this.isNew) {
+          this.petForm.controls.petTypeId.setValue(this.details.petTypeId);
+          this.petForm.controls.petCategoryId.setValue(this.details.petCategoryId);
+          this.petForm.controls.name.setValue(this.details.name);
+          this.petForm.controls.genderId.setValue(this.details.genderId);
+          this.petForm.controls.birthDate.setValue(this.details.birthDate.toISOString());
+          this.petForm.controls.weight.setValue(this.details.weight);
+        }
         this.isLoading = false;
       }
   );
   }
 
   ngOnInit() {
-    console.log(this.details);
     this.petForm = this.formBuilder.group({
-      petTypeId: [this.details.petTypeId, Validators.required],
-      petCategoryId: [this.details.petCategoryId, Validators.required],
-      name: [this.details.name, [Validators.required, Validators.minLength(2)]],
-      genderId: [this.details.genderId, Validators.required],
-      birthDate: [this.details.birthDate ? this.details.birthDate.toISOString() : new Date().toISOString(), Validators.required],
-      weight: [this.details.weight, Validators.required],
+      petTypeId: [null, Validators.required],
+      petCategoryId: [null, Validators.required],
+      name: [null, [Validators.required, Validators.minLength(2)]],
+      genderId: [null, Validators.required],
+      birthDate: [new Date().toISOString(), Validators.required],
+      weight: [0, Validators.required],
     });
   }
 

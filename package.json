@@ -48,6 +48,7 @@
     "ionicons": "^6.0.3",
     "javascript-time-ago": "^2.5.9",
     "moment": "^2.29.4",
+    "ngx-socket-io": "^4.4.0",
     "object-to-formdata": "^4.4.2",
     "peerjs": "^1.4.7",
     "rxjs": "~6.6.0",

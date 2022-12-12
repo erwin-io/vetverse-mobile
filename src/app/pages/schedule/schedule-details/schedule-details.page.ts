@@ -13,6 +13,7 @@ import { LoginResult } from 'src/app/core/model/loginresult.model';
 import { UserService } from 'src/app/core/services/user.service';
 import { StorageService } from 'src/app/core/storage/storage.service';
 import { AppConfigService } from 'src/app/core/services/app-config.service';
+import { ContactVetPage } from './contact-vet/contact-vet.page';
 
 @Component({
   selector: 'app-schedule-details',
@@ -25,6 +26,7 @@ export class ScheduleDetailsPage implements OnInit {
   isLoading = false;
   details: Appointment = {} as any;
   conferenceWebURL;
+
   constructor(private modalCtrl: ModalController,
     private alertController: AlertController,
     private pageLoaderService: PageLoaderService,
@@ -235,10 +237,19 @@ export class ScheduleDetailsPage implements OnInit {
     }
   }
 
-
   async joinVideoConference() {
     await Browser.open({ url: this.conferenceWebURL });
+  }
 
+  async openVetConnect() {
+    let modal: any = null;
+    modal = await this.modalCtrl.create({
+      component: ContactVetPage,
+      cssClass: 'modal-fullscreen',
+      componentProps: { modal, currentUser: this.currentUser, details: this.details, conferenceWebURL: this.conferenceWebURL },
+    });
+    modal.present();
+    await modal.onWillDismiss();
   }
 
   cancel() {

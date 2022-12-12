@@ -18,6 +18,7 @@ import { StorageService } from './core/storage/storage.service';
 import { Capacitor } from '@capacitor/core';
 import { UserService } from './core/services/user.service';
 import { AndroidPermissions } from '@awesome-cordova-plugins/android-permissions/ngx';
+import { CustomSocket } from './core/sockets/custom-socket.sockets';
 
 @Component({
   selector: 'app-root',
@@ -28,6 +29,7 @@ export class AppComponent implements OnInit {
 
   constructor(
     private platform: Platform,
+    private socket: CustomSocket,
     private alertController: AlertController,
     private authService: AuthService,
     private userService: UserService,
@@ -55,19 +57,12 @@ export class AppComponent implements OnInit {
         App.exitApp();
       }
     });
-  //   LocalNotifications.schedule({
-  //     notifications: [
-  //         {
-  //             title: 'Vetverse',
-  //             body: 'body here',
-  //             id: 1,
-  //             sound: 'android.resource://io.ionic.starter/raw/notif_call_waiting.wav',
-  //             ongoing: true
-  //         }
-  //     ]
-  // });
   }
   ngOnInit() {
+    this.socket.init();
+    this.socket.fromEvent('messageAdded').subscribe((message) => {
+      console.log(message);
+    });
   }
 
   toggleDarkMode(isDarkEnable: boolean) {

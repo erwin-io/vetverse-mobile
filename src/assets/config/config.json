@@ -6,7 +6,7 @@
     "maxCancellation": "3",
     "daysCancellationLimitReset": "5",
     "timeSlotHours": {
-      "start": "09:00",
+      "start": "08:00",
       "end": "17:00"
     },
     "timeSlotNotAvailableHours": ["12:00"],
@@ -50,8 +50,10 @@
     "user": {
       "getById": "users/",
       "getStaffByAdvanceSearch": "users/getStaffByAdvanceSearch",
-      "udpdate": "users/client",
-      "updateFirebaseToken": "users/updateFirebaseToken"
+      "udpdateClient": "users/client",
+      "updateFirebaseToken": "users/updateFirebaseToken",
+      "changePassword": "users/changePassword"
+
     },
     "serviceType": "service-type/",
     "appointment": {
@@ -83,6 +85,10 @@
       "getAllByClientIdPage": "notification/getAllByClientIdPage",
       "getTotalUnreadByClientId": "notification/getTotalUnreadByClientId",
       "updateReadStatus": "notification/updateReadStatus"
+    },
+    "message": {
+      "findByAppointmentPage": "message/findByAppointmentPage",
+      "create": "message/"
     }
   }
 }

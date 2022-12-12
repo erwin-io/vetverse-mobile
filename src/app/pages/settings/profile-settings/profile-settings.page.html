@@ -10,5 +10,142 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="ion-padding">
+  <form
+  id="petForm"
+  [formGroup]="editProfileForm"
+  (ngSubmit)="editProfileForm.valid ? onSubmit() : false">
+    <fieldset [disabled]="isSubmitting">
+      <div class="form-field-group">
+        <mat-label>First name</mat-label>
+        <mat-form-field appearance="outline">
+          <mat-label>First name</mat-label>
+          <input
+            matInput
+            type="text"
+            placeholder="First name"
+            formControlName="firstName"
+            autocomplete="new-firstName"
+          />
+        </mat-form-field>
+        <span class="error" *ngIf="errorControls.firstName.touched && errorControls.firstName.errors && errorControls.firstName.errors.required">
+          First name is required
+        </span>
+      </div>
+      <div class="form-field-group">
+        <mat-label>Middle name</mat-label>
+        <mat-form-field appearance="outline">
+          <mat-label>Middle name</mat-label>
+          <input
+            matInput
+            type="text"
+            placeholder="Middle name"
+            formControlName="middleName"
+            autocomplete="new-middleName"
+          />
+        </mat-form-field>
+      </div>
+      <div class="form-field-group">
+        <mat-label>Last name</mat-label>
+        <mat-form-field appearance="outline">
+          <mat-label>Last name</mat-label>
+          <input
+            matInput
+            type="text"
+            placeholder="Last name"
+            formControlName="lastName"
+            autocomplete="new-lastName"
+          />
+        </mat-form-field>
+        <span class="error" *ngIf="errorControls.lastName.touched && errorControls.lastName.errors && errorControls.lastName.errors.required">
+          Last name is required
+        </span>
+      </div>
+      <div class="form-field-group">
+        <mat-label>Email</mat-label>
+        <mat-form-field appearance="outline">
+          <mat-label>Email</mat-label>
+          <input
+            matInput
+            type="text"
+            placeholder="Email"
+            formControlName="email"
+            autocomplete="new-email"
+          />
+        </mat-form-field>
+        <span class="error" *ngIf="errorControls.email.touched && errorControls.email.errors && errorControls.email.errors.required">
+          Email is required
+        </span>
+      </div>
+      <div class="form-field-group">
+        <mat-label>Mobile number</mat-label>
+        <mat-form-field appearance="outline">
+          <mat-label>Mobile number</mat-label>
+          <input
+            matInput
+            type="text"
+            placeholder="Mobile number"
+            formControlName="mobileNumber"
+            autocomplete="new-mobileNumber"
+          />
+        </mat-form-field>
+        <span class="error" *ngIf="errorControls.mobileNumber.touched && errorControls.mobileNumber.errors && errorControls.mobileNumber.errors.required">
+          Mobile number is required
+        </span>
+      </div>
+      <div class="form-field-group">
+        <mat-label>Address</mat-label>
+        <mat-form-field appearance="outline">
+          <mat-label>Address</mat-label>
+          <textarea
+            matInput
+            type="text"
+            placeholder="Address"
+            formControlName="address"
+          ></textarea>
+        </mat-form-field>
+        <span class="error" *ngIf="errorControls.address.touched && errorControls.address.errors && errorControls.address.errors.required">
+          Address is required
+        </span>
+      </div>
+      <div class="form-field-group">
+        <mat-label slot="start">Birthdate</mat-label>
+        <ion-item id="open-birthDate-date-picker" [disabled]="isSubmitting" fill="outline" lines="none">
+          <ion-label>{{formData.birthDate | date: 'MMMM dd, yyyy'}}</ion-label>
+        </ion-item>
+        <ion-modal trigger="open-birthDate-date-picker" [cssClass]="'bottom-end'">
+          <ng-template>
+            <ion-datetime
+              presentation="date"
+              size="cover"
+              formControlName="birthDate"
+              [showDefaultButtons]="true"
+            ></ion-datetime>
+          </ng-template>
+        </ion-modal>
+      </div>
+      <div class="form-field-group">
+        <mat-label>Gender </mat-label>
+        <ion-item [disabled]="isSubmitting" fill="outline">
+          <ion-select slot="start" formControlName="genderId" placeholder="Select Gender" >
+            <ion-select-option slot="start" value="1">Male</ion-select-option>
+            <ion-select-option slot="start" value="2">Female</ion-select-option>
+            <ion-select-option slot="start" value="3">Rather not say</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <span class="error" *ngIf="errorControls.genderId.touched && errorControls.genderId.errors && errorControls.genderId.errors.required">
+          Please select a gender
+        </span>
+      </div>
+    </fieldset>
+  </form>
 </ion-content>
+<div class="controls-bottom">
+  <ion-button
+    type="submit"
+    mat-flat-button
+    color="primary"
+    form="petForm"
+    [disabled]="!isFormDirty || isSubmitting"
+    >Update</ion-button>
+</div>

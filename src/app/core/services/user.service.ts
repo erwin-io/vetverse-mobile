@@ -22,7 +22,7 @@ export class UserService implements IServices {
     userId: string;
     roles: string;
     email: string;
-    mobileNumber: number;
+    mobileNumber: string;
     name: string;
   }): Observable<ApiResponse<Staff[]>> {
     return this.http.get<any>(environment.apiBaseUrl + this.appconfig.config.apiEndPoints.user.getStaffByAdvanceSearch,
@@ -83,6 +83,14 @@ export class UserService implements IServices {
 
   udpdateClient(data: any): Observable<ApiResponse<Client>> {
     return this.http.put<any>(environment.apiBaseUrl + this.appconfig.config.apiEndPoints.user.udpdateClient, data)
+    .pipe(
+      tap(_ => this.log('user')),
+      catchError(this.handleError('user', []))
+    );
+  }
+
+  changePassword(data: any): Observable<ApiResponse<Client>> {
+    return this.http.put<any>(environment.apiBaseUrl + this.appconfig.config.apiEndPoints.user.changePassword, data)
     .pipe(
       tap(_ => this.log('user')),
       catchError(this.handleError('user', []))

@@ -50,7 +50,6 @@ export class AddSchedulePage implements OnInit {
   subscription: Subscription;
   allowToClose = false;
   isTimeSlotModalOpen = false;
-  isLoadingTimeSlot = false;
   availableTimeSlot = [];
 
   currentDate = new Date();

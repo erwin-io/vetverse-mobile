@@ -17,10 +17,10 @@ import { DirectiveModule } from 'src/app/core/directive/directive.module';
     FormsModule,
     ReactiveFormsModule,
     IonicModule,
-    MaterialModule,
     PetAddPageRoutingModule,
+    MaterialModule,
     DirectiveModule,
-    PipeModule
+    PipeModule,
   ],
   declarations: [PetAddPage]
 })
