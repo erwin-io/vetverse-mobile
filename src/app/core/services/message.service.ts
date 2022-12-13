@@ -5,7 +5,6 @@ import { tap, catchError } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { ApiResponse } from '../model/api-response.model';
 import { Messages } from '../model/message.model';
-import { CustomSocket } from '../sockets/custom-socket.sockets';
 import { AppConfigService } from './app-config.service';
 
 @Injectable({
@@ -13,7 +12,7 @@ import { AppConfigService } from './app-config.service';
 })
 export class MessageService {
 
-  constructor(private socket: CustomSocket, private http: HttpClient, private appconfig: AppConfigService) { }
+  constructor(private http: HttpClient, private appconfig: AppConfigService) { }
 
   getByAppointmentPage(params): Observable<ApiResponse<{
     items: Messages[];meta: { totalItems: number;currentPage: number;itemCount: number};

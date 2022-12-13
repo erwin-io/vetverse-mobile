@@ -38,7 +38,6 @@ export class ContactVetPage implements OnInit {
 
   ngOnInit() {
     this.initMessages(this.details.appointmentId);
-
     this.socket.fromEvent('messageAdded').subscribe((message) => {
       console.log(message);
       const newMessages: Messages[] = [];
@@ -48,6 +47,7 @@ export class ContactVetPage implements OnInit {
   }
 
   close() {
+    this.socket.disconnect();
     this.modal.dismiss(null, 'cancel');
   }
 
@@ -106,7 +106,7 @@ export class ContactVetPage implements OnInit {
     const message = messageInput.value;
     const param = {
       message,
-      isClient: false,
+      isClient: true,
       appointmentId: this.details.appointmentId,
       fromUserId: this.currentUser.userId,
       toUserId: this.details.staff.user.userId,

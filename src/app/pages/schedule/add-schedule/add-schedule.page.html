@@ -196,26 +196,31 @@
                 </ng-template>
               </ion-modal>
             </div>
-            <div class="form-field-group" *ngIf="availableTimeSlot.length > 0; else elseNoTimeSlotAvailable" >
-              <mat-label>Select time slot</mat-label>
-              <ion-radio-group [disabled]="isLoading" formControlName="selectTime">
+            <div class="form-field-group" *ngIf="!isLoading; else elseLoadingTimeSlot;" >
+              <mat-label *ngIf="availableTimeSlot.length > 0">Select time slot</mat-label>
+              <ion-radio-group [disabled]="isLoading" formControlName="selectTime" *ngIf="availableTimeSlot.length > 0">
                 <ion-item fill="outline" lines="none" *ngFor="let timeSlot of availableTimeSlot">
                   <ion-label>{{tConvert(timeSlot)}}</ion-label>
                   <ion-radio slot="end" [value]="timeSlot"></ion-radio>
                 </ion-item>
               </ion-radio-group>
             </div>
-            <ng-template #elseNoTimeSlotAvailable>
+            <ng-template #elseLoadingTimeSlot>
+              <div class="no-time-slot-available">
+                <span>Loading time slot please wait...</span>
+              </div>
+            </ng-template>
+            <ng-container *ngIf="!isLoading && availableTimeSlot.length <=0">
               <div class="no-time-slot-available">
                 <span>Sorry!<br>No available time slot to show, <br>try another date</span>
               </div>
-            </ng-template>
+            </ng-container>
           </fieldset>
         </form>
       </ion-content>
       <div class="sched-controls-bottom">
         <ion-button
-          [disabled]="isLoadingTimeSlot || !selectTimeSlotForm.valid"
+          [disabled]="isLoading || !selectTimeSlotForm.valid"
           color="primary"
           size="large"
           expand="block"

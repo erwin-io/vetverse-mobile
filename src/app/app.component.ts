@@ -5,20 +5,9 @@ import { App } from '@capacitor/app';
 import { LocalNotifications } from '@capacitor/local-notifications';
 import { AlertController, IonRouterOutlet, Platform } from '@ionic/angular';
 import { AuthService } from './core/services/auth.service';
-import {
-  ActionPerformed,
-  PushNotificationSchema,
-  PushNotifications,
-  Token,
-  PushNotification,
-  PushNotificationActionPerformed,
-  PushNotificationToken,
-} from '@capacitor/push-notifications';
 import { StorageService } from './core/storage/storage.service';
 import { Capacitor } from '@capacitor/core';
-import { UserService } from './core/services/user.service';
 import { AndroidPermissions } from '@awesome-cordova-plugins/android-permissions/ngx';
-import { CustomSocket } from './core/sockets/custom-socket.sockets';
 
 @Component({
   selector: 'app-root',
@@ -26,19 +15,15 @@ import { CustomSocket } from './core/sockets/custom-socket.sockets';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent implements OnInit {
-
   constructor(
     private platform: Platform,
-    private socket: CustomSocket,
     private alertController: AlertController,
     private authService: AuthService,
-    private userService: UserService,
     private route: ActivatedRoute,
     private storageService: StorageService,
     private androidPermissions: AndroidPermissions,
     @Optional() private routerOutlet?: IonRouterOutlet
   ) {
-    this.toggleDarkMode(this.storageService.getThemeIsDarkMode());
 
     this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.CAMERA).then(
       result => console.log('Has permission?',result.hasPermission),
@@ -59,74 +44,14 @@ export class AppComponent implements OnInit {
     });
   }
   ngOnInit() {
-    this.socket.init();
-    this.socket.fromEvent('messageAdded').subscribe((message) => {
-      console.log(message);
-    });
-  }
-
-  toggleDarkMode(isDarkEnable: boolean) {
-    console.log('isDarkEnable', isDarkEnable);
-    document.body.classList.toggle('dark', isDarkEnable);
-    if (isDarkEnable) {
-      document.body.setAttribute('data-theme', 'dark');
-    } else {
-      document.body.setAttribute('data-theme', 'light');
-    }
   }
 
 
   initPush() {
-    if (Capacitor.platform !== 'web') {
-      this.registerPush();
-    }
   }
 
   async presentAlert(options: any) {
     const alert = await this.alertController.create(options);
     await alert.present();
   }
-  private registerPush() {
-    PushNotifications.requestPermissions().then((permission) => {
-      PushNotifications.register();
-      if (permission.receive) {
-        // Register with Apple / Google to receive push via APNS/FCM
-      } else {
-        // No permission for push granted
-      }
-    });
-
-    PushNotifications.addListener(
-      'registration',
-      (token: PushNotificationToken) => {
-        console.log('My token: ' + JSON.stringify(token));
-        this.userService.updateFirebaseToken({});
-      }
-    );
-
-    PushNotifications.addListener('registrationError', (error: any) => {
-      console.log('Error: ' + JSON.stringify(error));
-    });
-
-    PushNotifications.addListener(
-      'pushNotificationReceived',
-      async (notification: PushNotification) => {
-        console.log('Push received: ' + JSON.stringify(notification));
-
-      }
-    );
-
-    PushNotifications.addListener(
-      'pushNotificationActionPerformed',
-      async (notification: PushNotificationActionPerformed) => {
-        const data = notification.notification.data;
-        console.log('Action performed: ' + JSON.stringify(notification.notification));
-        if (data.detailsId) {
-          // this.router.navigateByUrl(`/home/${data.detailsId}`);
-          this.presentAlert(data);
-        }
-      }
-    );
-  }
-
 }
