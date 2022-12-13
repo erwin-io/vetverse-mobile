@@ -9,13 +9,6 @@
     "SplashScreen": {
       "launchShowDuration": 0
     },
-    "plugins": {
-      "LocalNotifications": {
-        "smallIcon": "ic_launcher_round",
-        "largeIcon": "ic_launcher_round",
-        "iconColor": "#488AFF"
-      }
-    },
     "PushNotifications": {
       "presentationOptions": [
         "badge",

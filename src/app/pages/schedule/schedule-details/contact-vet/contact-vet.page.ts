@@ -37,6 +37,7 @@ export class ContactVetPage implements OnInit {
     }
 
   ngOnInit() {
+    this.socket.init();
     this.initMessages(this.details.appointmentId);
     this.socket.fromEvent('messageAdded').subscribe((message) => {
       console.log(message);

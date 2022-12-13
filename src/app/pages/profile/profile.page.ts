@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/member-ordering */
+/* eslint-disable no-underscore-dangle */
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
@@ -11,13 +13,16 @@ import { SettingsPage } from '../settings/settings.page';
   styleUrls: ['./profile.page.scss'],
 })
 export class ProfilePage implements OnInit {
-  user: LoginResult;
   constructor(
     private router: Router,
     private modalCtrl: ModalController,
     private storageService: StorageService
   ) {
-    this.user = this.storageService.getLoginUser();
+
+  }
+
+  get user(): LoginResult {
+    return this.storageService.getLoginUser();
   }
 
   ngOnInit() {}

@@ -8,6 +8,7 @@ import { AuthService } from './core/services/auth.service';
 import { StorageService } from './core/storage/storage.service';
 import { Capacitor } from '@capacitor/core';
 import { AndroidPermissions } from '@awesome-cordova-plugins/android-permissions/ngx';
+import { PushNotifications } from '@capacitor/push-notifications';
 
 @Component({
   selector: 'app-root',
@@ -24,6 +25,14 @@ export class AppComponent implements OnInit {
     private androidPermissions: AndroidPermissions,
     @Optional() private routerOutlet?: IonRouterOutlet
   ) {
+    PushNotifications.createChannel({
+     id: 'fcm_default_channel',
+     name: 'Vetverse',
+     importance: 5,
+     visibility: 1,
+     lights: true,
+     vibration: true,
+   });
 
     this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.CAMERA).then(
       result => console.log('Has permission?',result.hasPermission),
@@ -34,7 +43,7 @@ export class AppComponent implements OnInit {
     this.platform.ready().then(() => {
 
       // Trigger the push setup
-      this.initPush();
+
     });
 
     this.platform.backButton.subscribeWithPriority(-1, () => {
@@ -46,9 +55,6 @@ export class AppComponent implements OnInit {
   ngOnInit() {
   }
 
-
-  initPush() {
-  }
 
   async presentAlert(options: any) {
     const alert = await this.alertController.create(options);
