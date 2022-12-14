@@ -129,12 +129,8 @@ export class TokenInterceptor implements HttpInterceptor {
   }
 
   private handleLogout() {
-    this.authService.logout();
-    this.storageService.saveAccessToken(null);
-    this.storageService.saveRefreshToken(null);
-    this.storageService.saveLoginUser(null);
     this.presentToast('Session expired');
-    this.router.navigate(['auth/login'], { replaceUrl: true });
+    this.authService.logout();
   }
 
   private async presentToast(msg: string) {

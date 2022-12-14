@@ -8,15 +8,7 @@ import { NotificationService } from 'src/app/core/services/notification.service'
 import { SessionActivityService } from 'src/app/core/services/session-activity.service';
 import { StorageService } from 'src/app/core/storage/storage.service';
 import { Capacitor } from '@capacitor/core';
-import {
-  ActionPerformed,
-  PushNotificationSchema,
-  PushNotifications,
-  Token,
-  PushNotification,
-  PushNotificationActionPerformed,
-  PushNotificationToken,
-} from '@capacitor/push-notifications';
+
 import { UserService } from 'src/app/core/services/user.service';
 
 @Component({
@@ -45,9 +37,6 @@ export class NavigationPage implements OnInit, OnDestroy {
 
   ngOnInit() {
     //start session
-    if (Capacitor.platform !== 'web') {
-      this.registerPush();
-    }
     this.sessionActivityService.stop();
     this.sessionActivityService.start();
   }
@@ -63,52 +52,8 @@ export class NavigationPage implements OnInit, OnDestroy {
     this.active = event.tab;
   }
 
-
-  private registerPush() {
-    PushNotifications.requestPermissions().then((permission) => {
-      PushNotifications.register();
-      if (permission.receive) {
-        // Register with Apple / Google to receive push via APNS/FCM
-      } else {
-        // No permission for push granted
-      }
-    });
-
-    PushNotifications.addListener(
-      'registration',
-      (token: PushNotificationToken) => {
-        this.userService.updateFirebaseToken({
-          userId: this.currentUser.userId,
-          firebaseToken: token.value
-        });
-      }
-    );
-
-    PushNotifications.addListener('registrationError', (error: any) => {
-      console.log('Error: ' + JSON.stringify(error));
-    });
-
-    PushNotifications.addListener(
-      'pushNotificationReceived',
-      async (notification: PushNotification) => {
-        console.log('Push received: ' + JSON.stringify(notification));
-      }
-    );
-
-    PushNotifications.addListener(
-      'pushNotificationActionPerformed',
-      async (notification: PushNotificationActionPerformed) => {
-        const data = notification.notification.data;
-        console.log('Action performed: ' + JSON.stringify(notification.notification));
-        if (data.detailsId) {
-          // this.router.navigateByUrl(`/home/${data.detailsId}`);
-        }
-      }
-    );
-  }
-
   // eslint-disable-next-line @typescript-eslint/member-ordering
-@HostListener('click', ['$event.target']) onClick(e) {
+  @HostListener('click', ['$event.target']) onClick(e) {
     if(!this.sessionActivityService.isSessionExpired) {
       this.sessionActivityService.stop();
       this.sessionActivityService.resetSession();
@@ -116,4 +61,8 @@ export class NavigationPage implements OnInit, OnDestroy {
     }
   }
 
+  async presentAlert(options: any) {
+    const alert = await this.alertController.create(options);
+    await alert.present();
+  }
 }

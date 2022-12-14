@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ModalController, NavController } from '@ionic/angular';
 import { LoginResult } from 'src/app/core/model/loginresult.model';
+import { AuthService } from 'src/app/core/services/auth.service';
 import { StorageService } from '../../core/storage/storage.service';
 import { PasswordAndSecurityPage } from './password-and-security/password-and-security.page';
 import { ProfileSettingsPage } from './profile-settings/profile-settings.page';
@@ -14,12 +15,17 @@ import { ProfileSettingsPage } from './profile-settings/profile-settings.page';
 export class SettingsPage implements OnInit {
   user: LoginResult;
   modal: HTMLIonModalElement;
+  platform: any;
+  routerOutlet: any;
   constructor(
     private router: Router,
-    private navCtrl: NavController,
+    private authService: AuthService,
     private modalCtrl: ModalController,
     private storageService: StorageService
   ) {
+    this.platform.backButton.subscribeWithPriority(-1, () => {
+      this.close();
+    });
   }
 
   ngOnInit() {
@@ -59,11 +65,7 @@ export class SettingsPage implements OnInit {
   }
 
   signout() {
-    this.storageService.saveAccessToken(null);
-    this.storageService.saveRefreshToken(null);
-    this.storageService.saveLoginUser(null);
-    this.router.navigate(['login'], { replaceUrl: true });
-    this.close();
+    this.authService.logout();
   }
 
   ionViewWillEnter() {;

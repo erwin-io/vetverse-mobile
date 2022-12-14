@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AlertController, ModalController } from '@ionic/angular';
 import { StorageService } from '../storage/storage.service';
 import { AppConfigService } from './app-config.service';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root',
@@ -13,9 +14,8 @@ export class SessionActivityService {
   sessionTimeout = 0;
   constructor(
     private appconfig: AppConfigService,
-    private router: Router,
-    private modalController: ModalController,
     private alertController: AlertController,
+    private authService: AuthService,
     private storageService: StorageService
   ) {
     this.sessionTimeout = Number(
@@ -43,7 +43,6 @@ export class SessionActivityService {
         this.storageService.getSessionExpiredDate()
       );
       const diffTime = today - sessionExpiredDate;
-      console.log(diffTime);
       if (diffTime > 0) {
         this.stop();
         await this.presentAlert({
@@ -73,11 +72,7 @@ export class SessionActivityService {
 
   handleLogout() {
     this.stop();
-    this.storageService.saveAccessToken(null);
-    this.storageService.saveRefreshToken(null);
-    this.storageService.saveLoginUser(null);
-    // this.router.navigate(['login'], { replaceUrl: true });
-    window.location.href = 'login';
+    this.authService.logout();
   }
 
   resetSession() {

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/naming-convention */
 /* eslint-disable max-len */
 import { Component, OnInit, Optional } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -8,7 +9,7 @@ import { AuthService } from './core/services/auth.service';
 import { StorageService } from './core/storage/storage.service';
 import { Capacitor } from '@capacitor/core';
 import { AndroidPermissions } from '@awesome-cordova-plugins/android-permissions/ngx';
-import { PushNotifications } from '@capacitor/push-notifications';
+import { StatusBar, Style } from '@capacitor/status-bar';
 
 @Component({
   selector: 'app-root',
@@ -23,16 +24,12 @@ export class AppComponent implements OnInit {
     private route: ActivatedRoute,
     private storageService: StorageService,
     private androidPermissions: AndroidPermissions,
+
     @Optional() private routerOutlet?: IonRouterOutlet
   ) {
-    PushNotifications.createChannel({
-     id: 'fcm_default_channel',
-     name: 'Vetverse',
-     importance: 5,
-     visibility: 1,
-     lights: true,
-     vibration: true,
-   });
+    StatusBar.setOverlaysWebView({ overlay: false });
+    StatusBar.setStyle({ style: Style.Light });
+    StatusBar.show();
 
     this.androidPermissions.checkPermission(this.androidPermissions.PERMISSION.CAMERA).then(
       result => console.log('Has permission?',result.hasPermission),

@@ -1,5 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Development/vetverse-mobile/android/app/src/main/res/drawable/ic_notification_background.xml" value="0.1" />
+        <entry key="..\:/Development/vetverse-mobile/android/app/src/main/res/drawable/myicon_background.xml" value="0.1755" />
+      </map>
+    </option>
+  </component>
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="11" project-jdk-type="JavaSDK" />
 </project>

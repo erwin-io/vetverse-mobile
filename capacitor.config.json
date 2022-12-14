@@ -10,6 +10,7 @@
       "launchShowDuration": 0
     },
     "PushNotifications": {
+      "sound": "notif_alert",
       "presentationOptions": [
         "badge",
         "sound",

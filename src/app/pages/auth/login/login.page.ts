@@ -11,6 +11,7 @@ import { UserService } from 'src/app/core/services/user.service';
 import { PageLoaderService } from 'src/app/core/ui-service/page-loader.service';
 import { PetService } from 'src/app/core/services/pet.service';
 import { AppConfigService } from 'src/app/core/services/app-config.service';
+import { FcmService } from 'src/app/core/services/fcm.service';
 
 @Component({
   selector: 'app-login',
@@ -31,6 +32,7 @@ export class LoginPage implements OnInit {
     private storageService: StorageService,
     private loaderService: LoaderService,
     private petService: PetService,
+    private fcmService: FcmService,
     private appconfig: AppConfigService,
     private pageLoaderService: PageLoaderService,
     ) {
@@ -68,6 +70,7 @@ export class LoginPage implements OnInit {
             this.storageService.saveSessionExpiredDate(today);
             const userData: LoginResult = res.data;
             this.storageService.saveLoginUser(userData);
+            this.fcmService.init();
             this.router.navigate(['/'], { replaceUrl: true });
             this.isSubmitting = false;
           } else {
@@ -75,7 +78,6 @@ export class LoginPage implements OnInit {
             await this.pageLoaderService.close();
             await this.presentAlert({
               header: 'Try again!',
-              subHeader: '',
               message: Array.isArray(res.message) ? res.message[0] : res.message,
               buttons: ['OK']
             });

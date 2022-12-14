@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { Router, RouterEvent } from '@angular/router';
+import { AuthService } from 'src/app/core/services/auth.service';
 import { StorageService } from '../../core/storage/storage.service';
 
 @Component({
@@ -43,6 +44,7 @@ export class SidenavPage implements OnInit {
 
   constructor(
     private router: Router,
+    private authService: AuthService,
     private storageService: StorageService) {
     this.router.events.subscribe((event: RouterEvent) => {
       this.active = event.url;
@@ -52,9 +54,6 @@ export class SidenavPage implements OnInit {
   ngOnInit() { }
 
   logout() {
-    this.storageService.saveAccessToken(null);
-    this.storageService.saveRefreshToken(null);
-    this.storageService.saveLoginUser(null);
-    this.router.navigate(['login'], { replaceUrl: true });
+    this.authService.logout();
   }
 }
