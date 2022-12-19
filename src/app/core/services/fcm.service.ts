@@ -17,6 +17,7 @@ import { Capacitor } from '@capacitor/core';
   providedIn: 'root'
 })
 export class FcmService {
+  topic = 'announcements';
   currentUser: LoginResult;
   constructor(
     private storageService: StorageService,
@@ -26,8 +27,7 @@ export class FcmService {
 
   init() {
     if (Capacitor.platform !== 'web') {
-      this.registerFCM();
-
+      this.delete();
       PushNotifications.createChannel({
        id: 'fcm_default_channel',
        name: 'Vetverse',
@@ -37,11 +37,13 @@ export class FcmService {
        vibration: true,
        sound: 'notif_alert'
      });
+     this.registerPushNotif();
     }
   }
 
-  registerFCM(){
+  registerPushNotif() {
     this.currentUser = this.storageService.getLoginUser();
+
     PushNotifications.requestPermissions().then((permission) => {
       PushNotifications.register();
       if (permission.receive) {
@@ -50,6 +52,12 @@ export class FcmService {
         // No permission for push granted
       }
     });
+
+
+    // now you can subscribe to a specific topic
+    FCM.subscribeTo({ topic: this.topic })
+      .then((r) => console.log(`subscribed to topic`))
+      .catch((err) => {console.log('error subscribing to topic');console.log(err);});
 
     PushNotifications.addListener(
       'registration',
@@ -62,7 +70,7 @@ export class FcmService {
         }).subscribe((res)=> {
           console.log('saved! to user', this.currentUser.userId);
           console.log(res);
-        }, (err)=>{console.log(err)});
+        }, (err)=>{console.log('error saving token');console.log(err);});
       }
     );
 
@@ -90,13 +98,18 @@ export class FcmService {
   }
 
 
-
   delete() {
     if (Capacitor.platform !== 'web') {
+
       // Remove FCM instance
       FCM.deleteInstance()
         .then(() => console.log(`Token deleted`))
-        .catch((err) => console.log(err));
+        .catch((err) => {console.log('error deleting instance token');console.log(err);});
+
+      // Unsubscribe from a specific topic
+      FCM.unsubscribeFrom({ topic: this.topic })
+      .then(() => console.log(`unsubscribed from topic`))
+      .catch((err) => {console.log('error unsubscribing topic');console.log(err);});
     }
   }
 

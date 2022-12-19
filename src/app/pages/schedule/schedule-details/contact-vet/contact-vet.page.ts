@@ -19,7 +19,7 @@ export class ContactVetPage implements OnInit {
   modal;
   details: Appointment;
   currentUser: LoginResult;
-  messages: Messages[] = [];
+  messages: any[] = [];
   currentMessagePage = 0;
   loadingMessage = false;
   isSendingMessage = false;
@@ -112,8 +112,17 @@ export class ContactVetPage implements OnInit {
       fromUserId: this.currentUser.userId,
       toUserId: this.details.staff.user.userId,
     };
+    this.isSendingMessage = true;
+    const messages: any [] = [];
+    messages.push({
+      message,
+      dateTime: new Date(),
+      fromUser: { userId: this.currentUser.userId },
+      isClient: true,
+      isSending: true
+    });
+    this.messages = [...messages,...this.messages];
     try {
-      this.isSendingMessage = true;
       await this.
       messageService
         .add(param)
@@ -121,9 +130,6 @@ export class ContactVetPage implements OnInit {
           async (res) => {
             if (res.success) {
               this.isSendingMessage = false;
-              const messages: Messages [] = [];
-              messages.push(res.data);
-              this.messages = [...messages,...this.messages];
             } else {
               this.isSendingMessage = false;
               this.error = Array.isArray(res.message)
@@ -131,6 +137,7 @@ export class ContactVetPage implements OnInit {
                 : res.message;
               this.presentToast(this.error);
             }
+            this.messages.filter(x=> Number(x.fromUser.userId) === Number(this.currentUser.userId))[0].isSending = false;
           },
           async (err) => {
             this.isSendingMessage = false;

@@ -6,6 +6,7 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import { StorageService } from '../../core/storage/storage.service';
 import { PasswordAndSecurityPage } from './password-and-security/password-and-security.page';
 import { ProfileSettingsPage } from './profile-settings/profile-settings.page';
+import { Platform } from '@ionic/angular';
 
 @Component({
   selector: 'app-settings',
@@ -15,9 +16,9 @@ import { ProfileSettingsPage } from './profile-settings/profile-settings.page';
 export class SettingsPage implements OnInit {
   user: LoginResult;
   modal: HTMLIonModalElement;
-  platform: any;
   routerOutlet: any;
   constructor(
+    private platform: Platform,
     private router: Router,
     private authService: AuthService,
     private modalCtrl: ModalController,

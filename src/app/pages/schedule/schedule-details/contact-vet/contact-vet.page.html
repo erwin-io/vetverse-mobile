@@ -21,9 +21,10 @@
   <div class="convo-section">
     <ul class="message-list">
       <li *ngFor="let message of messages" [ngClass]="{ 'from-me' : message.fromUser.userId === currentUser.userId, 'is-client' : message.isClient }">
-        <div class="chat-item-box">
+        <div class="chat-item-box" [class]="{ 'sending': message.isSending }">
           <span>{{ message.message }}</span>
         </div>
+        <span *ngIf="message.isSending">Sending...</span>
       </li>
       <li class="load-more">
         <button mat-flat-button *ngIf="!loadingMessage && messages.length > 39" (click)="loadMoreMessage()">

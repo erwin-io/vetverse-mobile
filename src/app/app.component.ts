@@ -10,6 +10,7 @@ import { StorageService } from './core/storage/storage.service';
 import { Capacitor } from '@capacitor/core';
 import { AndroidPermissions } from '@awesome-cordova-plugins/android-permissions/ngx';
 import { StatusBar, Style } from '@capacitor/status-bar';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-root',
@@ -27,6 +28,7 @@ export class AppComponent implements OnInit {
 
     @Optional() private routerOutlet?: IonRouterOutlet
   ) {
+    console.log('environment.apiBaseUrl ', environment.apiBaseUrl);
     StatusBar.setOverlaysWebView({ overlay: false });
     StatusBar.setStyle({ style: Style.Light });
     StatusBar.show();
