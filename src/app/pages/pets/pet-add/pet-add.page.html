@@ -10,6 +10,11 @@
   </ion-toolbar>
 </ion-header>
 <ion-content class="ion-padding">
+  <div id="petProfilePic">
+    <ion-avatar>
+      <img (click)="onChangeProfilePic()" [src]="petProfilePic ? petProfilePic.source : ''" (error)="profilePicErrorHandler($event)" id="profilePicture">
+    </ion-avatar>
+  </div>
   <form
   id="petForm"
   [formGroup]="petForm"

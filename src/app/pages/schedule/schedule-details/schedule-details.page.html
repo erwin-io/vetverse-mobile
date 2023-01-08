@@ -93,6 +93,32 @@
         <span class="desc">{{!isLoading?details.petAppointment.pet.petCategory.name : ''}}</span>
       </ion-label>
     </ion-item>
+    <ion-item class="item" lines="none">
+      <ion-label text-wrap>
+        <h3>Photos</h3>
+      </ion-label>
+    </ion-item>
+    <ion-item class="item" lines="none">
+      <ion-button fill="outline" size="large" style="flex-grow: 1;" (click)="onAddPhoto()" >
+        <ion-icon slot="start" name="camera"></ion-icon>
+        Add photo
+      </ion-button>
+    </ion-item>
+    <ion-item class="item" *ngIf="details.appointmentAttachments.length > 0; else noAttachments">
+      <div class="photos" [style.opacity]="isLoadingAttachments ? '0.4' : '1'">
+        <ion-avatar *ngFor="let attachments of details.appointmentAttachments">
+          <ion-button class="remove-button" size="small" color="light" (click)="onRemovePhoto(attachments)">
+            <ion-icon name="close"></ion-icon>
+          </ion-button>
+          <img (click)="onViewImage(attachments)" [src]="attachments.file ? attachments.file.url : ''" (error)="profilePicErrorHandler($event)">
+        </ion-avatar>
+      </div>
+    </ion-item>
+    <ng-template #noAttachments>
+      <ion-item>
+        <h3 style="width: 100%;text-align: center;margin-top: 10px;">No attachments here</h3>
+      </ion-item>
+    </ng-template>
   </div>
   <ng-template #loading>
     <div class="details-container" >

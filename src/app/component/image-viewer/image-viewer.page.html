@@ -1,0 +1,9 @@
+
+<button class="close" (click)="close()">
+  <ion-icon name="close"></ion-icon>
+</button>
+<div class="image-background">
+  <div class="image-holder">
+    <img [src]="file ? file.url : ''" [style.display]="loaded ? 'block' : 'none'" (error)="profilePicErrorHandler($event)" (load)="loaded = true">
+  </div>
+</div>

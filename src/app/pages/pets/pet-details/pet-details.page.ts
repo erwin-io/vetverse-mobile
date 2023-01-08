@@ -22,6 +22,7 @@ export class PetDetailsPage implements OnInit {
     private petService: PetService) { }
 
   ngOnInit() {
+    console.log(this.details);
     this.loadRecords();
   }
 

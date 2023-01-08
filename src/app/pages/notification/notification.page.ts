@@ -13,6 +13,7 @@ import { ScheduleDetailsPage } from '../schedule/schedule-details/schedule-detai
 import TimeAgo from 'javascript-time-ago';
 import en from 'javascript-time-ago/locale/en';
 import { forkJoin } from 'rxjs';
+import * as moment from 'moment';
 
 @Component({
   selector: 'app-notification',
@@ -78,18 +79,30 @@ export class NotificationPage implements OnInit {
     }
   }
 
-  async openDetails(notifDetails: { appointment: any; notificationId: string }) {
-    const modal = await this.modalCtrl.create({
-      component: ScheduleDetailsPage,
-      cssClass: 'modal-fullscreen',
-      componentProps: { details: notifDetails.appointment, currentUser: this.currentUser },
-    });
-    modal.onWillDismiss().then(() => {
+  async openDetails(notifDetails: Notifications) {
+    if(!notifDetails.isReminder){
+      const modal = await this.modalCtrl.create({
+        component: ScheduleDetailsPage,
+        cssClass: 'modal-fullscreen',
+        componentProps: { details: notifDetails.appointment, currentUser: this.currentUser },
+      });
+      modal.onWillDismiss().then(() => {
+        if(!this.data.filter(x=>x.notificationId === notifDetails.notificationId)[0].isRead) {
+          this.markNotifAsRead(notifDetails);
+        }
+      });
+      modal.present();
+    } else {
+      await this.presentAlert({
+        header: notifDetails.title,
+        subHeader: moment(notifDetails.date).format('MMMM DD, YYYY h:mm a'),
+        message: notifDetails.description,
+        buttons: ['OK']
+      });
       if(!this.data.filter(x=>x.notificationId === notifDetails.notificationId)[0].isRead) {
         this.markNotifAsRead(notifDetails);
       }
-    });
-    modal.present();
+    }
   }
 
   async getTotalUnreadNotif(clientId: string){

@@ -2,7 +2,7 @@
 import { Component, ElementRef, OnInit, AfterViewInit, ViewChild, ChangeDetectorRef, AfterViewChecked, Input } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatStepper } from '@angular/material/stepper';
-import { AlertController, IonDatetime, IonModal, ModalController, Platform } from '@ionic/angular';
+import { ActionSheetController, AlertController, IonDatetime, IonModal, ModalController, Platform } from '@ionic/angular';
 import { IonSlides} from '@ionic/angular';
 import { forkJoin, Subscription } from 'rxjs';
 import { Appointment, ConsultaionType, PaymentType, Pet, ServiceType } from 'src/app/core/model/appointment.model';
@@ -17,6 +17,9 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { Browser } from '@capacitor/browser';
 import { InAppBrowserObject, InAppBrowser } from '@ionic-native/in-app-browser';
 import { LoginResult } from 'src/app/core/model/loginresult.model';
+import { Filesystem } from '@capacitor/filesystem';
+import { Camera, CameraResultType, CameraSource, Photo } from '@capacitor/camera';
+import { ImageViewerPage } from 'src/app/component/image-viewer/image-viewer.page';
 
 
 @Component({
@@ -51,6 +54,7 @@ export class AddSchedulePage implements OnInit {
   allowToClose = false;
   isTimeSlotModalOpen = false;
   availableTimeSlot = [];
+  appointmentAttachments: any[] = [];
 
   currentDate = new Date();
   minDate: string = new Date(new Date().setDate(this.currentDate.getDate() + 1)).toISOString();
@@ -58,12 +62,16 @@ export class AddSchedulePage implements OnInit {
     private formBuilder: FormBuilder,
     private alertController: AlertController,
     private appointmentService: AppointmentService,
+    private actionSheetController: ActionSheetController,
     private pageLoaderService: PageLoaderService,
     private appconfig: AppConfigService,
     private platform: Platform,
     public sanitizer: DomSanitizer) {
       this.consultaionTypeOption = this.appconfig.config.lookup.consultaionType;
       this.paymentTypeOption = this.appconfig.config.lookup.paymentTypes;
+      this.platform.backButton.subscribeWithPriority(-1, () => {
+        this.cancel();
+      });
   }
 
   get formData(){
@@ -76,6 +84,7 @@ export class AddSchedulePage implements OnInit {
       time: this.appointmentForm.value.appointmentDate ?
         moment(this.appointmentForm.value.time).format('HH:mm') : null,
       clientId: this.currentUser.clientId,
+      appointmentAttachments: this.appointmentAttachments
     };
   }
 
@@ -489,6 +498,119 @@ export class AddSchedulePage implements OnInit {
         message: Array.isArray(e.message) ? e.message[0] : e.message,
         buttons: ['OK']
       });
+    }
+  }
+
+  async onAddPhoto() {
+    const actionSheet = await this.actionSheetController.create({
+      cssClass: 'sched-card-action-sheet',
+      buttons: [
+        {
+          text: 'Camera',
+          handler: async () => {
+            const image = await Camera.getPhoto({
+              quality: 90,
+              allowEditing: false,
+              resultType: CameraResultType.Uri,
+              source: CameraSource.Camera, // Camera, Photos or Prompt!
+            });
+            if (image) {
+              const base64Data = await this.readAsBase64(image);
+              const id = this.appointmentAttachments.length > 0 ? this.appointmentAttachments[this.appointmentAttachments.length - 1] : 1;
+              this.appointmentAttachments.push({
+                id,
+                fileName: `profile-sample-name.${image.format}`,
+                data: base64Data,
+                source: `data:image/${image.format};base64,${base64Data}`,
+                isNew: true
+              });
+            }
+            actionSheet.dismiss();
+          },
+        },
+        {
+          text: 'Gallery',
+          handler: async () => {
+            const image = await Camera.getPhoto({
+              quality: 90,
+              allowEditing: false,
+              resultType: CameraResultType.Uri,
+              source: CameraSource.Photos, // Camera, Photos or Prompt!
+            });
+            if (image) {
+              const base64Data = await this.readAsBase64(image);
+              const id = this.appointmentAttachments.length > 0 ? this.appointmentAttachments[this.appointmentAttachments.length - 1] : 1;
+              this.appointmentAttachments.push({
+                id,
+                fileName: `profile-sample-name.${image.format}`,
+                data: base64Data,
+                source: `data:image/${image.format};base64,${base64Data}`,
+                isNew: true
+              });
+            }
+            actionSheet.dismiss();
+          },
+        },
+        {
+          text: 'Cancel',
+          handler: async () => {
+            actionSheet.dismiss();
+          },
+        },
+      ],
+    });
+    await actionSheet.present();
+
+    // const result = await actionSheet.onDidDismiss();
+    // console.log(result);
+  }
+
+  async onRemovePhoto(file) {
+    this.appointmentAttachments = this.appointmentAttachments.filter(x=>x.id !== file.id);
+  }
+
+  async readAsBase64(photo: Photo) {
+    if (this.platform.is('hybrid')) {
+      const file = await Filesystem.readFile({
+        path: photo.path,
+      });
+
+      return file.data;
+    } else {
+      // Fetch the photo, read as a blob, then convert to base64 format
+      const response = await fetch(photo.webPath);
+      const blob = await response.blob();
+
+      const base64 = (await this.convertBlobToBase64(blob)) as string;
+      console.log(base64);
+      return base64.split(',')[1];
+    }
+  }
+
+  // eslint-disable-next-line @typescript-eslint/member-ordering
+  convertBlobToBase64 = (blob: Blob) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onerror = reject;
+      reader.onload = () => {
+        resolve(reader.result);
+      };
+      reader.readAsDataURL(blob);
+    });
+
+  async profilePicErrorHandler(event) {
+    event.target.src = '../../../../assets/img/error_black.png';
+  }
+
+  async onViewImage(file) {
+    if(file && file.source) {
+      const modal = await this.modalCtrl.create({
+        component: ImageViewerPage,
+        cssClass: 'modal-fullscreen',
+        componentProps: { file: { url: file.source} },
+      });
+      modal.present();
+      await modal.onWillDismiss();
     }
   }
 

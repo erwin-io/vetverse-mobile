@@ -12,9 +12,9 @@
 <ion-content>
   <div class="details">
     <div class="profile">
-      <div class="avatar">
-        <img src="https://hips.hearstapps.com/hmg-prod/images/cute-dog-captions-1563456568.jpg?crop=0.668xw:1.00xh;0.241xw,0&resize=480:*" />
-      </div>
+      <ion-avatar>
+        <img [src]="details.petProfilePic && details.petProfilePic.file ? details.petProfilePic.file.url : ''"  />
+      </ion-avatar>
       <h1 class="title">
         {{details.name}}
       </h1>

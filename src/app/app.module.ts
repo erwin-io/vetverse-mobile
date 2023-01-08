@@ -45,7 +45,7 @@ import { AndroidPermissions } from '@awesome-cordova-plugins/android-permissions
       multi : true,
       deps : [AppConfigService],
       useFactory : (config: AppConfigService) =>  () => config.loadAppConfig()
-    }
+    },
   ],
   bootstrap: [AppComponent],
 })

@@ -1,7 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { AlertController, IonModal, ModalController } from '@ionic/angular';
+import { ActionSheetController, AlertController, IonModal, ModalController, Platform } from '@ionic/angular';
 import { forkJoin } from 'rxjs';
 import { Pet, PetCategory, PetType } from 'src/app/core/model/appointment.model';
 import { FilterPetCategoryPipe } from 'src/app/core/pipe/filter-pet-category.pipe';
@@ -10,6 +10,8 @@ import { PetTypeService } from 'src/app/core/services/pet-type.service';
 import { PetService } from 'src/app/core/services/pet.service';
 import { PageLoaderService } from 'src/app/core/ui-service/page-loader.service';
 import * as moment from 'moment';
+import { Camera, CameraResultType, CameraSource, Photo } from '@capacitor/camera';
+import { Filesystem } from '@capacitor/filesystem';
 
 export class PetAddModel {
   petId?: string;
@@ -37,11 +39,15 @@ export class PetAddPage implements OnInit {
   activeAditionalBackdrop = false;
   isSubmitting = false;
   isLoading = false;
+  petProfilePic;
 
   private _petTypeData: PetType[] = [];
   private _petCategoryData: PetCategory[] = [];
 
   constructor(
+    private actionSheetController: ActionSheetController,
+    private platform: Platform,
+    private modalCtrl: ModalController,
     private petService: PetService,
     private petTypeService: PetTypeService,
     private petCategoryService: PetCategoryService,
@@ -56,7 +62,8 @@ export class PetAddPage implements OnInit {
       petId: this.details.petId,
       clientId: this.details.clientId,
       ...this.petForm.value,
-      birthDate: moment(this.petForm.value.birthDate).format('YYYY-MM-DD')
+      birthDate: moment(this.petForm.value.birthDate).format('YYYY-MM-DD'),
+      petProfilePic: this.petProfilePic,
     };
   }
 
@@ -66,7 +73,8 @@ export class PetAddPage implements OnInit {
     this.details.name !== this.formData.name ||
     this.details.genderId !== this.formData.genderId ||
     this.details.weight !== this.formData.weight ||
-    moment(this.details.birthDate).format('YYYY-MM-DD').toString() !== moment(this.formData.birthDate).format('YYYY-MM-DD');
+    moment(this.details.birthDate).format('YYYY-MM-DD').toString() !== moment(this.formData.birthDate).format('YYYY-MM-DD') ||
+    this.petProfilePic.isNew;
   }
 
   get errorControls() {
@@ -161,6 +169,7 @@ export class PetAddPage implements OnInit {
             this.isSubmitting = false;
             this.modal.dismiss({success: true, data: res.data}, 'confirm');
           } else {
+            await this.pageLoaderService.close();
             this.isSubmitting = false;
             await this.presentAlert({
               header: 'Try again!',
@@ -169,6 +178,7 @@ export class PetAddPage implements OnInit {
             });
           }
         }, async (err) => {
+          await this.pageLoaderService.close();
           this.isSubmitting = false;
           await this.presentAlert({
             header: 'Try again!',
@@ -177,6 +187,7 @@ export class PetAddPage implements OnInit {
           });
         });
     } catch (e){
+      await this.pageLoaderService.close();
       this.isSubmitting = false;
       await this.presentAlert({
         header: 'Try again!',
@@ -200,6 +211,7 @@ export class PetAddPage implements OnInit {
             this.isSubmitting = false;
             this.modal.dismiss({success: true, data: res.data}, 'confirm');
           } else {
+            await this.pageLoaderService.close();
             this.isSubmitting = false;
             await this.presentAlert({
               header: 'Try again!',
@@ -208,6 +220,7 @@ export class PetAddPage implements OnInit {
             });
           }
         }, async (err) => {
+          await this.pageLoaderService.close();
           this.isSubmitting = false;
           await this.presentAlert({
             header: 'Try again!',
@@ -216,6 +229,7 @@ export class PetAddPage implements OnInit {
           });
         });
     } catch (e){
+      await this.pageLoaderService.close();
       this.isSubmitting = false;
       await this.presentAlert({
         header: 'Try again!',
@@ -223,6 +237,98 @@ export class PetAddPage implements OnInit {
         buttons: ['OK']
       });
     }
+  }
+
+  async onChangeProfilePic() {
+    const actionSheet = await this.actionSheetController.create({
+      cssClass: 'sched-card-action-sheet',
+      buttons: [
+        {
+          text: 'Camera',
+          handler: async () => {
+            const image = await Camera.getPhoto({
+              quality: 90,
+              allowEditing: false,
+              resultType: CameraResultType.Uri,
+              source: CameraSource.Camera, // Camera, Photos or Prompt!
+            });
+            if (image) {
+              const base64Data = await this.readAsBase64(image);
+              this.petProfilePic = {
+                fileName: `profile-sample-name.${image.format}`,
+                data: base64Data,
+                source: `data:image/${image.format};base64,${base64Data}`,
+                isNew: true
+              };
+            }
+            actionSheet.dismiss();
+          },
+        },
+        {
+          text: 'Gallery',
+          handler: async () => {
+            const image = await Camera.getPhoto({
+              quality: 90,
+              allowEditing: false,
+              resultType: CameraResultType.Uri,
+              source: CameraSource.Photos, // Camera, Photos or Prompt!
+            });
+            if (image) {
+              const base64Data = await this.readAsBase64(image);
+              this.petProfilePic = {
+                fileName: `profile-sample-name.${image.format}`,
+                data: base64Data,
+                source: `data:image/${image.format};base64,${base64Data}`,
+                isNew: true
+              };
+            }
+            actionSheet.dismiss();
+          },
+        },
+        {
+          text: 'Cancel',
+          handler: async () => {
+            actionSheet.dismiss();
+          },
+        },
+      ],
+    });
+    await actionSheet.present();
+
+    // const result = await actionSheet.onDidDismiss();
+    // console.log(result);
+  }
+  async readAsBase64(photo: Photo) {
+    if (this.platform.is('hybrid')) {
+      const file = await Filesystem.readFile({
+        path: photo.path,
+      });
+
+      return file.data;
+    } else {
+      // Fetch the photo, read as a blob, then convert to base64 format
+      const response = await fetch(photo.webPath);
+      const blob = await response.blob();
+
+      const base64 = (await this.convertBlobToBase64(blob)) as string;
+      console.log(base64);
+      return base64.split(',')[1];
+    }
+  }
+
+  // eslint-disable-next-line @typescript-eslint/member-ordering
+  convertBlobToBase64 = (blob: Blob) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onerror = reject;
+      reader.onload = () => {
+        resolve(reader.result);
+      };
+      reader.readAsDataURL(blob);
+    });
+
+  async profilePicErrorHandler(event) {
+    event.target.src = '../../../assets/img/pet-profile-not-found.png';
   }
 
   cancel() {

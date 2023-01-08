@@ -54,7 +54,11 @@ const routes: Routes = [
   {
     path: 'settings',
     loadChildren: () => import('./pages/settings/settings.module').then( m => m.SettingsPageModule)
+  },  {
+    path: 'image-viewer',
+    loadChildren: () => import('./component/image-viewer/image-viewer.module').then( m => m.ImageViewerPageModule)
   }
+
 
 
 ];

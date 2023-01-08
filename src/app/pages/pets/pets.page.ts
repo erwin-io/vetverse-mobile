@@ -116,8 +116,8 @@ export class PetsPage implements OnInit {
         clientId: details.client.clientId,
         petTypeId: details.petCategory.petType.petTypeId,
         petCategoryId: details.petCategory.petCategoryId,
-        genderId: details.gender.genderId,
-      } },
+        genderId: details.gender.genderId
+      }, petProfilePic: { source: details.petProfilePic.file.url } },
     });
     modal.present();
     await modal.onWillDismiss();
@@ -126,6 +126,7 @@ export class PetsPage implements OnInit {
   }
 
   async details(details) {
+    console.log(details);
     const modal = await this.modalCtrl.create({
       component: PetDetailsPage,
       cssClass: 'modal-fullscreen',
@@ -219,6 +220,9 @@ export class PetsPage implements OnInit {
         buttons: ['OK']
       });
     }
+  }
+  async profilePicErrorHandler(event) {
+    event.target.src = '../../../assets/img/pet-profile-not-found.png';
   }
 
   async presentAlert(options: any) {

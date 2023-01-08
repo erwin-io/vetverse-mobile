@@ -21,6 +21,11 @@ ion-header::after {
       ion-avatar {
         width: 103px;
         height: 103px;
+        img {
+          object-position: center;
+          object-fit: contain;
+          box-shadow: 0 0 10px 0 rgb(122 122 122 / 46%);
+        }
       }
     }
     .welcome {

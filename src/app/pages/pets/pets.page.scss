@@ -135,6 +135,10 @@ ion-header::after {
           ::ng-deep ion-avatar {
             width: 120px!important;
             height: 120px!important;
+            img {
+              object-position: center;
+              object-fit: contain;
+            }
           }
         }
         .card-content {
@@ -158,6 +162,8 @@ ion-header::after {
               color: #004D40;
               font-size: 30px!important;
               transition: color 0.5s cubic-bezier(0.075, 0.82, 0.165, 1);
+              word-break: break-all;
+              line-height: 1;
               &:focus,
               &:active,
               &:visited,

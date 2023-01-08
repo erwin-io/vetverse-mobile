@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { AlertController, ModalController } from '@ionic/angular';
-import { Appointment } from 'src/app/core/model/appointment.model';
+import { ActionSheetController, AlertController, ModalController, Platform } from '@ionic/angular';
+import { Appointment, AppointmentAttachments } from 'src/app/core/model/appointment.model';
 import * as moment from 'moment';
 import { AppointmentService } from 'src/app/core/services/appointment.service';
 import { PageLoaderService } from 'src/app/core/ui-service/page-loader.service';
@@ -14,6 +14,9 @@ import { UserService } from 'src/app/core/services/user.service';
 import { StorageService } from 'src/app/core/storage/storage.service';
 import { AppConfigService } from 'src/app/core/services/app-config.service';
 import { ContactVetPage } from './contact-vet/contact-vet.page';
+import { ImageViewerPage } from 'src/app/component/image-viewer/image-viewer.page';
+import { Camera, CameraResultType, CameraSource, Photo } from '@capacitor/camera';
+import { Filesystem } from '@capacitor/filesystem';
 
 @Component({
   selector: 'app-schedule-details',
@@ -26,14 +29,20 @@ export class ScheduleDetailsPage implements OnInit {
   isLoading = false;
   details: Appointment = {} as any;
   conferenceWebURL;
+  isLoadingAttachments = false;
 
   constructor(private modalCtrl: ModalController,
     private alertController: AlertController,
+    private actionSheetController: ActionSheetController,
+    private platform: Platform,
     private pageLoaderService: PageLoaderService,
     private storageService: StorageService,
     private userService: UserService,
     private appconfig: AppConfigService,
     private appointmentService: AppointmentService) {
+      this.platform.backButton.subscribeWithPriority(-1, () => {
+        this.cancel();
+      });
   }
 
   get appointmentDate(){
@@ -250,6 +259,206 @@ export class ScheduleDetailsPage implements OnInit {
     });
     modal.present();
     await modal.onWillDismiss();
+  }
+
+  async onAddPhoto() {
+    const actionSheet = await this.actionSheetController.create({
+      cssClass: 'sched-card-action-sheet',
+      buttons: [
+        {
+          text: 'Camera',
+          handler: async () => {
+            const image = await Camera.getPhoto({
+              quality: 90,
+              allowEditing: false,
+              resultType: CameraResultType.Uri,
+              source: CameraSource.Camera, // Camera, Photos or Prompt!
+            });
+            if (image) {
+              const base64Data = await this.readAsBase64(image);
+              const attachmentFile = {
+                appointmentId: this.details.appointmentId,
+                fileName: `profile-sample-name.${image.format}`,
+                data: base64Data,
+              };
+              this.addAttachmentFile(attachmentFile);
+            }
+            actionSheet.dismiss();
+          },
+        },
+        {
+          text: 'Gallery',
+          handler: async () => {
+            const image = await Camera.getPhoto({
+              quality: 90,
+              allowEditing: false,
+              resultType: CameraResultType.Uri,
+              source: CameraSource.Photos, // Camera, Photos or Prompt!
+            });
+            if (image) {
+              const base64Data = await this.readAsBase64(image);
+              const attachmentFile = {
+                appointmentId: this.details.appointmentId,
+                fileName: `profile-sample-name.${image.format}`,
+                data: base64Data,
+              };
+              this.addAttachmentFile(attachmentFile);
+            }
+            actionSheet.dismiss();
+          },
+        },
+        {
+          text: 'Cancel',
+          handler: async () => {
+            actionSheet.dismiss();
+          },
+        },
+      ],
+    });
+    await actionSheet.present();
+
+    // const result = await actionSheet.onDidDismiss();
+    // console.log(result);
+  }
+
+  async readAsBase64(photo: Photo) {
+    if (this.platform.is('hybrid')) {
+      const file = await Filesystem.readFile({
+        path: photo.path,
+      });
+
+      return file.data;
+    } else {
+      // Fetch the photo, read as a blob, then convert to base64 format
+      const response = await fetch(photo.webPath);
+      const blob = await response.blob();
+
+      const base64 = (await this.convertBlobToBase64(blob)) as string;
+      console.log(base64);
+      return base64.split(',')[1];
+    }
+  }
+
+  // eslint-disable-next-line @typescript-eslint/member-ordering
+  convertBlobToBase64 = (blob: Blob) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onerror = reject;
+      reader.onload = () => {
+        resolve(reader.result);
+      };
+      reader.readAsDataURL(blob);
+    });
+
+
+  async onViewImage(attachments) {
+    if(attachments.file && attachments.file.url) {
+      const modal = await this.modalCtrl.create({
+        component: ImageViewerPage,
+        cssClass: 'modal-fullscreen',
+        componentProps: { file: attachments.file },
+      });
+      modal.present();
+      await modal.onWillDismiss();
+    }
+  }
+
+  async addAttachmentFile(params) {
+    try{
+      this.isLoadingAttachments = true;
+      this.appointmentService.addAttachmentFile(params)
+      .subscribe(async res => {
+        if(res.success){
+          console.log(res.data);
+          this.details.appointmentAttachments = res.data;
+          this.isLoadingAttachments = false;
+        }
+        else{
+          this.isLoadingAttachments = false;
+          await this.presentAlert({
+            header: 'Try again!',
+            subHeader: '',
+            message: Array.isArray(res.message) ? res.message[0] : res.message,
+            buttons: ['OK']
+          });
+        }
+      }, async (e) => {
+        await this.presentAlert({
+          header: 'Try again!',
+          subHeader: '',
+          message: Array.isArray(e.message) ? e.message[0] : e.message,
+          buttons: ['OK']
+        });
+        this.isLoadingAttachments = false;
+      });
+    }catch(e) {
+      this.isLoadingAttachments = false;
+      await this.presentAlert({
+        header: 'Try again!',
+        subHeader: '',
+        message: Array.isArray(e.message) ? e.message[0] : e.message,
+        buttons: ['OK']
+      });
+    }
+  }
+
+  async onRemovePhoto(attachments: AppointmentAttachments) {
+    try{
+      await this.presentAlert({
+        header: 'Are you sure you want to remove photo?',
+        buttons: [
+          {
+            text: 'BACK',
+            role: 'cancel',
+          },
+          {
+            text: 'YES',
+            role: 'confirm',
+            handler: async () => {
+              this.isLoadingAttachments = true;
+              this.appointmentService.removeAttachmentFile(attachments.appointmentAttachmentId)
+              .subscribe(async res => {
+                if(res.success){
+                  console.log(res.data);
+                  this.details.appointmentAttachments = res.data;
+                  this.isLoadingAttachments = false;
+                }
+                else{
+                  this.isLoadingAttachments = false;
+                  await this.presentAlert({
+                    header: 'Try again!',
+                    subHeader: '',
+                    message: Array.isArray(res.message) ? res.message[0] : res.message,
+                    buttons: ['OK']
+                  });
+                }
+              }, async (e) => {
+                await this.presentAlert({
+                  header: 'Try again!',
+                  subHeader: '',
+                  message: Array.isArray(e.message) ? e.message[0] : e.message,
+                  buttons: ['OK']
+                });
+                this.isLoadingAttachments = false;
+              });
+            },
+          },
+        ],
+      });
+    }
+    catch(e){
+      this.isLoadingAttachments = false;
+      await this.presentAlert({
+        header: 'Try again!',
+        subHeader: '',
+        message: Array.isArray(e.message) ? e.message[0] : e.message,
+        buttons: ['OK']
+      });
+    }
+  }
+
+  async profilePicErrorHandler(event) {
+    event.target.src = '../../../../assets/img/error_black.png';
   }
 
   cancel() {

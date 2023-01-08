@@ -33,7 +33,7 @@
           <ion-card class="pet-card ion-activatable">
             <div class="card-header">
               <ion-avatar>
-                <img alt="" src="../../../assets/img/vetverse_icon.png" />
+                <img alt="" [src]="pet.petProfilePic && pet.petProfilePic.file ? pet.petProfilePic.file.url : ''" (error)="profilePicErrorHandler($event)" />
               </ion-avatar>
             </div>
             <div class="card-content">

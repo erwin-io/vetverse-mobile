@@ -7,4 +7,5 @@ export class User {
   userType: UserType;
   role: Role;
   enable:boolean;
+  userProfilePic: any;
 }

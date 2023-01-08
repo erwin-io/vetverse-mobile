@@ -13,3 +13,17 @@ ion-header::after {
   margin-bottom: 10px;
 }
 
+#petProfilePic {
+  display: flex;
+  justify-content: center;
+  ion-avatar {
+    width: 148px!important;
+    height: 148px!important;
+    img {
+      border-radius: 100%;
+      object-position: center;
+      object-fit: contain;
+      box-shadow: 0 0 10px 0 rgb(122 122 122 / 46%);
+    }
+  }
+}

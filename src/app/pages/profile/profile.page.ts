@@ -4,6 +4,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { LoginResult } from 'src/app/core/model/loginresult.model';
+import { environment } from 'src/environments/environment';
 import { StorageService } from '../../core/storage/storage.service';
 import { SettingsPage } from '../settings/settings.page';
 
@@ -18,10 +19,9 @@ export class ProfilePage implements OnInit {
     private modalCtrl: ModalController,
     private storageService: StorageService
   ) {
-
   }
 
-  get user(): LoginResult {
+  get user() {
     return this.storageService.getLoginUser();
   }
 
@@ -38,9 +38,14 @@ export class ProfilePage implements OnInit {
       componentProps: { modal },
     });
     modal.present();
+    console.log('open settings');
   }
 
   ionViewWillEnter() {
     console.log('visited');
+  }
+
+  profilePicErrorHandler(event) {
+    event.target.src = '../../../assets/img/profile-not-found.png';
   }
 }

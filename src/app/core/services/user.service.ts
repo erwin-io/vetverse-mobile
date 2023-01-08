@@ -104,6 +104,13 @@ export class UserService implements IServices {
       catchError(this.handleError('user', []))
     );
   }
+  updateClientProfilePicture(data: any){
+    return this.http.put<any>(environment.apiBaseUrl + this.appconfig.config.apiEndPoints.user.updateClientProfilePicture, data)
+    .pipe(
+      tap(_ => this.log('user')),
+      catchError(this.handleError('user', []))
+    );
+  }
 
   handleError<T>(operation = 'operation', result?: T) {
     return (error: any): Observable<T> => {

@@ -52,7 +52,8 @@
       "getStaffByAdvanceSearch": "users/getStaffByAdvanceSearch",
       "udpdateClient": "users/client",
       "updateFirebaseToken": "users/updateFirebaseToken",
-      "changePassword": "users/changePassword"
+      "changePassword": "users/changePassword",
+      "updateClientProfilePicture": "users/clientProfilePicture"
 
     },
     "serviceType": "service-type/",
@@ -63,7 +64,9 @@
       "createClientAppointment": "appointment/createClientAppointment",
       "createClientCashlessAppointment": "appointment/createClientCashlessAppointment",
       "rescheduleAppointment": "appointment/rescheduleAppointment",
-      "updateAppointmentStatus": "appointment/updateAppointmentStatus"
+      "updateAppointmentStatus": "appointment/updateAppointmentStatus",
+      "addAttachmentFile": "appointment/addAttachmentFile",
+      "removeAttachmentFile": "appointment/removeAttachmentFile/"
     },
     "payment": {
       "get": "payments",

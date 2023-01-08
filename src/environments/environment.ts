@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  conferenceHost: 'https://vetverse-web.herokuapp.com/',
-  apiBaseUrl: 'https://vetverse-api.herokuapp.com/api/v1/'
+  conferenceHost: 'https://localhost:4200/',
+  apiBaseUrl: 'http://localhost:3000/api/v1/'
 };
 
 /*

@@ -4,7 +4,7 @@ import { Observable, of } from 'rxjs';
 import { tap, catchError } from 'rxjs/operators';
 import { environment } from 'src/environments/environment';
 import { ApiResponse } from '../model/api-response.model';
-import { Appointment } from '../model/appointment.model';
+import { Appointment, AppointmentAttachments } from '../model/appointment.model';
 import { AppConfigService } from './app-config.service';
 import { IServices } from './interface/iservices';
 
@@ -97,6 +97,31 @@ export class AppointmentService implements IServices {
         environment.apiBaseUrl +
           this.appconfig.config.apiEndPoints.appointment.updateAppointmentStatus,
         data
+      )
+      .pipe(
+        tap((_) => this.log('appointment')),
+        catchError(this.handleError('appointment', []))
+      );
+  }
+
+  addAttachmentFile(data: any): Observable<ApiResponse<AppointmentAttachments[]>> {
+    return this.http
+      .post<any>(
+        environment.apiBaseUrl +
+          this.appconfig.config.apiEndPoints.appointment.addAttachmentFile,
+        data
+      )
+      .pipe(
+        tap((_) => this.log('appointment')),
+        catchError(this.handleError('appointment', []))
+      );
+  }
+
+
+  removeAttachmentFile(appointmentAttachmentId): Observable<ApiResponse<AppointmentAttachments[]>> {
+    return this.http
+      .delete<any>(
+        environment.apiBaseUrl + this.appconfig.config.apiEndPoints.appointment.removeAttachmentFile + appointmentAttachmentId
       )
       .pipe(
         tap((_) => this.log('appointment')),

@@ -21,4 +21,5 @@ export class LoginResult {
   totalUnreadNotif: number;
   lastCancelledDate: Date;
   numberOfCancelledAttempt: string;
+  userProfilePic:any;
 }

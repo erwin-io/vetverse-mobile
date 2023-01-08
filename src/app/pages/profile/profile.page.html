@@ -14,7 +14,7 @@
     <div class="row profile">
       <div class="col avatar">
         <ion-avatar>
-          <img src="https://ionicframework.com/docs/demos/api/avatar/avatar.svg">
+          <img [src]="user.userProfilePic" (error)="profilePicErrorHandler($event)">
         </ion-avatar>
       </div>
       <div class="col welcome">

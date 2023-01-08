@@ -17,15 +17,18 @@ ion-content {
       display: flex;
       flex-direction: column;
       box-sizing: border-box;
-      .avatar {
+      ion-avatar {
         display: flex;
         flex-direction: column;
         box-sizing: border-box;
-        padding: 20px 20px 0 20px;
+        margin: 20px 20px 0 20px;
+        width: 148px!important;
+        height: 148px!important;
         img {
           border-radius: 100%;
-          width: 148px!important;
-          height: 148px!important;
+          object-position: center;
+          object-fit: contain;
+          box-shadow: 0 0 10px 0 rgb(122 122 122 / 46%);
         }
       }
       .title{
@@ -38,6 +41,8 @@ ion-content {
         text-align: center;
         margin: 0!important;
         padding: 10px 0 0 0;
+        word-break: break-all;
+        line-height: 1;
       }
     }
     .info {

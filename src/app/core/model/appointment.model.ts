@@ -22,6 +22,7 @@ export class Appointment {
   conferencePeerId: string;
   diagnosisAndTreatment: string;
   serviceRate: number;
+  appointmentAttachments: AppointmentAttachments[];
 }
 
 export class ConsultaionType {
@@ -76,6 +77,7 @@ export class Pet {
   petCategory: PetCategory;
   gender: Gender;
   petAppointments?: PetAppointment[];
+  petProfilePic: PetProfilePic;
 }
 
 export class PetCategory {
@@ -89,4 +91,18 @@ export class PetType {
   petTypeId: string;
   name: string;
   entityStatusId: string;
+}
+export class PetProfilePic {
+  petId: string;
+  file: Files;
+}
+export class Files {
+  fileId: string;
+  fileName: string;
+  url: string;
+}
+
+export class AppointmentAttachments {
+  appointmentAttachmentId: string;
+  file: Files;
 }

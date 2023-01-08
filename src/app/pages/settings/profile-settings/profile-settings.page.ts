@@ -11,6 +11,7 @@ import { PetService } from 'src/app/core/services/pet.service';
 import { UserService } from 'src/app/core/services/user.service';
 import { StorageService } from 'src/app/core/storage/storage.service';
 import { PageLoaderService } from 'src/app/core/ui-service/page-loader.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-profile-settings',

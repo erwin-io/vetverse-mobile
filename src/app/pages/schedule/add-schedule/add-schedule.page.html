@@ -100,6 +100,22 @@
               Please add comments or notes
             </span>
           </div>
+          <div class="form-field-group" >
+            <ion-button fill="outline" size="large" (click)="onAddPhoto()" >
+              <ion-icon slot="start" name="camera"></ion-icon>
+              Add photo
+            </ion-button>
+          </div>
+          <div class="form-field-group" >
+            <div class="photos">
+              <ion-avatar *ngFor="let file of appointmentAttachments">
+                <ion-button class="remove-button" size="small" color="light" (click)="onRemovePhoto(file)">
+                  <ion-icon name="close"></ion-icon>
+                </ion-button>
+                <img [src]="file ? file.source : ''" (error)="profilePicErrorHandler($event)" (click)="onViewImage(file)">
+              </ion-avatar>
+            </div>
+          </div>
         </fieldset>
       </form>
     </mat-step>

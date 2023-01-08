@@ -1,33 +1,33 @@
 {
   "project_info": {
-    "project_number": "395138105511",
-    "project_id": "vetverse-web",
-    "storage_bucket": "vetverse-web.appspot.com"
+    "project_number": "887198043844",
+    "project_id": "vetverse-web-ba257",
+    "storage_bucket": "vetverse-web-ba257.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:395138105511:android:a116507484e04a94df5b82",
+        "mobilesdk_app_id": "1:887198043844:android:a04356637b963535500391",
         "android_client_info": {
           "package_name": "io.ionic.starter"
         }
       },
       "oauth_client": [
         {
-          "client_id": "395138105511-0bv73dtiv3anc72ruoqm8glkm81lpceo.apps.googleusercontent.com",
+          "client_id": "887198043844-629s27vej6pur2fogqnqafjlbrmq0vdn.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCWn1Gb4-nHfzI0zIZ3Yz6qQbpeACPu6Uo"
+          "current_key": "AIzaSyBdRyflM_pmYN0AngubRVI6fLcJZwDziD8"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "395138105511-0bv73dtiv3anc72ruoqm8glkm81lpceo.apps.googleusercontent.com",
+              "client_id": "887198043844-629s27vej6pur2fogqnqafjlbrmq0vdn.apps.googleusercontent.com",
               "client_type": 3
             }
           ]

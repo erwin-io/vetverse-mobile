@@ -56,3 +56,31 @@ ion-radio-group {
     }
   }
 }
+
+.photos {
+  row-gap: 10px;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  width: 100%;
+  padding: 10px;
+  ion-avatar {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: auto;
+    .remove-button {
+      position: absolute;
+      right: 30px;
+      width: 40px;
+      height: 40px;
+    }
+    img {
+      height: 200px;
+      border-radius: 10px;
+      object-position: center;
+      object-fit: contain;
+      box-shadow: 0 0 10px 0 rgb(122 122 122 / 46%);
+    }
+  }
+}
