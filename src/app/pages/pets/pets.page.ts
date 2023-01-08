@@ -117,7 +117,7 @@ export class PetsPage implements OnInit {
         petTypeId: details.petCategory.petType.petTypeId,
         petCategoryId: details.petCategory.petCategoryId,
         genderId: details.gender.genderId
-      }, petProfilePic: { source: details.petProfilePic.file.url } },
+      }, petProfilePic: { source: details.petProfilePic && details.petProfilePic.file ? details.petProfilePic.file.url : '' } },
     });
     modal.present();
     await modal.onWillDismiss();
