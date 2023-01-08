@@ -19,6 +19,7 @@ import { PageLoaderModule } from './component/page-loader/page-loader.module';
 import { DirectiveModule } from './core/directive/directive.module';
 import { InAppBrowser } from '@awesome-cordova-plugins/in-app-browser/ngx';
 import { AndroidPermissions } from '@awesome-cordova-plugins/android-permissions/ngx';
+import { ImageViewerPageModule } from './component/image-viewer/image-viewer.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -34,6 +35,7 @@ import { AndroidPermissions } from '@awesome-cordova-plugins/android-permissions
     MaterialModule,
     PageLoaderModule,
     DirectiveModule,
+    ImageViewerPageModule,
   ],
   providers: [
     InAppBrowser,

@@ -17,9 +17,12 @@ export class LoginResult {
   gender: Gender;
   birthDate: Date;
   role: Role;
+  accessToken: any;
+  refreshToken: any;
   userTypeIdentityId: string;
   totalUnreadNotif: number;
   lastCancelledDate: Date;
   numberOfCancelledAttempt: string;
-  userProfilePic:any;
+  userProfilePic: any;
+  isVerified: boolean;
 }

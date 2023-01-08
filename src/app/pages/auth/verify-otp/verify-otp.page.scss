@@ -1,0 +1,87 @@
+.container {
+    height: 100%;
+    display: flex;
+    padding: 0 40px!important;
+    &.verify-otp {
+      flex-direction: column;
+      justify-content: flex-start!important;
+      .welcome {
+        text-transform: uppercase;
+        white-space: pre;
+        overflow: visible;
+        font-weight: 400;
+        font-style: normal;
+        font-family: "Sumana", serif;
+        color: #247881;
+        font-size: 23px;
+        letter-spacing: 0px;
+        line-height: 1.2;
+        text-align: center;
+        margin: 0 0 25px 0!important;
+      }
+      .app_banner {
+        display: flex;
+        flex-grow: 1;
+        height: 104px;
+        justify-content: center;
+        margin-bottom: 57px!important;
+        .image-container {
+          width: 299px;
+          img {
+            width: 100%;
+            height: 100%;
+            background-repeat: no-repeat;
+            background-position: center center;
+            background-size: cover;
+          }
+        }
+      }
+      .verify-otp-text {
+        text-align: center;
+      }
+      span, input {
+        font-size: 16px;
+        letter-spacing: 0px;
+        line-height: 1.2;
+      }
+      .form-container {
+        display: flex;
+        flex-grow: 1;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        width: 100%!important;
+        .action {
+          flex-grow: 1;
+          display: flex;
+          flex-direction: column;
+          row-gap: 5px;
+          * {
+            flex-grow: 1;
+          }
+          button {
+            height: 53px;
+            font-size: 16px;
+            letter-spacing: 0px;
+            line-height: 1.2;
+          }
+        }
+      }
+      .verify-otp-footer {
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        height: 103px;
+        justify-content: flex-end;
+        padding: 20px 0;
+        * {
+          color: #000000!important;
+        }
+        a {
+          text-decoration: underline;
+        }
+      }
+    }
+  
+  }
+  

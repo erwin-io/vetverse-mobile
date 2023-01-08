@@ -1,10 +1,11 @@
 .container {
   height: 100%;
   display: flex;
-  padding: 0 40px;
+  padding: 0 40px!important;
   &.register {
     flex-direction: column;
     margin-top: 30px;
+    justify-content: flex-start!important;
     .app_banner {
       display: flex;
       flex-grow: 1;
@@ -37,6 +38,7 @@
       justify-content: center;
       align-items: center;
       padding-bottom: 130px!important;
+      width: 100%!important;
       .form-field-group {
       }
     }

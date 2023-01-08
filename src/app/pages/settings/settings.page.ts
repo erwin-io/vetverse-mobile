@@ -205,7 +205,7 @@ export class SettingsPage implements OnInit {
     });
 
   profilePicErrorHandler(event) {
-    event.target.src = '../../../assets/img/pet-profile-not-found.png';
+    event.target.src = '../../../assets/img/profile-not-found.png';
   }
 
   async saveProfilePicture(params) {

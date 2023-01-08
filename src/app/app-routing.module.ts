@@ -45,6 +45,13 @@ const routes: Routes = [
     }
   },
   {
+    path: 'verify-otp',
+    loadChildren: () => import('./pages/auth/verify-otp/verify-otp.module').then( m => m.VerifyOtpPageModule),
+    data: {
+      auth: true
+    }
+  },
+  {
     path: 'signup',
     loadChildren: () => import('./pages/auth/register/register.module').then( m => m.RegisterPageModule),
     data: {
@@ -54,13 +61,7 @@ const routes: Routes = [
   {
     path: 'settings',
     loadChildren: () => import('./pages/settings/settings.module').then( m => m.SettingsPageModule)
-  },  {
-    path: 'image-viewer',
-    loadChildren: () => import('./component/image-viewer/image-viewer.module').then( m => m.ImageViewerPageModule)
   }
-
-
-
 ];
 
 @NgModule({

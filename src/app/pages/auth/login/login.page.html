@@ -3,7 +3,7 @@
     <div class="form-container">
       <form
         [formGroup]="loginForm"
-        (ngSubmit)="onFormSubmit(loginForm.value)">
+        (ngSubmit)="onFormSubmit()">
         <fieldset [disabled]="isSubmitting">
           <h4 class="welcome">Welcome to</h4>
           <div class="form-field-group">

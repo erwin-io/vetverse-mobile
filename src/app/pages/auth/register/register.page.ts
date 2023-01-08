@@ -1,10 +1,11 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, NgForm, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { AuthService } from '../../../core/services/auth.service';
-import { Router } from '@angular/router';
+import { NavigationExtras, Router } from '@angular/router';
 import { ToastController } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
 import { MyErrorStateMatcher } from '../../../core/form-validation/error-state.matcher';
+import { PageLoaderService } from 'src/app/core/ui-service/page-loader.service';
 
 @Component({
   selector: 'app-register',
@@ -20,6 +21,7 @@ export class RegisterPage implements OnInit {
     private formBuilder: FormBuilder,
     private router: Router,
     private authService: AuthService,
+    private pageLoaderService: PageLoaderService,
     private alertController: AlertController) { }
 
   ngOnInit() {
@@ -28,7 +30,9 @@ export class RegisterPage implements OnInit {
       middleName : [null],
       lastName : [null, Validators.required],
       email : [null, Validators.required],
-      mobileNumber : [null, Validators.required],
+      mobileNumber : [null, [ Validators.required,
+        Validators.pattern('^[0-9]*$'),
+        Validators.minLength(11), Validators.maxLength(11)]],
       address : [null, Validators.required],
       birthDate : [null, Validators.required],
       genderId : [null, Validators.required],
@@ -51,14 +55,24 @@ export class RegisterPage implements OnInit {
     }
     try{
       this.isSubmitting = true;
+      await this.pageLoaderService.open('Processing please wait...');
       this.authService.register(form)
         .subscribe(async res => {
+          await this.pageLoaderService.close();
           if (res.success) {
+            console.log(res.data);
             await this.presentAlert({
               header: 'Saved!',
               buttons: ['OK']
             }).then(() =>{
-              this.router.navigate(['login'], { replaceUrl: true });
+              const navigationExtras: NavigationExtras = {
+                state: {
+                  data: {
+                    userId: res.data.user.userId
+                  }
+                }
+              };
+              this.router.navigate(['verify-otp'], navigationExtras);
               this.isSubmitting = false;
             });
           } else {
@@ -70,6 +84,7 @@ export class RegisterPage implements OnInit {
             });
           }
         }, async (err) => {
+          await this.pageLoaderService.close();
           this.isSubmitting = false;
           await this.presentAlert({
             header: 'Try again!',

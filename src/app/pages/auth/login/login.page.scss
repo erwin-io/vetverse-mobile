@@ -1,9 +1,10 @@
 .container {
   height: 100%;
   display: flex;
-  padding: 0 40px;
+  padding: 0 40px!important;
   &.login {
     flex-direction: column;
+    justify-content: flex-start!important;
     .welcome {
       text-transform: uppercase;
       white-space: pre;

@@ -2,7 +2,7 @@
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
 import { AuthService } from '../../../core/services/auth.service';
-import { Router } from '@angular/router';
+import { NavigationExtras, Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { StorageService } from '../../../core/storage/storage.service';
 import { LoginResult } from 'src/app/core/model/loginresult.model';
@@ -40,6 +40,9 @@ export class LoginPage implements OnInit {
         this.appconfig.config.sessionConfig.sessionTimeout
       );
     }
+  get formData() {
+    return this.loginForm.value;
+  }
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
@@ -49,33 +52,42 @@ export class LoginPage implements OnInit {
     });
   }
 
-  async onFormSubmit(form: NgForm) {
-    const date = new Date();
+  async onFormSubmit() {
     if(!this.loginForm.valid){
       return;
     }
     try{
+      const params = this.formData;
       this.isSubmitting = true;
-      // await this.loaderService.presentLoader('Loging in...');
       await this.pageLoaderService.open('Loging in please wait...');
-      this.authService.login(form)
+      this.authService.login(params)
         .subscribe(async res => {
+          await this.pageLoaderService.close();
           if (res.success) {
-            await this.pageLoaderService.close();
-            this.storageService.saveRefreshToken(res.data.accessToken);
-            this.storageService.saveAccessToken(res.data.refreshToken);
-            this.storageService.saveTotalUnreadNotif(res.data.totalUnreadNotif);
-            const today = new Date();
-            today.setTime(today.getTime() + this.sessionTimeout * 1000);
-            this.storageService.saveSessionExpiredDate(today);
-            const userData: LoginResult = res.data;
-            this.storageService.saveLoginUser(userData);
-            this.fcmService.init();
-            this.router.navigate(['/'], { replaceUrl: true });
-            this.isSubmitting = false;
+            if(res.data.isVerified) {
+              this.storageService.saveRefreshToken(res.data.accessToken);
+              this.storageService.saveAccessToken(res.data.refreshToken);
+              this.storageService.saveTotalUnreadNotif(res.data.totalUnreadNotif);
+              const today = new Date();
+              today.setTime(today.getTime() + this.sessionTimeout * 1000);
+              this.storageService.saveSessionExpiredDate(today);
+              const userData: LoginResult = res.data;
+              this.storageService.saveLoginUser(userData);
+              this.fcmService.init();
+              this.router.navigate(['/'], { replaceUrl: true });
+              this.isSubmitting = false;
+            } else {
+              const navigationExtras: NavigationExtras = {
+                state: {
+                  data: {
+                    userId: res.data.userId
+                  }
+                }
+              };
+              this.router.navigate(['/verify-otp'], navigationExtras);
+            }
           } else {
             this.isSubmitting = false;
-            await this.pageLoaderService.close();
             await this.presentAlert({
               header: 'Try again!',
               message: Array.isArray(res.message) ? res.message[0] : res.message,
@@ -95,8 +107,8 @@ export class LoginPage implements OnInit {
         });
     } catch (e){
       console.log(e);
-      this.isSubmitting = false;
       await this.pageLoaderService.close();
+      this.isSubmitting = false;
       await this.presentAlert({
         header: 'Try again!',
         subHeader: '',

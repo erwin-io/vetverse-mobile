@@ -38,7 +38,8 @@
       "logout": "auth/logout",
       "register":"auth/register/client",
       "findByUsername": "auth/findByUsername/",
-      "refreshToken": "auth/refresh-token"
+      "refreshToken": "auth/refresh-token",
+      "verifyOtp": "auth/verifyOtp"
     },
     "gateway": {
       "gcash": {

@@ -9,6 +9,9 @@ import { AppConfigService } from './app-config.service';
 import { StorageService } from '../storage/storage.service';
 import { FcmService } from './fcm.service';
 import { UserService } from './user.service';
+import { Client } from '../model/client.model';
+import { ApiResponse } from '../model/api-response.model';
+import { LoginResult } from '../model/loginresult.model';
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +28,7 @@ export class AuthService implements IServices {
     private fcmService: FcmService
     ) { }
 
-  login(data: any): Observable<any> {
+  login(data: any): Observable<ApiResponse<LoginResult>> {
     return this.http.post<any>(environment.apiBaseUrl + this.appconfig.config.apiEndPoints.auth.login, data)
     .pipe(
       tap(_ => this.isLoggedIn = true),
@@ -55,7 +58,7 @@ export class AuthService implements IServices {
     );
   }
 
-  register(data: any): Observable<any> {
+  register(data: any): Observable<ApiResponse<Client>> {
     return this.http.post<any>(environment.apiBaseUrl + this.appconfig.config.apiEndPoints.auth.register, data)
     .pipe(
       tap(_ => this.log('register')),
@@ -76,6 +79,14 @@ export class AuthService implements IServices {
     .pipe(
       tap(_ => this.log('refresh token')),
       catchError(this.handleError('refresh token', []))
+    );
+  }
+
+  verifyOtp(data: any): Observable<any> {
+    return this.http.post<any>(environment.apiBaseUrl + this.appconfig.config.apiEndPoints.auth.verifyOtp, data)
+    .pipe(
+      tap(_ => this.isLoggedIn = true),
+      catchError(this.handleError('verify-otp', []))
     );
   }
 

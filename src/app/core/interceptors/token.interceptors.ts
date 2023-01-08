@@ -101,12 +101,14 @@ export class TokenInterceptor implements HttpInterceptor {
                 error.error.success === false
               ) {
               } else {
+                console.log('logout from interceptor');
                 this.handleLogout();
               }
               return throwError(error);
             })
           );
       } else {
+        console.log('logout from interceptor');
         this.handleLogout();
         this.isRefreshing = false;
       }

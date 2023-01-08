@@ -4,9 +4,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { ImageViewerPageRoutingModule } from './image-viewer-routing.module';
+import { VerifyOtpPageRoutingModule } from './verify-otp-routing.module';
 
-import { ImageViewerPage } from './image-viewer.page';
+import { VerifyOtpPage } from './verify-otp.page';
 import { MaterialModule } from 'src/app/material/material.module';
 
 @NgModule({
@@ -15,9 +15,9 @@ import { MaterialModule } from 'src/app/material/material.module';
     FormsModule,
     ReactiveFormsModule,
     IonicModule,
-    ImageViewerPageRoutingModule,
+    VerifyOtpPageRoutingModule,
     MaterialModule
   ],
-  declarations: [ImageViewerPage]
+  declarations: [VerifyOtpPage]
 })
-export class ImageViewerPageModule {}
+export class VerifyOtpPageModule {}

@@ -1,0 +1,37 @@
+<ion-content>
+  <div class="verify-otp container">
+    <div class="form-container">
+      <form
+        [formGroup]="verifyOtpForm"
+        (ngSubmit)="onFormSubmit()">
+        <fieldset [disabled]="isSubmitting">
+          <div class="form-field-group">
+            <span class="verify-otp-text">Verify OTP</span>
+          </div>
+          <div class="form-field-group">
+            <mat-form-field appearance="outline">
+              <mat-label>OTP</mat-label>
+              <input
+                matInput
+                type="text"
+                placeholder="OTP"
+                formControlName="otp"
+                oninput="this.value = this.value.toLowerCase()"
+              />
+            </mat-form-field>
+          </div>
+          <div class="action">
+            <button
+              type="submit"
+              mat-flat-button
+              color="primary"
+              >Verify</button>
+          </div>
+        </fieldset>
+      </form>
+    </div>
+    <div class="verify-otp-footer">
+      <span><a routerLink="/login" replaceUrl="true">Back to login</a></span>
+    </div>
+  </div>
+</ion-content>

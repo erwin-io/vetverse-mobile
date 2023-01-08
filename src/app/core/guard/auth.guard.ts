@@ -46,6 +46,7 @@ export class AuthGuard implements CanActivate {
       const diffTime = today - sessionExpiredDate;
       if (diffTime > 0) {
         this.authService.redirectUrl = url;
+        console.log('logout from authguard');
         this.authService.logout();
         return false;
       } else {
@@ -54,6 +55,7 @@ export class AuthGuard implements CanActivate {
       }
     } else {
       this.authService.redirectUrl = url;
+      console.log('logout from authguard');
       this.authService.logout();
       return false;
     }
@@ -63,6 +65,7 @@ export class AuthGuard implements CanActivate {
 
     if (!user || !refresh_token || refresh_token === '') {
       this.authService.redirectUrl = url;
+      console.log('logout from authguard');
       this.authService.logout();
       return false;
     }
@@ -72,6 +75,7 @@ export class AuthGuard implements CanActivate {
     this.authService.refreshToken({ userId: user.userId, refresh_token }).pipe(
       tap((token) => {
         if (!token) {
+          console.log('logout from authguard');
           this.authService.logout();
           return false;
         } else {
