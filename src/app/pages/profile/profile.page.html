@@ -93,9 +93,9 @@
               </ion-item>
               <ion-item *ngIf="latestAnnouncements;" button detail="false" class="ion-no-padding" (click)="openNotif(latestAnnouncements)">
                 <ion-label>
-                  <h2><strong>{{latestAppointmentNotif.title}}</strong></h2>
-                  <h3><strong>{{latestAppointmentNotif.description}}</strong></h3>
-                  <h3>{{latestAppointmentNotif.date | timeAgo}}</h3>
+                  <h2><strong>{{latestAnnouncements.title}}</strong></h2>
+                  <h3><strong>{{latestAnnouncements.description}}</strong></h3>
+                  <h3>{{latestAnnouncements.date | timeAgo}}</h3>
                 </ion-label>
               </ion-item>
               <ion-item *ngIf="!latestAppointmentNotif && !latestAnnouncements" button detail="false" class="ion-no-padding">
