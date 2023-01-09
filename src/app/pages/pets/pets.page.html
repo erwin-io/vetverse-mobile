@@ -30,7 +30,7 @@
     <div *ngIf="!isLoading; else elseLoadingPet" style="flex-grow: 1 ">
       <div class="pet-list" *ngIf="data.length > 0; else elseNoData">
         <div *ngFor="let pet of data | filterPet:keywordCtrl.value" >
-          <ion-card class="pet-card ion-activatable">
+          <ion-card mode="ios" class="pet-card ion-activatable">
             <div class="card-header">
               <ion-avatar>
                 <img alt="" [src]="pet.petProfilePic && pet.petProfilePic.file ? pet.petProfilePic.file.url : ''" (error)="profilePicErrorHandler($event)" />

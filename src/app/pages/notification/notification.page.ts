@@ -46,7 +46,6 @@ export class NotificationPage implements OnInit {
   ngOnInit() {
   }
 
-
   initNotification(clientId: string){
     this.isLoading = true;
     forkJoin(
@@ -80,6 +79,7 @@ export class NotificationPage implements OnInit {
   }
 
   async openDetails(notifDetails: Notifications) {
+    console.log(notifDetails);
     if(!notifDetails.isReminder){
       const modal = await this.modalCtrl.create({
         component: ScheduleDetailsPage,
@@ -189,5 +189,9 @@ export class NotificationPage implements OnInit {
 
   ionViewWillEnter(){
     console.log('visited');
+    if(window.history.state && window.history.state.open && window.history.state.open){
+      const details = window.history.state.open as Notifications;
+      this.openDetails(details);
+    }
   }
 }

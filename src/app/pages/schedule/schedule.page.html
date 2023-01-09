@@ -16,7 +16,7 @@
     </ion-refresher-content>
   </ion-refresher>
   <div>
-    <ion-card >
+    <ion-card mode="ios">
       <ion-list lines="none" >
         <ion-item *ngIf="!isLoading; else elseLoadingPending" button (click)="onOpenPending()">
           <ion-label><h2>Pending</h2></ion-label>
@@ -34,7 +34,7 @@
     <h2 class="list-title">Appointments</h2>
     <div *ngIf="appointment.length > 0; else elseNoData">
       <div *ngFor="let a of appointment">
-        <ion-card >
+        <ion-card mode="ios">
           <div class="sched-card">
             <div class="card-header">
               <span>{{a.appointmentDate | date: 'MMMM'}}</span>
@@ -86,7 +86,7 @@
   <ng-template #elseLoading>
     <div>
       <div *ngFor="let a of [1]">
-        <ion-card >
+        <ion-card mode="ios">
           <div class="sched-card">
             <div class="card-header" style="width: 90px!important">
               <span style="width: 100%!important">

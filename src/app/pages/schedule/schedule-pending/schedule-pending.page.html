@@ -17,7 +17,7 @@
   <div *ngIf="!isLoading; else elseLoading">
     <div *ngIf="appointment.length > 0; else elseNoData">
       <div *ngFor="let a of appointment">
-        <ion-card >
+        <ion-card mode="ios">
           <div class="sched-card">
             <div class="card-header">
               <span>{{a.appointmentDate | date: 'MMMM'}}</span>
@@ -64,7 +64,7 @@
   <ng-template #elseLoading>
     <div>
       <div *ngFor="let a of [1]">
-        <ion-card >
+        <ion-card mode="ios">
           <div class="sched-card">
             <div class="card-header" style="width: 90px!important">
               <span style="width: 100%!important">

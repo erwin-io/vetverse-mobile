@@ -9,7 +9,11 @@
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
-<ion-content>
+<ion-content class="ion-padding">
+  <ion-refresher *ngIf="!isLoading" slot="fixed" (ionRefresh)="doRefresh($event)" class="refresher-custom">
+    <ion-refresher-content >
+    </ion-refresher-content>
+  </ion-refresher>
   <div class="content">
     <div class="row profile">
       <div class="col avatar">
@@ -26,5 +30,114 @@
         </div>
       </div>
     </div>
+    <div class="row dashboard">
+      <div class="col">
+        <ion-card mode="ios">
+          <ion-card-header>
+            <ion-list lines="none">
+              <ion-item class="ion-no-padding">
+                <ion-label >
+                  <h2><strong>Upcoming appointment</strong></h2>
+                </ion-label>
+                <ion-badge slot="end" color="success" *ngIf="!isLoading; else elseLoadingBadge">{{totalUpcoming}}</ion-badge>
+              </ion-item>
+            </ion-list>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-list lines="none" *ngIf="!isLoading; else elseLoadingCards">
+              <ion-item *ngIf="upcomingAppointment; else elseNoUpcommingAppointment" button detail="false" class="ion-no-padding" (click)="onOpenDetails(upcomingAppointment)">
+                <ion-label>
+                  <h2><strong>{{upcomingAppointment.serviceType.name}}</strong></h2>
+                  <h3><strong>{{upcomingAppointment.consultaionType.name}}</strong></h3>
+                  <h3>{{upcomingAppointment.appointmentDate | date: 'EEEE, MMM dd, yyyy'}}</h3>
+                  <h3>
+                      @{{upcomingAppointment.appointmentDate + ' ' + upcomingAppointment.timeStart | date: 'hh:mm a'}}
+                  </h3>
+                  <h3><strong>Dr {{upcomingAppointment.staff.fullName}}</strong></h3>
+                </ion-label>
+              </ion-item>
+              <ng-template #elseNoUpcommingAppointment>
+                <ion-item button detail="false" class="ion-no-padding">
+                  <ion-label>
+                    <h3>No upcomming appointment</h3>
+                  </ion-label>
+                </ion-item>
+              </ng-template>
+            </ion-list>
+          </ion-card-content>
+          <div class="action">
+            <ion-button fill="clear" *ngIf="totalUpcoming > 0" [disabled]="isLoading" routerLink="/schedule">View all</ion-button>
+          </div>
+        </ion-card>
+      </div>
+      <div class="col">
+        <ion-card mode="ios">
+          <ion-card-header>
+            <ion-list lines="none">
+              <ion-item class="ion-no-padding">
+                <ion-label >
+                  <h2><strong>Notifications</strong></h2>
+                </ion-label>
+                <ion-badge slot="end"color="warning" *ngIf="!isLoading; else elseLoadingBadge">{{totalUnreadNotification}}</ion-badge>
+              </ion-item>
+            </ion-list>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-list lines="none" *ngIf="!isLoading; else elseLoadingCards" style="margin-bottom: 10px;">
+              <ion-item *ngIf="latestAppointmentNotif;" button detail="false" class="ion-no-padding" (click)="openNotif(latestAppointmentNotif)">
+                <ion-label>
+                  <h2><strong>{{latestAppointmentNotif.title}}</strong></h2>
+                  <h3><strong>{{latestAppointmentNotif.description}}</strong></h3>
+                  <h3>{{latestAppointmentNotif.date | timeAgo}}</h3>
+                </ion-label>
+              </ion-item>
+              <ion-item *ngIf="latestAnnouncements;" button detail="false" class="ion-no-padding" (click)="openNotif(latestAnnouncements)">
+                <ion-label>
+                  <h2><strong>{{latestAppointmentNotif.title}}</strong></h2>
+                  <h3><strong>{{latestAppointmentNotif.description}}</strong></h3>
+                  <h3>{{latestAppointmentNotif.date | timeAgo}}</h3>
+                </ion-label>
+              </ion-item>
+              <ion-item *ngIf="!latestAppointmentNotif && !latestAnnouncements" button detail="false" class="ion-no-padding">
+                <ion-label>
+                  <h3>No unread notifcations to show</h3>
+                </ion-label>
+              </ion-item>
+            </ion-list>
+          </ion-card-content>
+          <div class="action">
+            <ion-button fill="clear" *ngIf="totalUnreadNotification > 0" [disabled]="isLoading" routerLink="/notification">View all</ion-button>
+          </div>
+        </ion-card>
+      </div>
+    </div>
   </div>
 </ion-content>
+
+<ng-template #elseLoadingCards>
+  <ion-list lines="none">
+    <ion-item detail="false" class="ion-no-padding">
+      <ion-label style="display: flex;flex-direction: column; gap: 10px;">
+        <h2>
+          <ion-skeleton-text [animated]="true" style="height: 20px;"></ion-skeleton-text>
+        </h2>
+        <h3>
+          <ion-skeleton-text [animated]="true" style="height: 20px;"></ion-skeleton-text>
+        </h3>
+        <h3>
+          <ion-skeleton-text [animated]="true" style="height: 20px;"></ion-skeleton-text>
+        </h3>
+        <h3>
+          <ion-skeleton-text [animated]="true" style="height: 20px;"></ion-skeleton-text>
+        </h3>
+        <h3>
+          <ion-skeleton-text [animated]="true" style="height: 20px;"></ion-skeleton-text>
+        </h3>
+      </ion-label>
+    </ion-item>
+  </ion-list>
+</ng-template>
+
+<ng-template #elseLoadingBadge>
+  <ion-skeleton-text [animated]="true" style="height: 20px;width: 40px;"></ion-skeleton-text>
+</ng-template>

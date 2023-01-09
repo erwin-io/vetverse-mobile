@@ -93,6 +93,11 @@
     "message": {
       "findByAppointmentPage": "message/findByAppointmentPage",
       "create": "message/"
+    },
+    "dashboard": {
+      "getClientUpcomingAppointment": "dashboard/getClientUpcomingAppointment/",
+      "getClientLatestAppointmentNotif": "dashboard/getClientLatestAppointmentNotif/",
+      "getClientLatestAnnouncements": "dashboard/getClientLatestAnnouncements/"
     }
   }
 }
