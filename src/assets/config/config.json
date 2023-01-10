@@ -14,7 +14,7 @@
   },
   "gCashConfig": {
     "url": "https://getpaid.gcash.com/paynow?",
-    "publicKey": "pk_110d253c490c150538dd04b3a622fd52",
+    "publicKey": "pk_c53cadc7fec19fc887c63717c22955fa",
     "fee": "0",
     "expiry": "6"
   },
