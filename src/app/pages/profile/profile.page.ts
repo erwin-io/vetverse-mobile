@@ -3,6 +3,7 @@
 import { Component, OnInit } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
 import { AlertController, ModalController } from '@ionic/angular';
+import * as moment from 'moment';
 import { forkJoin } from 'rxjs';
 import { Appointment } from 'src/app/core/model/appointment.model';
 import { LoginResult } from 'src/app/core/model/loginresult.model';
@@ -44,9 +45,10 @@ export class ProfilePage implements OnInit {
   }
 
   async initDashboard(clientId){
+    const date = moment().format('YYYY-MM-DD');
     this.isLoading = true;
     forkJoin(
-      this.dashboardService.getClientUpcomingAppointment(clientId),
+      this.dashboardService.getClientUpcomingAppointment(clientId, date),
       this.dashboardService.getClientLatestAppointmentNotif(clientId),
       this.dashboardService.getClientLatestAnnouncements(clientId),
       this.notificationService.getTotalUnreadByClientId({clientId})

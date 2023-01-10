@@ -8,6 +8,8 @@ import { IonicModule } from '@ionic/angular';
 import { RegisterPageRoutingModule } from './register-routing.module';
 
 import { RegisterPage } from './register.page';
+import { DirectiveModule } from 'src/app/core/directive/directive.module';
+import { PipeModule } from 'src/app/core/pipe/pipe.module';
 
 @NgModule({
   imports: [
@@ -16,7 +18,9 @@ import { RegisterPage } from './register.page';
     ReactiveFormsModule,
     IonicModule,
     RegisterPageRoutingModule,
-    MaterialModule
+    MaterialModule,
+    DirectiveModule,
+    PipeModule,
   ],
   declarations: [RegisterPage]
 })

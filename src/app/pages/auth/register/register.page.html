@@ -60,6 +60,8 @@
                 placeholder="Email"
                 formControlName="email"
                 autocomplete="new-email"
+                autocapitalize="none"
+                oninput="this.value = this.value.toLowerCase()"
               />
             </mat-form-field>
           </div>
@@ -68,7 +70,7 @@
               <mat-label>Mobile number</mat-label>
               <input
                 matInput
-                type="text"
+                type="number"
                 placeholder="Mobile number"
                 formControlName="mobileNumber"
                 autocomplete="new-mobileNumber"
@@ -87,29 +89,33 @@
             </mat-form-field>
           </div>
           <div class="form-field-group">
-            <mat-form-field appearance="outline" (click)="picker.open()" style="cursor: pointer;">
-              <mat-label>Birthdate</mat-label>
-              <input
-                matInput
-                [matDatepicker]="picker"
-                placeholder="Birthdate"
-                formControlName="birthDate"
-                autocomplete="new-birthDate">
-              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-              <mat-datepicker #picker></mat-datepicker>
-            </mat-form-field>
+            <mat-label slot="start">Birthdate</mat-label>
+            <ion-item id="open-birthDate-picker" [disabled]="isSubmitting" fill="outline" lines="none">
+              <ion-label>{{controls.birthDate.value | date: 'MMMM dd, yyyy'}}</ion-label>
+            </ion-item>
+            <ion-modal trigger="open-birthDate-picker" [cssClass]="'bottom-end'">
+              <ng-template>
+                <ion-datetime
+                  presentation="date"
+                  size="cover"
+                  formControlName="birthDate"
+                  [showDefaultButtons]="true"
+                ></ion-datetime>
+              </ng-template>
+            </ion-modal>
           </div>
           <div class="form-field-group">
-            <mat-form-field appearance="outline">
-              <mat-label>Gender</mat-label>
-              <mat-select
-                formControlName="genderId"
-                [disabled]="isSubmitting">
-                <mat-option value="1">Male</mat-option>
-                <mat-option value="2">Female</mat-option>
-                <mat-option value="3">Rather not say</mat-option>
-              </mat-select>
-            </mat-form-field>
+            <mat-label>Gender </mat-label>
+            <ion-item fill="outline" [disabled]="isSubmitting">
+              <ion-select slot="start" formControlName="genderId" placeholder="Select Gender" >
+                <ion-select-option slot="start" value="1">Male</ion-select-option>
+                <ion-select-option slot="start" value="2">Female</ion-select-option>
+                <ion-select-option slot="start" value="3">Rather not say</ion-select-option>
+              </ion-select>
+            </ion-item>
+            <span class="error" *ngIf="controls.genderId.touched && controls.genderId.errors && controls.genderId.errors.required">
+              Please select a gender
+            </span>
           </div>
           <div class="form-field-group">
             <mat-form-field appearance="outline">
@@ -120,6 +126,8 @@
                 placeholder="Username"
                 formControlName="username"
                 autocomplete="new-username"
+                autocapitalize="none"
+                oninput="this.value = this.value.toLowerCase()"
               />
             </mat-form-field>
           </div>

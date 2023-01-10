@@ -16,8 +16,9 @@ import { IServices } from './interface/iservices';
 export class DashboardService implements IServices {
 
   constructor(private http: HttpClient, private appconfig: AppConfigService) { }
-  getClientUpcomingAppointment(clientId): Observable<ApiResponse<{ appointment: Appointment; total: number}>> {
-    return this.http.get<any>(environment.apiBaseUrl + this.appconfig.config.apiEndPoints.dashboard.getClientUpcomingAppointment + clientId)
+  getClientUpcomingAppointment(clientId, date): Observable<ApiResponse<{ appointment: Appointment; total: number}>> {
+    const params = { clientId, date };
+    return this.http.get<any>(environment.apiBaseUrl + this.appconfig.config.apiEndPoints.dashboard.getClientUpcomingAppointment, { params })
     .pipe(
       tap(_ => this.log('dashboard')),
       catchError(this.handleError('dashboard', []))

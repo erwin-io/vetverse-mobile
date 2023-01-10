@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/member-ordering */
 import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, NgForm, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { AuthService } from '../../../core/services/auth.service';
@@ -16,7 +17,7 @@ export class RegisterPage implements OnInit {
   isSubmitting = false;
   registerForm: FormGroup;
   matcher = new MyErrorStateMatcher();
-
+  defaultDate = new Date();
   constructor(
     private formBuilder: FormBuilder,
     private router: Router,
@@ -34,12 +35,16 @@ export class RegisterPage implements OnInit {
         Validators.pattern('^[0-9]*$'),
         Validators.minLength(11), Validators.maxLength(11)]],
       address : [null, Validators.required],
-      birthDate : [null, Validators.required],
+      birthDate : [this.defaultDate.toISOString(), Validators.required],
       genderId : [null, Validators.required],
       username : [null, Validators.required],
       password : [null, Validators.required],
       confirmPassword : '',
     }, { validators: this.checkPasswords });
+  }
+
+  get controls() {
+    return this.registerForm.controls;
   }
 
   checkPasswords: ValidatorFn = (group: AbstractControl):  ValidationErrors | null => {
