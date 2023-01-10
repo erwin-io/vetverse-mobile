@@ -16,8 +16,8 @@
         <ion-label>
           <div *ngIf="item.isRead; else elseUnRead">
             <h3 class="title">{{item.title}}</h3>
-            <p>{{item.description}}</p>
-            <p>{{item.date | timeAgo}}</p>
+            <p class="desc">{{item.description}}</p>
+            <p class="desc" >{{item.date | timeAgo}}</p>
           </div>
           <ng-template #elseUnRead >
             <div>

@@ -19,8 +19,21 @@ ion-header::after {
     }
   }
   ion-label {
+    text-overflow: unset;
+    white-space: unset;
+    overflow: unset;
+    title {
+      -webkit-line-clamp: 2;
+    }
+    desc {
+      -webkit-line-clamp: 4;
+    }
     h3, p {
       margin: 0 !important;
+      display: -webkit-box;
+      max-width: 100%;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
     }
   }
   div {

@@ -1,0 +1,31 @@
+ion-header::after {
+    background-image: none;
+  }
+  
+.photos {
+    row-gap: 10px;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    width: 100%;
+    padding: 10px;
+    ion-avatar {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      height: auto;
+      .remove-button {
+        position: absolute;
+        right: 30px;
+        width: 40px;
+        height: 40px;
+      }
+      img {
+        height: 200px;
+        border-radius: 10px;
+        object-position: center;
+        object-fit: contain;
+      }
+    }
+  }
+  

@@ -17,6 +17,7 @@ import { ContactVetPage } from './contact-vet/contact-vet.page';
 import { ImageViewerPage } from 'src/app/component/image-viewer/image-viewer.page';
 import { Camera, CameraResultType, CameraSource, Photo } from '@capacitor/camera';
 import { Filesystem } from '@capacitor/filesystem';
+import { DiagnosisAttachmentsPage } from './diagnosis-attachments/diagnosis-attachments.page';
 
 @Component({
   selector: 'app-schedule-details',
@@ -454,6 +455,20 @@ export class ScheduleDetailsPage implements OnInit {
         message: Array.isArray(e.message) ? e.message[0] : e.message,
         buttons: ['OK']
       });
+    }
+  }
+
+
+  async onViewDiagnosisAttachments() {
+    if(this.details.diagnosisAttachments) {
+      const diagnosisAttachments = this.details.diagnosisAttachments;
+      const modal = await this.modalCtrl.create({
+        component: DiagnosisAttachmentsPage,
+        cssClass: 'modal-fullscreen',
+        componentProps: { diagnosisAttachments },
+      });
+      modal.present();
+      await modal.onWillDismiss();
     }
   }
 

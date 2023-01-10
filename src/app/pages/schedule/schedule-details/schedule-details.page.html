@@ -81,6 +81,11 @@
         <span class="desc">{{details.diagnosisAndTreatment !=='' ? 'Diagnosis & Treatment' : 'No Diagnosis & Treatment'}}</span>
       </ion-label>
     </ion-item>
+    <ion-item class="item" *ngIf="details.appointmentStatus.appointmentStatusId === '2'">
+      <ion-label text-wrap>
+        <ion-button fill="clear" *ngIf="details.diagnosisAndTreatment && details.diagnosisAndTreatment !==''" (click)="onViewDiagnosisAttachments()">View diagnosis attachments({{details.diagnosisAttachments.length}})</ion-button>
+      </ion-label>
+    </ion-item>
     <ion-item class="item" lines="none">
       <ion-label text-wrap>
         <h3>Pet details</h3>
@@ -189,17 +194,6 @@
         </span>
       </ion-label>
     </ion-item>
-    <!-- <ion-item class="item" >
-      <ion-icon name="receipt" slot="start"></ion-icon>
-      <ion-label text-wrap>
-        <h2 class="title">
-          <ion-skeleton-text [animated]="true"></ion-skeleton-text>
-        </h2>
-        <span class="desc">
-          <ion-skeleton-text [animated]="true"></ion-skeleton-text>
-        </span>
-      </ion-label>
-    </ion-item> -->
     <ion-item class="item" lines="none">
       <ion-label text-wrap>
         <h3>

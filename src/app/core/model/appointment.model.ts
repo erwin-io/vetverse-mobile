@@ -23,6 +23,7 @@ export class Appointment {
   diagnosisAndTreatment: string;
   serviceRate: number;
   appointmentAttachments: AppointmentAttachments[];
+  diagnosisAttachments: DiagnosisAttachments[];
 }
 
 export class ConsultaionType {
@@ -104,5 +105,9 @@ export class Files {
 
 export class AppointmentAttachments {
   appointmentAttachmentId: string;
-  file: Files;
+  file?: Files;
+}
+export class DiagnosisAttachments {
+  diagnosisAttachmentsId?: string;
+  file?: Files;
 }

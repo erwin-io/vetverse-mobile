@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button [disabled]="isLoading" (click)="cancel()" >
+        <ion-icon name="chevron-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title style="text-align: center">Diagnosis Attachments</ion-title>
+    <div slot="end" style="width: 48px"></div>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+  <div style="display: flex;flex-direction:column" *ngIf="diagnosisAttachments.length > 0; else elseNoDiagnosisAttachments">
+    <ion-card mode="ios" *ngFor="let attachments of diagnosisAttachments">
+      <div class="photos">
+        <ion-avatar>
+          <img (click)="onViewImage(attachments)" [src]="attachments.file ? attachments.file.url : ''" (error)="profilePicErrorHandler($event)">
+        </ion-avatar>
+      </div>
+    </ion-card>
+  </div>
+</ion-content>
+<ng-template #elseNoDiagnosisAttachments>
+  <h2 style="
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  align-items: center;
+  flex-grow: 1!important;
+  justify-content: center;
+  margin: auto 0;
+  ">No diagnosis attachment to show</h2>
+</ng-template>

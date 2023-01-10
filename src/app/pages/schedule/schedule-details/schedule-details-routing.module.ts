@@ -15,7 +15,11 @@ const routes: Routes = [
   {
     path: 'contact-vet',
     loadChildren: () => import('./contact-vet/contact-vet.module').then( m => m.ContactVetPageModule)
+  },  {
+    path: 'diagnosis-attachments',
+    loadChildren: () => import('./diagnosis-attachments/diagnosis-attachments.module').then( m => m.DiagnosisAttachmentsPageModule)
   }
+
 ];
 
 @NgModule({
