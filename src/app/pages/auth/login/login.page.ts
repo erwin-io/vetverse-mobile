@@ -59,7 +59,7 @@ export class LoginPage implements OnInit {
     try{
       const params = this.formData;
       this.isSubmitting = true;
-      await this.pageLoaderService.open('Loging in please wait...');
+      await this.pageLoaderService.open('Signing in please wait...');
       this.authService.login(params)
         .subscribe(async res => {
           await this.pageLoaderService.close();

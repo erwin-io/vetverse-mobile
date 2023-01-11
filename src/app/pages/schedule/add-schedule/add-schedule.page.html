@@ -62,9 +62,9 @@
             </span>
           </div>
           <div class="form-field-group">
-            <mat-label slot="start">Veterenarian</mat-label>
+            <mat-label slot="start">Veterinarian</mat-label>
             <ion-item [disabled]="isLoading" fill="outline">
-              <ion-select slot="start" formControlName="veterenarianId" placeholder="Select Veterenarian" >
+              <ion-select slot="start" formControlName="veterenarianId" placeholder="Select Veterinarian" >
                 <ion-select-option slot="start" [value]="vet.staffid" *ngFor="let vet of vetOption">{{vet.fullName}}</ion-select-option>
                 <ion-select-option  classs="no-result-option" disabled slot="start" *ngIf="vetOption.length === 0">No Vet available</ion-select-option>
               </ion-select>

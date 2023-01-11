@@ -52,6 +52,7 @@
       width: 100%;
       left: 0;
       bottom: 0;
+      z-index: 1000;
       background-color: #ffff;
       .action {
         width: 100%;
@@ -79,6 +80,20 @@
         }
         a {
           text-decoration: underline;
+        }
+      }
+    }
+  }
+}
+
+::ng-deep .datetime-calendar {
+  .calendar-body {
+    button {
+      color: #000000 !important;
+      &.calendar-day {
+        color: #000000 !important;
+        &.calendar-day-active {
+          color: #fff !important;
         }
       }
     }

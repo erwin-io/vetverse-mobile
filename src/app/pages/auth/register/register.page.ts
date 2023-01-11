@@ -12,6 +12,7 @@ import { PageLoaderService } from 'src/app/core/ui-service/page-loader.service';
   selector: 'app-register',
   templateUrl: './register.page.html',
   styleUrls: ['./register.page.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class RegisterPage implements OnInit {
   isSubmitting = false;
