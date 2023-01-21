@@ -23,10 +23,10 @@
       </div>
       <div class="col welcome">
         <div class="row name">
-          <h2>Hi, {{ user.fullName }}</h2>
+          <h2>Hi, {{ user.firstName }}!</h2>
         </div>
         <div class="row description">
-          <h3>What can we help you today?</h3>
+          <h3>What can we help you with today?</h3>
         </div>
       </div>
     </div>
@@ -37,9 +37,9 @@
             <ion-list lines="none">
               <ion-item class="ion-no-padding">
                 <ion-label >
-                  <h2><strong>Upcoming appointment</strong></h2>
+                  <h3><strong>Upcoming appointments</strong></h3>
                 </ion-label>
-                <ion-badge slot="end" color="success" *ngIf="!isLoading; else elseLoadingBadge">{{totalUpcoming}}</ion-badge>
+                <ion-badge slot="start" color="success" *ngIf="!isLoading; else elseLoadingBadge">{{totalUpcoming}}</ion-badge>
               </ion-item>
             </ion-list>
           </ion-card-header>
@@ -59,7 +59,7 @@
               <ng-template #elseNoUpcommingAppointment>
                 <ion-item button detail="false" class="ion-no-padding">
                   <ion-label>
-                    <h3>No upcoming appointment</h3>
+                    <h3>No upcoming appointments</h3>
                   </ion-label>
                 </ion-item>
               </ng-template>
@@ -76,40 +76,48 @@
             <ion-list lines="none">
               <ion-item class="ion-no-padding">
                 <ion-label >
-                  <h2><strong>Notifications</strong></h2>
+                  <h3><strong>Pet Reminders</strong></h3>
                 </ion-label>
-                <ion-badge slot="end"color="warning" *ngIf="!isLoading; else elseLoadingBadge">{{totalUnreadNotification}}</ion-badge>
+                <ion-badge slot="start" color="warning" *ngIf="!isLoading; else elseLoadingBadge">{{clientReminders.length}}</ion-badge>
+                <ion-fab-button size="small" [disabled]="isLoading" (click)="onAddReminder()"><ion-icon name="add"></ion-icon></ion-fab-button>
               </ion-item>
             </ion-list>
           </ion-card-header>
           <ion-card-content>
-            <ion-list lines="none" *ngIf="!isLoading; else elseLoadingCards" style="margin-bottom: 10px;">
-              <ion-item *ngIf="latestAppointmentNotif;" button detail="false" class="ion-no-padding" (click)="openNotif(latestAppointmentNotif)">
-                <ion-label>
-                  <h2><strong>{{latestAppointmentNotif.title}}</strong></h2>
-                  <h3><strong>{{latestAppointmentNotif.description}}</strong></h3>
-                  <h3>{{latestAppointmentNotif.date | timeAgo}}</h3>
-                </ion-label>
-              </ion-item>
-              <ion-item *ngIf="latestAnnouncements;" button detail="false" class="ion-no-padding" (click)="openNotif(latestAnnouncements)">
-                <ion-label>
-                  <h2><strong>{{latestAnnouncements.title}}</strong></h2>
-                  <h3><strong>{{latestAnnouncements.description}}</strong></h3>
-                  <h3>{{latestAnnouncements.date | timeAgo}}</h3>
-                </ion-label>
-              </ion-item>
-              <ion-item *ngIf="!latestAppointmentNotif && !latestAnnouncements" button detail="false" class="ion-no-padding">
-                <ion-label>
-                  <h3>No unread notifications to show</h3>
-                </ion-label>
-              </ion-item>
-            </ion-list>
+            <div style="width: 100%; display: flex; flex-direction: column;"  *ngIf="!isLoading; else elseLoadingCards">
+              <ion-list *ngIf="clientReminders && clientReminders.length > 0; else elseNoReminders" style="margin-bottom: 10px;" class="reminder-list">
+                <ion-item *ngFor="let reminder of clientReminders" button detail="false" class="ion-no-padding" (click)="onEditReminder(reminder)">
+                  <ion-thumbnail slot="start">
+                    <img src="../../../assets/img/dog-bowl.png" />
+                  </ion-thumbnail>
+                  <ion-label>
+                    <h2 class="title"><strong>{{reminder.clientReminderType.name}}</strong></h2>
+                    <span class="desc">{{reminder.description}}</span>
+                    <div class="sched">
+                      <ion-icon name="time-outline"></ion-icon>
+                      <div class="details">
+                        <h4><strong>{{reminder.startDate | date: 'hh:mm a' }} {{reminder.repeatTypeCode | uppercase}}</strong></h4>
+                        <span *ngIf="reminder.repeatTypeCode && reminder.repeatTypeCode.toString() !== ''; else elseNoRepeat">
+                          Reoccurs&nbsp;
+                          {{
+                            (reminder.repeatTypeCode.toString() === 'daily' ? 'everyday' : '') ||
+                            (reminder.repeatTypeCode.toString() === 'yearly' || reminder.repeatTypeCode.toString() === 'monthly' ? 'every ' + (reminder.startDate | date: 'EEE, MMM dd') : '') ||
+                            (reminder.repeatTypeCode.toString() === 'weekly' ? 'every ' + (reminder.startDate | date: 'EEEE') : '')
+                          }}
+                        </span>
+                        <ng-template #elseNoRepeat>
+                          <span>No repeat</span>
+                        </ng-template>
+                      </div>
+                    </div>
+                  </ion-label>
+                </ion-item>
+              </ion-list>
+            </div>
           </ion-card-content>
-          <div class="action">
-            <ion-button fill="clear" *ngIf="totalUnreadNotification > 0" [disabled]="isLoading" routerLink="/notification">View all</ion-button>
-          </div>
         </ion-card>
       </div>
+      
     </div>
   </div>
 </ion-content>
@@ -140,4 +148,13 @@
 
 <ng-template #elseLoadingBadge>
   <ion-skeleton-text [animated]="true" style="height: 20px;width: 40px;"></ion-skeleton-text>
+</ng-template>
+<ng-template #elseNoReminders>
+  <ion-list lines="none">
+    <ion-item  button detail="false" class="ion-no-padding">
+      <ion-label>
+        <h3>No reminders set</h3>
+      </ion-label>
+    </ion-item>
+  </ion-list>
 </ng-template>

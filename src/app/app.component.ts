@@ -51,7 +51,8 @@ export class AppComponent implements OnInit {
       }
     });
   }
-  ngOnInit() {
+  async ngOnInit() {
+    await LocalNotifications.requestPermissions();
   }
 
 

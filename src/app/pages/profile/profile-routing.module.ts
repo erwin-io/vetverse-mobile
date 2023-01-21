@@ -7,7 +7,11 @@ const routes: Routes = [
   {
     path: '',
     component: ProfilePage
+  },  {
+    path: 'reminder',
+    loadChildren: () => import('./reminder/reminder.module').then( m => m.ReminderPageModule)
   }
+
 ];
 
 @NgModule({

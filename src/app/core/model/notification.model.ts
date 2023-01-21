@@ -8,7 +8,7 @@ export class Notifications {
   date: Date;
   title: string;
   description: any;
-  isReminder: boolean;
+  notificationTypeId: string;
   isRead: boolean;
   appointment: Appointment;
   client: Client;

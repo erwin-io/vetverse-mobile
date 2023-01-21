@@ -13,7 +13,7 @@
   <div class="details">
     <div class="profile">
       <ion-avatar>
-        <img [src]="details.petProfilePic && details.petProfilePic.file ? details.petProfilePic.file.url : ''"  />
+        <img [src]="details.petProfilePic && details.petProfilePic.file ? details.petProfilePic.file.url : ''" (error)="profilePicErrorHandler($event)"  />
       </ion-avatar>
       <h1 class="title">
         {{details.name}}

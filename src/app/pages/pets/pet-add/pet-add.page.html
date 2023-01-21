@@ -21,7 +21,7 @@
   (ngSubmit)="petForm.valid ? onSubmit() : false">
     <fieldset [disabled]="isSubmitting || isLoading">
       <div class="form-field-group">
-        <mat-label>What type of pet</mat-label>
+        <mat-label>Enter your pet's species</mat-label>
         <ion-item [disabled]="isLoading || isSubmitted" fill="outline">
           <ion-select slot="start" formControlName="petTypeId" placeholder="Select Pet type" >
             <ion-select-option slot="start" [value]="item.petTypeId" *ngFor="let item of petTypeOption">{{item.name}}</ion-select-option>
@@ -29,7 +29,7 @@
           </ion-select>
         </ion-item>
         <span class="error" *ngIf="errorControls.petTypeId.touched && errorControls.petTypeId.errors && errorControls.petTypeId.errors.required">
-          Please select a type of pet
+          Cannot be left blank
         </span>
       </div>
 
@@ -107,16 +107,18 @@
           Weight is required
         </span>
       </div>
-      <div class="action">
-        <ion-button
-          *ngIf="errorControls.petCategoryId.value && errorControls.petCategoryId.value !== ''"
-          type="submit"
-          mat-flat-button
-          form="petForm"
-          color="primary"
-          [disabled]="!petForm.valid || !isFormDirty || isSubmitting"
-          >Save</ion-button>
-      </div>
     </fieldset>
   </form>
 </ion-content>
+<div class="action-controls-bottom">
+  <ion-button
+    *ngIf="errorControls.petCategoryId.value && errorControls.petCategoryId.value !== ''"
+    type="submit"
+    mat-flat-button
+    form="petForm"
+    color="primary"
+    size="large"
+    expand="block"
+    [disabled]="!petForm.valid || !isFormDirty || isSubmitting"
+    >Save</ion-button>
+</div>

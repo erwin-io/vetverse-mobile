@@ -1,7 +1,9 @@
+/* eslint-disable max-len */
 /* eslint-disable @typescript-eslint/member-ordering */
 /* eslint-disable no-underscore-dangle */
 import { Component, OnInit } from '@angular/core';
 import { NavigationExtras, Router } from '@angular/router';
+import { LocalNotifications } from '@capacitor/local-notifications';
 import { AlertController, ModalController } from '@ionic/angular';
 import * as moment from 'moment';
 import { forkJoin } from 'rxjs';
@@ -14,6 +16,11 @@ import { environment } from 'src/environments/environment';
 import { StorageService } from '../../core/storage/storage.service';
 import { ScheduleDetailsPage } from '../schedule/schedule-details/schedule-details.page';
 import { SettingsPage } from '../settings/settings.page';
+import { Plugins } from '@capacitor/core';
+import { ReminderPage } from './reminder/reminder.page';
+import { Calendar } from '@awesome-cordova-plugins/calendar/ngx';
+import { ClientReminders } from 'src/app/core/model/client-reminder.model';
+import { ClientReminderService } from 'src/app/core/services/client-reminder.service';
 
 @Component({
   selector: 'app-profile',
@@ -23,21 +30,23 @@ import { SettingsPage } from '../settings/settings.page';
 export class ProfilePage implements OnInit {
   isLoading;
   upcomingAppointment: Appointment = new Appointment();
-  latestAppointmentNotif: Notifications;
-  latestAnnouncements: Notifications;
   totalUnreadNotification = 0;
   totalUpcoming = 0;
   hasChanges = false;
+  clientReminders: ClientReminders[] = [];
   constructor(
     private router: Router,
     private modalCtrl: ModalController,
     private dashboardService: DashboardService,
     private notificationService: NotificationService,
     private storageService: StorageService,
+    private clientReminderService: ClientReminderService,
     private alertController: AlertController,
+    private calendar: Calendar,
   ) {
     const currentUser = this.storageService.getLoginUser();
     this.initDashboard(currentUser.clientId);
+
   }
 
   get user() {
@@ -49,22 +58,17 @@ export class ProfilePage implements OnInit {
     this.isLoading = true;
     forkJoin(
       this.dashboardService.getClientUpcomingAppointment(clientId, date),
-      this.dashboardService.getClientLatestAppointmentNotif(clientId),
-      this.dashboardService.getClientLatestAnnouncements(clientId),
-      this.notificationService.getTotalUnreadByClientId({clientId})
+      this.notificationService.getTotalUnreadByClientId({clientId}),
+      this.clientReminderService.getAll(),
   ).subscribe(
-      ([getUpcomingAppointment, getLatestAppointmentNotif, getLatestAnnouncements, getTotalUnread]) => {
+      ([getUpcomingAppointment, getTotalUnread, getAllReminders]) => {
           // do things
           this.upcomingAppointment = getUpcomingAppointment.data.appointment;
           this.totalUpcoming = getUpcomingAppointment.data.total;
-          this.latestAppointmentNotif = getLatestAppointmentNotif.data;
-          this.latestAnnouncements = getLatestAnnouncements.data;
           this.totalUnreadNotification = getTotalUnread.data.total;
           this.storageService.saveTotalUnreadNotif(this.totalUnreadNotification);
-          console.log(getUpcomingAppointment.data);
-          console.log(getLatestAppointmentNotif.data);
-          console.log(getLatestAnnouncements.data);
-          console.log(getTotalUnread.data);
+
+          this.clientReminders = getAllReminders;
       },
       (error) => console.error(error),
       () => {
@@ -74,7 +78,7 @@ export class ProfilePage implements OnInit {
   );
   }
 
-  ngOnInit() {
+  async ngOnInit() {
   }
 
   async onShowSettings() {
@@ -102,7 +106,7 @@ export class ProfilePage implements OnInit {
     await modal.onWillDismiss();
   }
 
-  ionViewWillEnter() {
+  async ionViewWillEnter() {
     console.log('visited');
     const totalUnreadNotification = Number(this.storageService.getTotalUnreadNotif());
     if(totalUnreadNotification !== this.totalUnreadNotification) {
@@ -121,6 +125,36 @@ export class ProfilePage implements OnInit {
     };
     this.hasChanges = true;
     this.router.navigate(['notification'], navigationExtras);
+  }
+
+  async onAddReminder() {
+    let modal: any = null;
+    modal = await this.modalCtrl.create({
+      component: ReminderPage,
+      cssClass: 'modal-fullscreen',
+      componentProps: { modal, isNew: true },
+    });
+    modal.onWillDismiss().then(async (res) => {
+      this.clientReminders = await this.clientReminderService.getAll();
+    });
+    modal.present();
+
+    //this.loadPet(this.currentUser.clientId);
+  }
+
+  async onEditReminder(reminder) {
+    let modal: any = null;
+    modal = await this.modalCtrl.create({
+      component: ReminderPage,
+      cssClass: 'modal-fullscreen',
+      componentProps: { modal, isNew: false, details: reminder },
+    });
+    modal.onWillDismiss().then(async (res) => {
+      this.clientReminders = await this.clientReminderService.getAll();
+    });
+    modal.present();
+
+    //this.loadPet(this.currentUser.clientId);
   }
 
   async doRefresh(event: any){

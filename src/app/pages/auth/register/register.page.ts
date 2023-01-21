@@ -7,6 +7,7 @@ import { ToastController } from '@ionic/angular';
 import { AlertController } from '@ionic/angular';
 import { MyErrorStateMatcher } from '../../../core/form-validation/error-state.matcher';
 import { PageLoaderService } from 'src/app/core/ui-service/page-loader.service';
+import { AppConfigService } from 'src/app/core/services/app-config.service';
 
 @Component({
   selector: 'app-register',
@@ -23,6 +24,7 @@ export class RegisterPage implements OnInit {
     private formBuilder: FormBuilder,
     private router: Router,
     private authService: AuthService,
+    private appConfigService: AppConfigService,
     private pageLoaderService: PageLoaderService,
     private alertController: AlertController) { }
 
@@ -59,6 +61,10 @@ export class RegisterPage implements OnInit {
     if(!this.registerForm.valid){
       return;
     }
+    const params = {
+      ...form,
+      sendOtp: this.appConfigService.config.appConfig.sendOtp,
+    };
     try{
       this.isSubmitting = true;
       await this.pageLoaderService.open('Processing please wait...');
