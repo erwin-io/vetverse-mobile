@@ -14,6 +14,7 @@ import TimeAgo from 'javascript-time-ago';
 import en from 'javascript-time-ago/locale/en';
 import { forkJoin } from 'rxjs';
 import * as moment from 'moment';
+import { NotificationTypeEnum } from 'src/app/core/enums/notifications-type.enum';
 
 @Component({
   selector: 'app-notification',
@@ -80,7 +81,7 @@ export class NotificationPage implements OnInit {
 
   async openDetails(notifDetails: Notifications) {
     console.log(notifDetails);
-    if(!notifDetails.isReminder){
+    if(notifDetails.notificationTypeId === NotificationTypeEnum.APPOINTMENT.toString()){
       const modal = await this.modalCtrl.create({
         component: ScheduleDetailsPage,
         cssClass: 'modal-fullscreen',

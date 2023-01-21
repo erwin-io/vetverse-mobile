@@ -4,8 +4,8 @@
 
 export const environment = {
   production: false,
-  conferenceHost: 'https://localhost:4200/',
-  apiBaseUrl: 'http://localhost:3000/api/v1/'
+  conferenceHost: 'http://192.168.254.140:4200/',
+  apiBaseUrl: 'http://192.168.254.140:3000/api/v1/'
 };
 
 /*

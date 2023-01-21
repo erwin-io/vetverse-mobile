@@ -1,0 +1,134 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="cancel()" >
+        <ion-icon name="chevron-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title style="text-align: center">Update Reminder</ion-title>
+    <div slot="end" *ngIf="isNew; else elseShowDelete" style="width: 48px"></div>
+    <ng-template #elseShowDelete>
+      <ion-buttons slot="end">
+        <ion-button (click)="onDelete()" >
+          <ion-icon name="trash-outline"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </ng-template>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+  <form
+  id="reminderForm"
+  [formGroup]="reminderForm"
+  (ngSubmit)="reminderForm.valid ? onSubmit() : false">
+    <fieldset [disabled]="isLoading">
+      <div class="form-field-group">
+        <mat-label>What shall we remind you of?</mat-label>
+        <ion-item [disabled]="isLoading" fill="outline">
+          <ion-select slot="start" formControlName="clientReminderTypeId" placeholder="Select a reminder" >
+            <ion-select-option slot="start" [value]="item.clientReminderTypeId" *ngFor="let item of clientReminderTypeOption">{{item.name}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <span class="error" *ngIf="errorControls.clientReminderTypeId.touched && errorControls.clientReminderTypeId.errors && errorControls.clientReminderTypeId.errors.required">
+          Cannot be left blank
+        </span>
+      </div>
+
+      <div class="form-field-group" *ngIf="errorControls.clientReminderTypeId.value && errorControls.clientReminderTypeId.value !== ''">
+        <mat-label slot="start">Start</mat-label>
+        <ion-item id="open-startDate-picker" [disabled]="isLoading" fill="outline" lines="none">
+          <ion-label>{{reminderForm.value.startDate | date: 'EEE, MMM d hh:mm a'}}</ion-label>
+        </ion-item>
+        <ion-modal trigger="open-startDate-picker" [cssClass]="'bottom-end'">
+          <ng-template>
+            <ion-datetime
+              locale="en-PH"
+              presentation="date-time"
+              size="cover"
+              formControlName="startDate"
+              [showDefaultButtons]="true"
+              displayFormat="HH:mm" 
+              pickerFormat="HH:mm" 
+            ></ion-datetime>
+          </ng-template>
+        </ion-modal>
+      </div>
+
+      <div class="form-field-group"  *ngIf="errorControls.clientReminderTypeId.value && errorControls.clientReminderTypeId.value !== ''">
+        <mat-label>Repeat </mat-label>
+        <ion-item [disabled]="isLoading" fill="outline">
+          <ion-select slot="start" formControlName="repeatTypeCode" placeholder="Repeat?" >
+            <ion-select-option slot="start" value="">Don't repeat</ion-select-option>
+            <ion-select-option slot="start" [value]="item.repeatTypeCode" *ngFor="let item of repeatTypeOption">{{item.name}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </div>
+
+      <div class="form-field-group" *ngIf="formData.repeatTypeCode && formData.repeatTypeCode && formData.repeatTypeCode !== ''">
+        <mat-label>Repeat every number of {{every}}</mat-label>
+        <mat-form-field appearance="outline">
+          <mat-label>Every</mat-label>
+          <input
+            matInput
+            type="number"
+            placeholder="Specific times"
+            formControlName="interval"
+          />
+        </mat-form-field>
+      </div>
+
+      <div class="form-field-group" *ngIf="formData.repeatTypeCode !== ''">
+        <mat-label>Duration </mat-label>
+        <ion-item [disabled]="isLoading" fill="outline">
+          <ion-select slot="start" formControlName="durationTypeCode" placeholder="Duration" >
+            <ion-select-option slot="start" [value]="item.durationTypeCode" *ngFor="let item of durationTypeOption">{{item.name}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+      </div>
+
+      <div class="form-field-group" *ngIf="formData.repeatTypeCode !== '' && formData.durationTypeCode === 'U'">
+        <mat-label slot="start">End</mat-label>
+        <ion-item id="open-endDate-picker" [disabled]="isLoading" fill="outline" lines="none">
+          <ion-label>{{reminderForm.value.endDate | date: 'EEE, MMM d hh:mm a'}}</ion-label>
+        </ion-item>
+        <ion-modal trigger="open-endDate-picker" [cssClass]="'bottom-end'">
+          <ng-template>
+            <ion-datetime
+              locale="en-PH"
+              presentation="date-time"
+              size="cover"
+              formControlName="endDate"
+              [showDefaultButtons]="true"
+              displayFormat="HH:mm" 
+              pickerFormat="HH:mm" 
+            ></ion-datetime>
+          </ng-template>
+        </ion-modal>
+      </div>
+
+      <div class="form-field-group" *ngIf="errorControls.clientReminderTypeId.value && errorControls.clientReminderTypeId.value !== ''">
+        <mat-label>Notes</mat-label>
+        <mat-form-field appearance="outline">
+          <mat-label>Notes</mat-label>
+          <textarea
+            matInput
+            type="text"
+            placeholder="Notes"
+            formControlName="description"
+          ></textarea>
+        </mat-form-field>
+      </div>
+    </fieldset>
+  </form>
+</ion-content>
+<div class="action-controls-bottom">
+  <ion-button
+    type="submit"
+    mat-flat-button
+    form="reminderForm"
+    color="primary"
+    size="large"
+    expand="block"
+    [disabled]="!reminderForm.valid"
+    >Save</ion-button>
+</div>

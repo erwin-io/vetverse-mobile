@@ -80,6 +80,10 @@ export class PetDetailsPage implements OnInit {
     return this.modalCtrl.dismiss(null, 'confirm');
   }
 
+  profilePicErrorHandler(event) {
+    event.target.src = '../../../../assets/img/pet-profile-not-found.png';
+  }
+
   async presentAlert(options: any) {
     const alert = await this.alertController.create(options);
     await alert.present();

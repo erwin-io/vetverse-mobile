@@ -1,4 +1,7 @@
 {
+  "appConfig": {
+    "sendOtp": false
+  },
   "sessionConfig": {
     "sessionTimeout": "1800"
   },
@@ -18,19 +21,28 @@
     "fee": "0",
     "expiry": "6"
   },
-  "tableColumns": {
-    "appointment": {
-      "admin": ["appointmentId", "appointmentDate", "client", "consultaionType", "service", "vet", "amountToPay", "appointmentStatus", "controls"],
-      "manager": ["appointmentId", "appointmentDate", "client", "consultaionType", "service", "vet", "amountToPay", "appointmentStatus", "controls"],
-      "vet": ["appointmentId", "appointmentDate", "client", "consultaionType", "service", "appointmentStatus", "controls"],
-      "frontDesk": ["appointmentId", "appointmentDate", "client", "consultaionType", "service", "vet", "amountToPay", "appointmentStatus", "controls"]
-    }
-  },
   "lookup": {
     "appointmentStatus": ["Pending", "Approved", "Completed", "Cancelled"],
     "serviceType": [],
     "consultaionType": [{"consultaionTypeId":"1", "name": "Onsite"}, {"consultaionTypeId":"2", "name": "Video"}],
-    "paymentType": [{"paymentTypeId":"1", "name": "Cash"}, {"paymentTypeId":"2", "name": "G-Cash"}]
+    "paymentType": [{"paymentTypeId":"1", "name": "Cash"}, {"paymentTypeId":"2", "name": "G-Cash"}],
+    "repeatType": [
+      {"repeatTypeCode":"daily", "name": "Daily"},
+      {"repeatTypeCode":"weekly", "name": "Weekly"},
+      {"repeatTypeCode":"monthly", "name": "Monthly"},
+      {"repeatTypeCode":"yearly", "name": "Yearly"}
+    ],
+    "durationType": [
+      {"durationTypeCode":"C", "name": "Continuous"}, 
+      {"durationTypeCode":"U", "name": "Until end date"}
+    ],
+    "clientReminderType": [
+      {"clientReminderTypeId": 1, "name": "Preventative Check-up"}, 
+      {"clientReminderTypeId": 2, "name": "Food Refill"},
+      {"clientReminderTypeId": 3, "name": "Vaccination"},
+      {"clientReminderTypeId": 4, "name": "Grooming"},
+      {"clientReminderTypeId": 5, "name": "Others"}
+    ]
   },
   "apiEndPoints": {
     "auth": {

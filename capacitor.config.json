@@ -4,10 +4,12 @@
   "bundledWebRuntime": false,
   "npmClient": "npm",
   "webDir": "www",
-  "server": "http://localhost:8100/",
+  "server": {
+  },
   "plugins": {
     "SplashScreen": {
-      "launchShowDuration": 0
+      "launchShowDuration": 10000,
+      "launchAutoHide": false
     },
     "PushNotifications": {
       "sound": "notif_alert",
@@ -16,6 +18,15 @@
         "sound",
         "alert"
       ]
+    },
+    "LocalNotifications": {
+      "presentationOptions": [
+        "badge",
+        "sound",
+        "alert"
+      ],
+      "smallIcon": "ic_notification_round",
+      "largeIcon": "ic_notification_round"
     }
   },
   "cordova": {}

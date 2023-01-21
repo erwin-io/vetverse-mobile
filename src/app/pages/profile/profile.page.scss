@@ -64,16 +64,54 @@ ion-header::after {
     row-gap: 20px;
     flex-direction: column;
     ::ng-deep ion-card {
+      .reminder-list {
+        gap: 10px;
+      }
+      ion-list {
+        ion-thumbnail {
+          width: 40px!important;
+          img {
+            object-fit: contain!important;
+          }
+        }
+      }
       ion-label {
         text-overflow: unset;
         white-space: unset;
         overflow: unset;
-        h1,h2,h3,h4 {
+        h1,h2,h3,h4,h5,span,p {
           display: -webkit-box;
           max-width: 100%;
           -webkit-line-clamp: 3;
           -webkit-box-orient: vertical;
           overflow: hidden;
+        }
+        .title {
+          margin-bottom: 5px!important;
+        }
+        .desc {
+          font-size: 15px!important;
+        }
+        .title,.desc {
+          line-height: 1;
+          -webkit-line-clamp: 2!important;
+        }
+        .sched {
+          display: flex;
+          flex-direction: row;
+          align-items: center;
+          gap: 10px;
+          margin-top: 10px!important;
+          ion-icon {
+            font-size: 2em!important;
+          }
+          .details {
+            display: flex;
+            flex-direction: column;
+            span {
+              font-size: 15px!important;
+            }
+          }
         }
       }
       ::ng-deep ion-card-header {

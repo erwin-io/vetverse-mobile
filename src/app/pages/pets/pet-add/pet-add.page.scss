@@ -27,3 +27,16 @@ ion-header::after {
     }
   }
 }
+
+.action-controls-bottom {
+  position: relative;
+  display: block;
+  width: 100%;
+  background: #ffffff;
+  padding: 5px 10px;
+  box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
+  ion-button {
+    height: 45px;
+    font-size: 15px;
+  }
+}

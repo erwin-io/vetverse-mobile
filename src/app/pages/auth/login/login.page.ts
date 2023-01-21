@@ -62,6 +62,7 @@ export class LoginPage implements OnInit {
       await this.pageLoaderService.open('Signing in please wait...');
       this.authService.login(params)
         .subscribe(async res => {
+          console.log(res);
           await this.pageLoaderService.close();
           if (res.success) {
             if(res.data.isVerified) {

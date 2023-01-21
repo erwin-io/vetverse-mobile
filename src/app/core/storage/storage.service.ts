@@ -49,6 +49,16 @@ export class StorageService {
   saveThemeIsDarkMode(value: any){
     return this.set('themeIsDarkMode', value);
   }
+  getClientReminder(): any{
+    const clientReminder = this.get('clientReminder');
+    if(clientReminder !== null && clientReminder !== ''){
+      return JSON.parse(clientReminder);
+    }
+    else {return null;}
+  }
+  saveClientReminder(value: any){
+    return this.set('clientReminder', JSON.stringify(value));
+  }
   private set(key: string, value: any){
     localStorage.setItem(key, value);
   }
