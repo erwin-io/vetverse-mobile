@@ -125,13 +125,22 @@
           <div class="form-field-group" >
             <mat-label>Select payment method</mat-label>
             <ion-radio-group formControlName="paymentTypeId" value="1">
-              <ion-item fill="outline" lines="none" *ngIf="formData.consultaionTypeId && formData.consultaionTypeId !== '2'">
+              <!-- <ion-item fill="outline" lines="none" *ngIf="formData.consultaionTypeId && formData.consultaionTypeId !== '2'">
                 <ion-thumbnail slot="start">
                   <img alt="Cash Logo" src="../../../../assets/img/cash_logo.png" />
                 </ion-thumbnail>
                 <ion-label>Cash on site</ion-label>
                 <ion-radio [disabled]="isLoading" slot="end" value="1"></ion-radio>
               </ion-item>
+               -->
+              <ion-item fill="outline" lines="none" >
+                <ion-thumbnail slot="start">
+                  <img alt="Cash Logo" src="../../../../assets/img/cash_logo.png" />
+                </ion-thumbnail>
+                <ion-label>Cash on site</ion-label>
+                <ion-radio [disabled]="isLoading" slot="end" value="1"></ion-radio>
+              </ion-item>
+
               <ion-item fill="outline" lines="none">
                 <ion-thumbnail slot="start">
                   <img alt="GCash Logo" src="../../../../assets/img/gcash_logo.png" />
